@@ -14,7 +14,7 @@ const getAllServiceSubtypes = asyncHandler(async (req, res) => {
 //@desc Create new service subtype
 //@route /serviceSubtypes
 //@access public
-const createServiceSubtypes = asyncHandler(async (req, res) => {
+const createServiceSubtype = asyncHandler(async (req, res) => {
   const { name, serviceType } = req.body;
 
   const validateRequiredFields = name && serviceType;
@@ -33,7 +33,7 @@ const createServiceSubtypes = asyncHandler(async (req, res) => {
 //@desc Delete service subtype by id
 //@route /serviceSubtypes/:id
 //@access public
-const deleteServiceSubtypesById = asyncHandler(async (req, res) => {
+const deleteServiceSubtypeById = asyncHandler(async (req, res) => {
   const serviceSubtype = await ServiceSubtype.findById(req.params.id);
 
   checkNotFound(serviceSubtype)(req, res, async () => {
@@ -47,7 +47,7 @@ const deleteServiceSubtypesById = asyncHandler(async (req, res) => {
 //@desc Update service subtype by id
 //@route /serviceSubtypes/:id
 //@access public
-const updateServiceSubtypesById = asyncHandler(async (req, res) => {
+const updateServiceSubtypeById = asyncHandler(async (req, res) => {
   let serviceSubtype = await ServiceSubtype.findById(req.params.id);
 
   checkNotFound(serviceSubtype)(req, res, async () => {
@@ -65,7 +65,7 @@ const updateServiceSubtypesById = asyncHandler(async (req, res) => {
 //@desc Get service subtype by id
 //@route /serviceSubtypes/:id
 //@access public
-const getServiceSubtypesById = asyncHandler(async (req, res) => {
+const getServiceSubtypeById = asyncHandler(async (req, res) => {
   const serviceSubtype = await ServiceSubtype.findById(req.params.id);
 
   checkNotFound(serviceSubtype)(req, res, async () => {
@@ -75,8 +75,8 @@ const getServiceSubtypesById = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllServiceSubtypes,
-  createServiceSubtypes,
-  deleteServiceSubtypesById,
-  updateServiceSubtypesById,
-  getServiceSubtypesById,
+  createServiceSubtype,
+  deleteServiceSubtypeById,
+  updateServiceSubtypeById,
+  getServiceSubtypeById,
 };

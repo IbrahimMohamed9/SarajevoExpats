@@ -14,7 +14,7 @@ const getAllServices = asyncHandler(async (req, res) => {
 //@desc Create new service
 //@route /services
 //@access public
-const createServices = asyncHandler(async (req, res) => {
+const createService = asyncHandler(async (req, res) => {
   const { name, content, picture, phone, email } = req.body;
 
   const validateRequiredFields = name && content && picture;
@@ -36,7 +36,7 @@ const createServices = asyncHandler(async (req, res) => {
 //@desc Delete service by id
 //@route /services/:id
 //@access public
-const deleteServicesById = asyncHandler(async (req, res) => {
+const deleteServiceById = asyncHandler(async (req, res) => {
   const service = await Service.findById(req.params.id);
 
   checkNotFound(service)(req, res, async () => {
@@ -48,7 +48,7 @@ const deleteServicesById = asyncHandler(async (req, res) => {
 //@desc Update service by id
 //@route /services/:id
 //@access public
-const updateServicesById = asyncHandler(async (req, res) => {
+const updateServiceById = asyncHandler(async (req, res) => {
   let service = await Service.findById(req.params.id);
 
   checkNotFound(service)(req, res, async () => {
@@ -62,7 +62,7 @@ const updateServicesById = asyncHandler(async (req, res) => {
 //@desc Get service by id
 //@route /services/:id
 //@access public
-const getServicesById = asyncHandler(async (req, res) => {
+const getServiceById = asyncHandler(async (req, res) => {
   const service = await Service.findById(req.params.id);
 
   checkNotFound(service)(req, res, async () => {
@@ -72,8 +72,8 @@ const getServicesById = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllServices,
-  createServices,
-  deleteServicesById,
-  updateServicesById,
-  getServicesById,
+  createService,
+  deleteServiceById,
+  updateServiceById,
+  getServiceById,
 };

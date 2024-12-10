@@ -14,7 +14,7 @@ const getAllServiceTypes = asyncHandler(async (req, res) => {
 //@desc Create new service type
 //@route /serviceTypes
 //@access public
-const createServiceTypes = asyncHandler(async (req, res) => {
+const createServiceType = asyncHandler(async (req, res) => {
   if (!req.body.name) {
     res.status(400);
     throw new Error("All fields are mandatory");
@@ -30,7 +30,7 @@ const createServiceTypes = asyncHandler(async (req, res) => {
 //@desc Delete service type by id
 //@route /serviceTypes/:id
 //@access public
-const deleteServiceTypesById = asyncHandler(async (req, res) => {
+const deleteServiceTypeById = asyncHandler(async (req, res) => {
   const serviceType = await ServiceType.findById(req.params.id);
 
   checkNotFound(serviceType)(req, res, async () => {
@@ -42,7 +42,7 @@ const deleteServiceTypesById = asyncHandler(async (req, res) => {
 //@desc Update service subtype by id
 //@route /serviceTypes/:id
 //@access public
-const updateServiceTypesById = asyncHandler(async (req, res) => {
+const updateServiceTypeById = asyncHandler(async (req, res) => {
   let serviceType = await ServiceType.findById(req.params.id);
   if (!serviceType) {
     res.status(404);
@@ -69,7 +69,7 @@ const updateServiceTypesById = asyncHandler(async (req, res) => {
 //@desc Get service subtype by id
 //@route /serviceTypes/:id
 //@access public
-const getServiceTypesById = asyncHandler(async (req, res) => {
+const getServiceTypeById = asyncHandler(async (req, res) => {
   const serviceType = await ServiceType.findById(req.params.id);
 
   checkNotFound(serviceType)(req, res, async () => {
@@ -79,8 +79,8 @@ const getServiceTypesById = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllServiceTypes,
-  createServiceTypes,
-  deleteServiceTypesById,
-  updateServiceTypesById,
-  getServiceTypesById,
+  createServiceType,
+  deleteServiceTypeById,
+  updateServiceTypeById,
+  getServiceTypeById,
 };

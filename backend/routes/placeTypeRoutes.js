@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const validateToken = require("../middleware/validateToken");
 const {
   getAllPlaceTypes,
-  createPlaceTypes,
-  deletePlaceTypesById,
-  updatePlaceTypesById,
-  getPlaceTypesById,
+  createPlaceType,
+  deletePlaceTypeById,
+  updatePlaceTypeById,
+  getPlaceTypeById,
 } = require("../controllers/placeTypeController");
 const { validateMongoId } = require("../utils");
 
@@ -20,14 +21,19 @@ const { validateMongoId } = require("../utils");
  *       properties:
  *         name:
  *           type: string
- *           description: The name of the place type
+ *           description: Name of the place type
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
  * @swagger
- * /placeTypes:
+ * /placetypes:
  *   get:
- *     summary: Returns all place types
+ *     summary: Get all place types
  *     tags: [Place Types]
  *     responses:
  *       200:
@@ -41,6 +47,8 @@ const { validateMongoId } = require("../utils");
  *   post:
  *     summary: Create a new place type
  *     tags: [Place Types]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -50,14 +58,16 @@ const { validateMongoId } = require("../utils");
  *     responses:
  *       201:
  *         description: Place type created successfully
+ *       401:
+ *         description: Not authorized
  *       400:
- *         description: Invalid input data
+ *         description: Invalid input or place type already exists
  */
-router.route("/").get(getAllPlaceTypes).post(createPlaceTypes);
+router.route("/").get(getAllPlaceTypes).post(validateToken, createPlaceType);
 
 /**
  * @swagger
- * /placeTypes/{id}:
+ * /placetypes/{id}:
  *   get:
  *     summary: Get a place type by ID
  *     tags: [Place Types]
@@ -67,7 +77,7 @@ router.route("/").get(getAllPlaceTypes).post(createPlaceTypes);
  *         schema:
  *           type: string
  *         required: true
- *         description: The place type ID
+ *         description: The place type ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: Place type details
@@ -75,18 +85,18 @@ router.route("/").get(getAllPlaceTypes).post(createPlaceTypes);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/PlaceType'
- *       404:
- *         description: Place type not found
  *   put:
  *     summary: Update a place type
  *     tags: [Place Types]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The place type ID
+ *         description: The place type ID (must be a valid MongoDB ObjectId)
  *     requestBody:
  *       required: true
  *       content:
@@ -96,29 +106,38 @@ router.route("/").get(getAllPlaceTypes).post(createPlaceTypes);
  *     responses:
  *       200:
  *         description: Place type updated successfully
+ *       401:
+ *         description: Not authorized
  *       404:
  *         description: Place type not found
+ *       400:
+ *         description: Place type with the same name already exists
  *   delete:
  *     summary: Delete a place type
  *     tags: [Place Types]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The place type ID
+ *         description: The place type ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: Place type deleted successfully
+ *       401:
+ *         description: Not authorized
  *       404:
  *         description: Place type not found
  */
+router.get("/:id", getPlaceTypeById);
 router
   .route("/:id")
-  .get(getPlaceTypesById)
-  .put(updatePlaceTypesById)
-  .delete(deletePlaceTypesById);
+  .all(validateToken)
+  .put(updatePlaceTypeById)
+  .delete(deletePlaceTypeById);
 
 router.param("id", validateMongoId);
 

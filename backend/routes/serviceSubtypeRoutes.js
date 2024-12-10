@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllServiceSubtypes,
-  createServiceSubtypes,
-  deleteServiceSubtypesById,
-  updateServiceSubtypesById,
-  getServiceSubtypesById,
+  createServiceSubtype,
+  deleteServiceSubtypeById,
+  updateServiceSubtypeById,
+  getServiceSubtypeById,
 } = require("../controllers/serviceSubtypeController");
 const { validateMongoId } = require("../utils");
+const validateToken = require("../middleware/validateToken");
 
 /**
  * @swagger
@@ -25,6 +26,11 @@ const { validateMongoId } = require("../utils");
  *         serviceType:
  *           type: string
  *           description: The ID of the parent service type (must exist in ServiceTypes collection)
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
@@ -45,6 +51,8 @@ const { validateMongoId } = require("../utils");
  *   post:
  *     summary: Create a new service subtype
  *     tags: [Service Subtypes]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -74,8 +82,13 @@ const { validateMongoId } = require("../utils");
  *                 message:
  *                   type: string
  *                   example: All fields are mandatory
+ *       401:
+ *         description: Unauthorized
  */
-router.route("/").get(getAllServiceSubtypes).post(createServiceSubtypes);
+router
+  .route("/")
+  .get(getAllServiceSubtypes)
+  .post(validateToken, createServiceSubtype);
 
 /**
  * @swagger
@@ -102,6 +115,8 @@ router.route("/").get(getAllServiceSubtypes).post(createServiceSubtypes);
  *   put:
  *     summary: Update a service subtype
  *     tags: [Service Subtypes]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -124,9 +139,13 @@ router.route("/").get(getAllServiceSubtypes).post(createServiceSubtypes);
  *               $ref: '#/components/schemas/ServiceSubtype'
  *       404:
  *         description: Service subtype not found
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete a service subtype
  *     tags: [Service Subtypes]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -147,12 +166,14 @@ router.route("/").get(getAllServiceSubtypes).post(createServiceSubtypes);
  *                   example: The service subtype deleted successfully
  *       404:
  *         description: Service subtype not found
+ *       401:
+ *         description: Unauthorized
  */
 router
   .route("/:id")
-  .get(getServiceSubtypesById)
-  .put(updateServiceSubtypesById)
-  .delete(deleteServiceSubtypesById);
+  .get(getServiceSubtypeById)
+  .put(validateToken, updateServiceSubtypeById)
+  .delete(validateToken, deleteServiceSubtypeById);
 
 router.param("id", validateMongoId);
 

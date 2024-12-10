@@ -5,7 +5,7 @@ const { checkNotFound } = require("../utils");
 //@desc Get all events
 //@route /events
 //@access public
-const getEvent = asyncHandler(async (req, res) => {
+const getEvents = asyncHandler(async (req, res) => {
   const events = await Event.find();
   res.status(200).json(events);
 });
@@ -58,7 +58,7 @@ const deleteEventById = asyncHandler(async (req, res) => {
 //@access public
 const updateEventById = asyncHandler(async (req, res) => {
   let event = await Event.findById(req.params.id);
-  
+
   checkNotFound(event)(req, res, async () => {
     event = await Event.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -68,7 +68,7 @@ const updateEventById = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  getEvent,
+  getEvents,
   getEventById,
   createEvent,
   deleteEventById,

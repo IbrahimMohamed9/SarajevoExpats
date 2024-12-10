@@ -14,7 +14,7 @@ const getAllPlaceTypes = asyncHandler(async (req, res) => {
 //@desc Create new place type
 //@route /placeTypes
 //@access public
-const createPlaceTypes = asyncHandler(async (req, res) => {
+const createPlaceType = asyncHandler(async (req, res) => {
   if (!req.body.name) {
     res.status(400);
     throw new Error("All fields are mandatory");
@@ -36,7 +36,7 @@ const createPlaceTypes = asyncHandler(async (req, res) => {
 //@desc Delete place type by id
 //@route /placeTypes/:id
 //@access public
-const deletePlaceTypesById = asyncHandler(async (req, res) => {
+const deletePlaceTypeById = asyncHandler(async (req, res) => {
   const placeType = await PlaceType.findById(req.params.id);
 
   checkNotFound(placeType)(req, res, async () => {
@@ -52,7 +52,7 @@ const deletePlaceTypesById = asyncHandler(async (req, res) => {
 //@desc Update place type by id
 //@route /placeTypes/:id
 //@access public
-const updatePlaceTypesById = asyncHandler(async (req, res) => {
+const updatePlaceTypeById = asyncHandler(async (req, res) => {
   const id = req.params.id;
   const name = req.body.name;
 
@@ -85,7 +85,7 @@ const updatePlaceTypesById = asyncHandler(async (req, res) => {
 //@desc Get place type by id
 //@route /placeTypes/:id
 //@access public
-const getPlaceTypesById = asyncHandler(async (req, res) => {
+const getPlaceTypeById = asyncHandler(async (req, res) => {
   const placeType = await PlaceType.findById(req.params.id);
 
   checkNotFound(placeType)(req, res, async () => {
@@ -95,8 +95,8 @@ const getPlaceTypesById = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllPlaceTypes,
-  createPlaceTypes,
-  deletePlaceTypesById,
-  updatePlaceTypesById,
-  getPlaceTypesById,
+  createPlaceType,
+  deletePlaceTypeById,
+  updatePlaceTypeById,
+  getPlaceTypeById,
 };

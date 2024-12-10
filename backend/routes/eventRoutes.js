@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getEvent,
+  getEvents,
   createEvent,
   deleteEventById,
   updateEventById,
   getEventById,
 } = require("../controllers/eventController");
 const { validateMongoId } = require("../utils");
+const validateToken = require("../middleware/validateToken");
 
 /**
  * @swagger
@@ -42,6 +43,11 @@ const { validateMongoId } = require("../utils");
  *         email:
  *           type: string
  *           description: Contact email address (either phone or email must be provided)
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
@@ -62,6 +68,8 @@ const { validateMongoId } = require("../utils");
  *   post:
  *     summary: Create a new event
  *     tags: [Events]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -92,7 +100,7 @@ const { validateMongoId } = require("../utils");
  *                   type: string
  *                   example: All fields are mandatory
  */
-router.route("/").get(getEvent).post(createEvent);
+router.route("/").get(getEvents).post(validateToken, createEvent);
 
 /**
  * @swagger
@@ -106,7 +114,7 @@ router.route("/").get(getEvent).post(createEvent);
  *         schema:
  *           type: string
  *         required: true
- *         description: The event ID
+ *         description: The event ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: Event details
@@ -119,13 +127,15 @@ router.route("/").get(getEvent).post(createEvent);
  *   put:
  *     summary: Update an event
  *     tags: [Events]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The event ID
+ *         description: The event ID (must be a valid MongoDB ObjectId)
  *     requestBody:
  *       required: true
  *       content:
@@ -144,13 +154,15 @@ router.route("/").get(getEvent).post(createEvent);
  *   delete:
  *     summary: Delete an event
  *     tags: [Events]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The event ID
+ *         description: The event ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: Event deleted successfully
@@ -165,9 +177,10 @@ router.route("/").get(getEvent).post(createEvent);
  *       404:
  *         description: Event not found
  */
+router.get("/:id", getEventById);
 router
   .route("/:id")
-  .get(getEventById)
+  .all(validateToken)
   .put(updateEventById)
   .delete(deleteEventById);
 

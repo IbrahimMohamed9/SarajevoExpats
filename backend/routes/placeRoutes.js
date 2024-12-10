@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const validateToken = require("../middleware/validateToken");
 const {
   getAllPlaces,
-  createPlaces,
-  deletePlacesById,
-  updatePlacesById,
-  getPlacesById,
+  getPlaceById,
+  createPlace,
+  updatePlaceById,
+  deletePlaceById,
 } = require("../controllers/placeController");
 const { validateMongoId } = require("../utils");
 
@@ -16,43 +17,46 @@ const { validateMongoId } = require("../utils");
  *     Place:
  *       type: object
  *       required:
- *         - title
- *         - content
- *         - picture
- *         - type
- *         - link
+ *         - name
+ *         - description
+ *         - placeType
  *       properties:
- *         title:
+ *         name:
  *           type: string
- *           description: The title of the place
- *         content:
+ *           description: Name of the place
+ *         description:
  *           type: string
  *           description: Description of the place
- *         picture:
+ *         placeType:
  *           type: string
- *           description: URL of the place picture
- *         pictureDescription:
+ *           description: Type of the place (reference to PlaceType)
+ *         address:
  *           type: string
- *           description: Description of the place picture
+ *           description: Physical address of the place
  *         phone:
  *           type: string
- *           description: Contact phone number (either phone or email must be provided)
+ *           description: Contact phone number
  *         email:
  *           type: string
- *           description: Contact email address (either phone or email must be provided)
- *         type:
+ *           description: Contact email address
+ *         website:
  *           type: string
- *           description: The type of the place (must exist in PlaceTypes collection)
- *         link:
+ *           description: Website URL
+ *         workingHours:
  *           type: string
- *           description: URL for more information about the place
+ *           description: Operating hours
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
  * @swagger
  * /places:
  *   get:
- *     summary: Returns all places
+ *     summary: Get all places
  *     tags: [Places]
  *     responses:
  *       200:
@@ -66,6 +70,8 @@ const { validateMongoId } = require("../utils");
  *   post:
  *     summary: Create a new place
  *     tags: [Places]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -75,28 +81,12 @@ const { validateMongoId } = require("../utils");
  *     responses:
  *       201:
  *         description: Place created successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: The place added successfully
- *                 place:
- *                   $ref: '#/components/schemas/Place'
+ *       401:
+ *         description: Not authorized
  *       400:
- *         description: Invalid input data or missing required fields
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: All fields are mandatory
+ *         description: Invalid input
  */
-router.route("/").get(getAllPlaces).post(createPlaces);
+router.route("/").get(getAllPlaces).post(validateToken, createPlace);
 
 /**
  * @swagger
@@ -110,7 +100,7 @@ router.route("/").get(getAllPlaces).post(createPlaces);
  *         schema:
  *           type: string
  *         required: true
- *         description: The place ID
+ *         description: The place ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: Place details
@@ -118,18 +108,18 @@ router.route("/").get(getAllPlaces).post(createPlaces);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Place'
- *       404:
- *         description: Place not found
  *   put:
  *     summary: Update a place
  *     tags: [Places]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The place ID
+ *         description: The place ID (must be a valid MongoDB ObjectId)
  *     requestBody:
  *       required: true
  *       content:
@@ -139,41 +129,36 @@ router.route("/").get(getAllPlaces).post(createPlaces);
  *     responses:
  *       200:
  *         description: Place updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Place'
+ *       401:
+ *         description: Not authorized
  *       404:
  *         description: Place not found
  *   delete:
  *     summary: Delete a place
  *     tags: [Places]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The place ID
+ *         description: The place ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: Place deleted successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: The place deleted successfully
+ *       401:
+ *         description: Not authorized
  *       404:
  *         description: Place not found
  */
+router.get("/:id", getPlaceById);
 router
   .route("/:id")
-  .get(getPlacesById)
-  .put(updatePlacesById)
-  .delete(deletePlacesById);
+  .all(validateToken)
+  .put(updatePlaceById)
+  .delete(deletePlaceById);
 
 router.param("id", validateMongoId);
 

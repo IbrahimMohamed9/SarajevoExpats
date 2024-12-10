@@ -39,6 +39,7 @@ app.use("/placeTypes/", require("./routes/placeTypeRoutes"));
 app.use("/services/", require("./routes/serviceRoutes"));
 app.use("/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
+app.use("/users/", require("./routes/userRoutes"));
 app.use(errorHandler);
 
 const host_name = process.env.HOST_NAME || "localhost";

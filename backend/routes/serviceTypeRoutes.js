@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const {
   getAllServiceTypes,
-  createServiceTypes,
-  deleteServiceTypesById,
-  updateServiceTypesById,
-  getServiceTypesById,
+  createServiceType,
+  deleteServiceTypeById,
+  updateServiceTypeById,
+  getServiceTypeById,
 } = require("../controllers/serviceTypeController");
 const { validateMongoId } = require("../utils");
+const validateToken = require("../middleware/validateToken");
 
 /**
  * @swagger
@@ -21,6 +22,11 @@ const { validateMongoId } = require("../utils");
  *         name:
  *           type: string
  *           description: The name of the service type
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
@@ -41,6 +47,8 @@ const { validateMongoId } = require("../utils");
  *   post:
  *     summary: Create a new service type
  *     tags: [Service Types]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -62,8 +70,13 @@ const { validateMongoId } = require("../utils");
  *                   $ref: '#/components/schemas/ServiceType'
  *       400:
  *         description: Invalid input data
+ *       401:
+ *         description: Unauthorized
  */
-router.route("/").get(getAllServiceTypes).post(createServiceTypes);
+router
+  .route("/")
+  .get(getAllServiceTypes)
+  .post(validateToken, createServiceType);
 
 /**
  * @swagger
@@ -90,6 +103,8 @@ router.route("/").get(getAllServiceTypes).post(createServiceTypes);
  *   put:
  *     summary: Update a service type
  *     tags: [Service Types]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -112,9 +127,13 @@ router.route("/").get(getAllServiceTypes).post(createServiceTypes);
  *               $ref: '#/components/schemas/ServiceType'
  *       404:
  *         description: Service type not found
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete a service type
  *     tags: [Service Types]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -135,12 +154,14 @@ router.route("/").get(getAllServiceTypes).post(createServiceTypes);
  *                   example: The service type deleted successfully
  *       404:
  *         description: Service type not found
+ *       401:
+ *         description: Unauthorized
  */
 router
   .route("/:id")
-  .get(getServiceTypesById)
-  .put(updateServiceTypesById)
-  .delete(deleteServiceTypesById);
+  .get(getServiceTypeById)
+  .put(validateToken, updateServiceTypeById)
+  .delete(validateToken, deleteServiceTypeById);
 
 router.param("id", validateMongoId);
 

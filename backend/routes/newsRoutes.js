@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const validateToken = require("../middleware/validateToken");
 const {
   getAllNews,
-  createNews,
-  deleteNewsById,
-  updateNewsById,
   getNewsById,
+  createNews,
+  updateNewsById,
+  deleteNewsById,
 } = require("../controllers/newsController");
 const { validateMongoId } = require("../utils");
 
@@ -18,31 +19,25 @@ const { validateMongoId } = require("../utils");
  *       required:
  *         - title
  *         - content
- *         - picture
- *         - sources
  *       properties:
  *         title:
  *           type: string
  *           description: The title of the news article
  *         content:
  *           type: string
- *           description: Content of the news article
- *         picture:
- *           type: string
- *           description: URL of the news picture
- *         pictureDescription:
- *           type: string
- *           description: Description of the news picture
- *         sources:
- *           type: string
- *           description: Source of the news article (e.g., Reuters, AP, etc.)
+ *           description: The content of the news article
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
  * @swagger
  * /news:
  *   get:
- *     summary: Returns all news articles
+ *     summary: Get all news articles
  *     tags: [News]
  *     responses:
  *       200:
@@ -56,6 +51,8 @@ const { validateMongoId } = require("../utils");
  *   post:
  *     summary: Create a new news article
  *     tags: [News]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -65,28 +62,12 @@ const { validateMongoId } = require("../utils");
  *     responses:
  *       201:
  *         description: News article created successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: The news article added successfully
- *                 news:
- *                   $ref: '#/components/schemas/News'
+ *       401:
+ *         description: Not authorized
  *       400:
- *         description: Invalid input data or missing required fields
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: All fields are mandatory
+ *         description: Invalid input
  */
-router.route("/").get(getAllNews).post(createNews);
+router.route("/").get(getAllNews).post(validateToken, createNews);
 
 /**
  * @swagger
@@ -100,7 +81,7 @@ router.route("/").get(getAllNews).post(createNews);
  *         schema:
  *           type: string
  *         required: true
- *         description: The news article ID
+ *         description: The news article ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: News article details
@@ -108,18 +89,18 @@ router.route("/").get(getAllNews).post(createNews);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/News'
- *       404:
- *         description: News article not found
  *   put:
  *     summary: Update a news article
  *     tags: [News]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The news article ID
+ *         description: The news article ID (must be a valid MongoDB ObjectId)
  *     requestBody:
  *       required: true
  *       content:
@@ -129,39 +110,34 @@ router.route("/").get(getAllNews).post(createNews);
  *     responses:
  *       200:
  *         description: News article updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/News'
+ *       401:
+ *         description: Not authorized
  *       404:
  *         description: News article not found
  *   delete:
  *     summary: Delete a news article
  *     tags: [News]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The news article ID
+ *         description: The news article ID (must be a valid MongoDB ObjectId)
  *     responses:
  *       200:
  *         description: News article deleted successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: The news article deleted successfully
+ *       401:
+ *         description: Not authorized
  *       404:
  *         description: News article not found
  */
+router.get("/:id", getNewsById);
 router
   .route("/:id")
-  .get(getNewsById)
+  .all(validateToken)
   .put(updateNewsById)
   .delete(deleteNewsById);
 

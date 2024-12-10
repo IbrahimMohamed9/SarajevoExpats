@@ -15,7 +15,7 @@ const getAllPlaces = asyncHandler(async (req, res) => {
 //@desc Create new place
 //@route /places
 //@access public
-const createPlaces = asyncHandler(async (req, res) => {
+const createPlace = asyncHandler(async (req, res) => {
   const { title, content, picture, link, type } = req.body;
 
   const validateRequiredFields = title && content && picture && type && link;
@@ -39,7 +39,7 @@ const createPlaces = asyncHandler(async (req, res) => {
 //@desc Delete place by id
 //@route /places/:id
 //@access public
-const deletePlacesById = asyncHandler(async (req, res) => {
+const deletePlaceById = asyncHandler(async (req, res) => {
   const place = await Place.findById(req.params.id);
 
   checkNotFound(place)(req, res, async () => {
@@ -51,7 +51,7 @@ const deletePlacesById = asyncHandler(async (req, res) => {
 //@desc Update place by id
 //@route /places/:id
 //@access public
-const updatePlacesById = asyncHandler(async (req, res) => {
+const updatePlaceById = asyncHandler(async (req, res) => {
   let place = await Place.findById(req.params.id);
 
   checkNotFound(place)(req, res, async () => {
@@ -65,7 +65,7 @@ const updatePlacesById = asyncHandler(async (req, res) => {
 //@desc Get place by id
 //@route /places/:id
 //@access public
-const getPlacesById = asyncHandler(async (req, res) => {
+const getPlaceById = asyncHandler(async (req, res) => {
   const place = await Place.findById(req.params.id);
 
   checkNotFound(place)(req, res, async () => {
@@ -75,8 +75,8 @@ const getPlacesById = asyncHandler(async (req, res) => {
 
 module.exports = {
   getAllPlaces,
-  createPlaces,
-  deletePlacesById,
-  updatePlacesById,
-  getPlacesById,
+  createPlace,
+  deletePlaceById,
+  updatePlaceById,
+  getPlaceById,
 };

@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const { validateMongoId } = require("../utils");
+const validateToken = require("../middleware/validateToken");
 const {
   getAllServices,
-  createServices,
-  deleteServicesById,
-  updateServicesById,
-  getServicesById,
+  createService,
+  deleteServiceById,
+  updateServiceById,
+  getServiceById,
 } = require("../controllers/serviceController");
-const { validateMongoId } = require("../utils");
 
 /**
  * @swagger
@@ -42,6 +43,11 @@ const { validateMongoId } = require("../utils");
  *         serviceSubtype:
  *           type: string
  *           description: The subtype of the service (must exist in ServiceSubtypes collection)
+ *   securitySchemes:
+ *     BearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
@@ -62,6 +68,8 @@ const { validateMongoId } = require("../utils");
  *   post:
  *     summary: Create a new service
  *     tags: [Services]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -83,16 +91,10 @@ const { validateMongoId } = require("../utils");
  *                   $ref: '#/components/schemas/Service'
  *       400:
  *         description: Invalid input data or missing required fields
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: All fields are mandatory
+ *       401:
+ *         description: Unauthorized
  */
-router.route("/").get(getAllServices).post(createServices);
+router.route("/").get(getAllServices).post(validateToken, createService);
 
 /**
  * @swagger
@@ -119,6 +121,8 @@ router.route("/").get(getAllServices).post(createServices);
  *   put:
  *     summary: Update a service
  *     tags: [Services]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -141,9 +145,13 @@ router.route("/").get(getAllServices).post(createServices);
  *               $ref: '#/components/schemas/Service'
  *       404:
  *         description: Service not found
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Delete a service
  *     tags: [Services]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -164,12 +172,14 @@ router.route("/").get(getAllServices).post(createServices);
  *                   example: The service deleted successfully
  *       404:
  *         description: Service not found
+ *       401:
+ *         description: Unauthorized
  */
 router
   .route("/:id")
-  .get(getServicesById)
-  .put(updateServicesById)
-  .delete(deleteServicesById);
+  .get(getServiceById)
+  .put(validateToken, updateServiceById)
+  .delete(validateToken, deleteServiceById);
 
 router.param("id", validateMongoId);
 
