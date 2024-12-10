@@ -44,13 +44,26 @@ const deleteServiceTypesById = asyncHandler(async (req, res) => {
 //@access public
 const updateServiceTypesById = asyncHandler(async (req, res) => {
   let serviceType = await ServiceType.findById(req.params.id);
+  if (!serviceType) {
+    res.status(404);
+    throw new Error("Service type not found");
+  }
 
-  checkNotFound(serviceType)(req, res, async () => {
-    serviceType = await ServiceType.findByIdAndUpdate(req.params.id, req.body, {
+  const exists = await ServiceType.findOne({ name: req.body.name });
+  if (exists) {
+    res.status(400);
+    throw new Error("Service type already exists");
+  }
+
+  serviceType = await ServiceType.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: req.body },
+    {
       new: true,
-    });
-    res.status(200).json(serviceType);
-  });
+    }
+  );
+
+  res.status(200).json(serviceType);
 });
 
 //@desc Get service subtype by id

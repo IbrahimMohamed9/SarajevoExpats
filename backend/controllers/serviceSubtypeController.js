@@ -51,9 +51,9 @@ const updateServiceSubtypesById = asyncHandler(async (req, res) => {
   let serviceSubtype = await ServiceSubtype.findById(req.params.id);
 
   checkNotFound(serviceSubtype)(req, res, async () => {
-    serviceSubtype = await ServiceSubtype.findByIdAndUpdate(
-      req.params.id,
-      req.body,
+    serviceSubtype = await ServiceSubtype.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: req.body },
       {
         new: true,
       }

@@ -13,13 +13,20 @@ const serviceTypeSchema = new mongoose.Schema(
   }
 );
 
-serviceTypeSchema.pre("findOneAndUpdate", function (next) {
-  const update = this.getUpdate();
-  console.log(update);
+serviceTypeSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate().$set;
+  const oldData = await ServiceType.findOne(this._conditions);
 
   if (update.name) {
+    const ServiceSubtype = mongoose.model("ServiceSubtypes");
+    await ServiceSubtype.updateMany(
+      { serviceType: oldData.name },
+      { $set: { serviceType: update.name } }
+    );
   }
   next();
 });
 
-module.exports = mongoose.model("ServiceType", serviceTypeSchema);
+const ServiceType = mongoose.model("ServiceTypes", serviceTypeSchema);
+
+module.exports = ServiceType;

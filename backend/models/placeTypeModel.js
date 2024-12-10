@@ -9,29 +9,28 @@ const placeTypeSchema = new mongoose.Schema(
   }
 );
 
-// Pre-update middleware to check for duplicate names
 placeTypeSchema.pre("findOneAndUpdate", async function (next) {
   try {
-    const update = this.getUpdate().$set || this.getUpdate();
+    const update = this.getUpdate().$set;
+    const oldData = await PlaceType.findOne(this._conditions);
 
-    if (!update.name) {
-      next();
+    if (!update.name || oldData.name === update.name) {
+      return next();
     }
 
-    const exists = await mongoose.models("PlaceTypes").findOne({
+    const exists = await this.model.findOne({
       name: update.name,
-      _id: { $ne: this._id },
     });
     if (exists) {
       throw new Error("A place type with the same name already exists");
     }
 
-    await this.model("PlaceTypes").updateMany(
-      { _id: this._id },
-      { name: update.name }
-    );
+    const Place = mongoose.model("Places");
 
-    console.log("Place type updated successfully");
+    await Place.updateMany(
+      { type: oldData.name },
+      { $set: { type: update.name } }
+    );
 
     next();
   } catch (err) {

@@ -1,0 +1,50 @@
+ [2024-12-10T02:23:05.399Z] IP: ::1 "POST /servicesubtypes/" 400 - All fields are mandatory
+ Stack: Error: All fields are mandatory
+    at C:\Users\User\Desktop\SarajevoExpats\backend\controllers\serviceSubtypeController.js:23:11
+    at asyncUtilWrap (C:\Users\User\Desktop\SarajevoExpats\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\index.js:280:10)
+ [2024-12-10T02:23:09.032Z] IP: ::1 "POST /servicesubtypes/" 400 - All fields are mandatory
+ Stack: Error: All fields are mandatory
+    at C:\Users\User\Desktop\SarajevoExpats\backend\controllers\serviceSubtypeController.js:23:11
+    at asyncUtilWrap (C:\Users\User\Desktop\SarajevoExpats\node_modules\express-async-handler\index.js:3:20)
+    at Layer.handle [as handle_request] (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\route.js:149:13)
+    at next (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\route.js:145:7)
+    at Route.dispatch (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\User\Desktop\SarajevoExpats\node_modules\express\lib\router\index.js:280:10)
+ [2024-12-10T02:23:28.884Z] IP: ::1 "POST /servicesubtypes/" 200 - ServiceSubtype validation failed: serviceType: The specified type does not exist in ServiceTypes collection
+ Stack: ValidationError: ServiceSubtype validation failed: serviceType: The specified type does not exist in ServiceTypes collection
+    at Document.invalidate (C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\document.js:3318:32)
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\document.js:3079:17
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\schemaType.js:1388:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+ [2024-12-10T02:23:52.792Z] IP: ::1 "POST /servicesubtypes/" 200 - ServiceSubtype validation failed: serviceType: The specified type does not exist in ServiceTypes collection
+ Stack: ValidationError: ServiceSubtype validation failed: serviceType: The specified type does not exist in ServiceTypes collection
+    at Document.invalidate (C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\document.js:3318:32)
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\document.js:3079:17
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\schemaType.js:1388:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+ [2024-12-10T02:24:21.405Z] IP: ::1 "POST /servicesubtypes/" 200 - ServiceSubtype validation failed: serviceType: The specified type does not exist in ServiceTypes collection
+ Stack: ValidationError: ServiceSubtype validation failed: serviceType: The specified type does not exist in ServiceTypes collection
+    at Document.invalidate (C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\document.js:3318:32)
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\document.js:3079:17
+    at C:\Users\User\Desktop\SarajevoExpats\node_modules\mongoose\lib\schemaType.js:1388:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)
+ [2024-12-10T02:51:12.897Z] IP: ::1 "PUT /placetypes/67573986612134a30c008f13" 200 - A place type with the same name already exists
+ Stack: Error: A place type with the same name already exists
+    at model.Query.<anonymous> (C:\Users\User\Desktop\SarajevoExpats\backend\models\placeTypeModel.js:25:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+ [2024-12-10T03:01:25.242Z] IP: ::1 "PUT /servicetypes/6757a5e1f9e36e1ce005f72c" 400 - Service type already exists
+ Stack: Error: Service type already exists
+    at C:\Users\User\Desktop\SarajevoExpats\backend\controllers\serviceTypeController.js:55:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)

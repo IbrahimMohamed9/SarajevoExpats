@@ -26,4 +26,5 @@ eventSchema
   .path("email")
   .validate(validator, "At least one of phone or email must be provided");
 
-module.exports = mongoose.model("Event", eventSchema);
+const Event = mongoose.model("Events", eventSchema);
+module.exports = Event;
