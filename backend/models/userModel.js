@@ -6,6 +6,11 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add the user name"],
     },
+    userType: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
     email: {
       type: String,
       required: [true, "Please add the user email address"],

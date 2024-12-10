@@ -52,7 +52,14 @@ const loggedInUser = errorHandler(async (req, res) => {
   }
 
   const token = jwt.sign(
-    { user: { _id: user._id, email: user.email, username: user.usernames } },
+    {
+      user: {
+        _id: user._id,
+        email: user.email,
+        username: user.usernames,
+        userType: user.userType,
+      },
+    },
     process.env.JWT_SECRET,
     {
       expiresIn: "5d",

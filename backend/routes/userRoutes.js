@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const validateToken = require("../middleware/validateToken");
+const validateAdminToken = require("../middleware/validateAdminToken");
 const { validateMongoId } = require("../utils");
 const {
   getAllUsers,
@@ -107,7 +107,7 @@ const { validate } = require("../models/placeTypeModel");
  *             schema:
  *               $ref: '#/components/schemas/User'
  */
-router.route("/").get(validateToken, getAllUsers).post(registerUser);
+router.route("/").get(validateAdminToken, getAllUsers).post(registerUser);
 
 /**
  * @route GET /users/login
@@ -198,7 +198,7 @@ router.route("/login").post(loggedInUser);
  */
 router
   .route("/:id")
-  .all(validateToken)
+  .all(validateAdminToken)
   .get(getUserById)
   .put(updateUserById)
   .delete(deleteUserById);

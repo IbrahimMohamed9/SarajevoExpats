@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const validateToken = require("../middleware/validateToken");
+const validateAdminToken = require("../middleware/validateAdminToken");
 const {
   getAllPlaceTypes,
   createPlaceType,
@@ -63,7 +63,10 @@ const { validateMongoId } = require("../utils");
  *       400:
  *         description: Invalid input or place type already exists
  */
-router.route("/").get(getAllPlaceTypes).post(validateToken, createPlaceType);
+router
+  .route("/")
+  .get(getAllPlaceTypes)
+  .post(validateAdminToken, createPlaceType);
 
 /**
  * @swagger
@@ -135,7 +138,7 @@ router.route("/").get(getAllPlaceTypes).post(validateToken, createPlaceType);
 router.get("/:id", getPlaceTypeById);
 router
   .route("/:id")
-  .all(validateToken)
+  .all(validateAdminToken)
   .put(updatePlaceTypeById)
   .delete(deletePlaceTypeById);
 

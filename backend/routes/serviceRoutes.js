@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { validateMongoId } = require("../utils");
-const validateToken = require("../middleware/validateToken");
+const validateAdminToken = require("../middleware/validateAdminToken");
 const {
   getAllServices,
   createService,
@@ -94,7 +94,7 @@ const {
  *       401:
  *         description: Unauthorized
  */
-router.route("/").get(getAllServices).post(validateToken, createService);
+router.route("/").get(getAllServices).post(validateAdminToken, createService);
 
 /**
  * @swagger
@@ -178,8 +178,8 @@ router.route("/").get(getAllServices).post(validateToken, createService);
 router
   .route("/:id")
   .get(getServiceById)
-  .put(validateToken, updateServiceById)
-  .delete(validateToken, deleteServiceById);
+  .put(validateAdminToken, updateServiceById)
+  .delete(validateAdminToken, deleteServiceById);
 
 router.param("id", validateMongoId);
 

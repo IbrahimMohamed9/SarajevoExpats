@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const validateToken = require("../middleware/validateToken");
+const validateAdminToken = require("../middleware/validateAdminToken");
 const {
   getAllNews,
   getNewsById,
@@ -67,7 +67,7 @@ const { validateMongoId } = require("../utils");
  *       400:
  *         description: Invalid input
  */
-router.route("/").get(getAllNews).post(validateToken, createNews);
+router.route("/").get(getAllNews).post(validateAdminToken, createNews);
 
 /**
  * @swagger
@@ -137,7 +137,7 @@ router.route("/").get(getAllNews).post(validateToken, createNews);
 router.get("/:id", getNewsById);
 router
   .route("/:id")
-  .all(validateToken)
+  .all(validateAdminToken)
   .put(updateNewsById)
   .delete(deleteNewsById);
 

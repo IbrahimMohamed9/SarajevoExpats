@@ -8,7 +8,7 @@ const {
   getEventById,
 } = require("../controllers/eventController");
 const { validateMongoId } = require("../utils");
-const validateToken = require("../middleware/validateToken");
+const validateAdminToken = require("../middleware/validateAdminToken");
 
 /**
  * @swagger
@@ -100,7 +100,7 @@ const validateToken = require("../middleware/validateToken");
  *                   type: string
  *                   example: All fields are mandatory
  */
-router.route("/").get(getEvents).post(validateToken, createEvent);
+router.route("/").get(getEvents).post(validateAdminToken, createEvent);
 
 /**
  * @swagger
@@ -180,7 +180,7 @@ router.route("/").get(getEvents).post(validateToken, createEvent);
 router.get("/:id", getEventById);
 router
   .route("/:id")
-  .all(validateToken)
+  .all(validateAdminToken)
   .put(updateEventById)
   .delete(deleteEventById);
 

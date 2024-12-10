@@ -8,7 +8,7 @@ const {
   getServiceSubtypeById,
 } = require("../controllers/serviceSubtypeController");
 const { validateMongoId } = require("../utils");
-const validateToken = require("../middleware/validateToken");
+const validateAdminToken = require("../middleware/validateAdminToken");
 
 /**
  * @swagger
@@ -88,7 +88,7 @@ const validateToken = require("../middleware/validateToken");
 router
   .route("/")
   .get(getAllServiceSubtypes)
-  .post(validateToken, createServiceSubtype);
+  .post(validateAdminToken, createServiceSubtype);
 
 /**
  * @swagger
@@ -172,8 +172,8 @@ router
 router
   .route("/:id")
   .get(getServiceSubtypeById)
-  .put(validateToken, updateServiceSubtypeById)
-  .delete(validateToken, deleteServiceSubtypeById);
+  .put(validateAdminToken, updateServiceSubtypeById)
+  .delete(validateAdminToken, deleteServiceSubtypeById);
 
 router.param("id", validateMongoId);
 

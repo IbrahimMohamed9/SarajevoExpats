@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const validateToken = require("../middleware/validateToken");
+const validateAdminToken = require("../middleware/validateAdminToken");
 const {
   getAllPlaces,
   getPlaceById,
@@ -86,7 +86,7 @@ const { validateMongoId } = require("../utils");
  *       400:
  *         description: Invalid input
  */
-router.route("/").get(getAllPlaces).post(validateToken, createPlace);
+router.route("/").get(getAllPlaces).post(validateAdminToken, createPlace);
 
 /**
  * @swagger
@@ -156,7 +156,7 @@ router.route("/").get(getAllPlaces).post(validateToken, createPlace);
 router.get("/:id", getPlaceById);
 router
   .route("/:id")
-  .all(validateToken)
+  .all(validateAdminToken)
   .put(updatePlaceById)
   .delete(deletePlaceById);
 
