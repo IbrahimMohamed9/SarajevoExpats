@@ -32,14 +32,14 @@ const app = express();
 app.use(express.json());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use("/events/", require("./routes/eventRoutes"));
-app.use("/news/", require("./routes/newsRoutes"));
-app.use("/places/", require("./routes/placeRoutes"));
-app.use("/placeTypes/", require("./routes/placeTypeRoutes"));
-app.use("/services/", require("./routes/serviceRoutes"));
-app.use("/serviceTypes/", require("./routes/serviceTypeRoutes"));
-app.use("/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
-app.use("/users/", require("./routes/userRoutes"));
+app.use("/api/events/", require("./routes/eventRoutes"));
+app.use("/api/news/", require("./routes/newsRoutes"));
+app.use("/api/places/", require("./routes/placeRoutes"));
+app.use("/api/placeTypes/", require("./routes/placeTypeRoutes"));
+app.use("/api/services/", require("./routes/serviceRoutes"));
+app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
+app.use("/api/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
+app.use("/api/users/", require("./routes/userRoutes"));
 app.use(errorHandler);
 
 const host_name = process.env.HOST_NAME || "localhost";

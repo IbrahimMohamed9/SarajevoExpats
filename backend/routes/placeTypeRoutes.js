@@ -31,7 +31,7 @@ const { validateMongoId } = require("../utils");
 
 /**
  * @swagger
- * /placetypes:
+ * /api/placetypes:
  *   get:
  *     summary: Get all place types
  *     tags: [Place Types]
@@ -70,7 +70,7 @@ router
 
 /**
  * @swagger
- * /placetypes/{id}:
+ * /api/placetypes/{id}:
  *   get:
  *     summary: Get a place type by ID
  *     tags: [Place Types]

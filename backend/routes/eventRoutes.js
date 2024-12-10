@@ -52,7 +52,7 @@ const validateAdminToken = require("../middleware/validateAdminToken");
 
 /**
  * @swagger
- * /events:
+ * /api/events:
  *   get:
  *     summary: Returns all events
  *     tags: [Events]
@@ -104,7 +104,7 @@ router.route("/").get(getEvents).post(validateAdminToken, createEvent);
 
 /**
  * @swagger
- * /events/{id}:
+ * /api/events/{id}:
  *   get:
  *     summary: Get an event by ID
  *     tags: [Events]

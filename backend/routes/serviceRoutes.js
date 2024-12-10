@@ -52,7 +52,7 @@ const {
 
 /**
  * @swagger
- * /services:
+ * /api/services:
  *   get:
  *     summary: Returns all services
  *     tags: [Services]
@@ -98,7 +98,7 @@ router.route("/").get(getAllServices).post(validateAdminToken, createService);
 
 /**
  * @swagger
- * /services/{id}:
+ * /api/services/{id}:
  *   get:
  *     summary: Get a service by ID
  *     tags: [Services]

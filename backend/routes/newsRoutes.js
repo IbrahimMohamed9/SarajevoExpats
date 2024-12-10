@@ -35,7 +35,7 @@ const { validateMongoId } = require("../utils");
 
 /**
  * @swagger
- * /news:
+ * /api/news:
  *   get:
  *     summary: Get all news articles
  *     tags: [News]
@@ -71,7 +71,7 @@ router.route("/").get(getAllNews).post(validateAdminToken, createNews);
 
 /**
  * @swagger
- * /news/{id}:
+ * /api/news/{id}:
  *   get:
  *     summary: Get a news article by ID
  *     tags: [News]

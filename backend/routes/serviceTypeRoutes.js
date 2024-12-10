@@ -31,7 +31,7 @@ const validateAdminToken = require("../middleware/validateAdminToken");
 
 /**
  * @swagger
- * /serviceTypes:
+ * /api/serviceTypes:
  *   get:
  *     summary: Returns all service types
  *     tags: [Service Types]
@@ -80,7 +80,7 @@ router
 
 /**
  * @swagger
- * /serviceTypes/{id}:
+ * /api/serviceTypes/{id}:
  *   get:
  *     summary: Get a service type by ID
  *     tags: [Service Types]

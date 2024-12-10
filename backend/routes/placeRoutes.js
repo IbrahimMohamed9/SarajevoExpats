@@ -54,7 +54,7 @@ const { validateMongoId } = require("../utils");
 
 /**
  * @swagger
- * /places:
+ * /api/places:
  *   get:
  *     summary: Get all places
  *     tags: [Places]
@@ -90,7 +90,7 @@ router.route("/").get(getAllPlaces).post(validateAdminToken, createPlace);
 
 /**
  * @swagger
- * /places/{id}:
+ * /api/places/{id}:
  *   get:
  *     summary: Get a place by ID
  *     tags: [Places]
