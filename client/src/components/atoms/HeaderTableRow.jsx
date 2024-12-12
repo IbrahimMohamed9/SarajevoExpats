@@ -14,10 +14,18 @@ export default function HeaderTableRow({ data, includeEmpty = false }) {
     ) {
       return null;
     }
-    return <TableCell key={key}>{key}</TableCell>;
+    return (
+      <TableCell key={key} align="center">
+        {key}
+      </TableCell>
+    );
   });
 
-  headerCells.push(<TableCell key="actions">Actions</TableCell>);
+  headerCells.push(
+    <TableCell key="actions" align="center">
+      Actions
+    </TableCell>
+  );
   if (includeEmpty) {
     headerCells.unshift(<TableCell key="empty"></TableCell>);
   }

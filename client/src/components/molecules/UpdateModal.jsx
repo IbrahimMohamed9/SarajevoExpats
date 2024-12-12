@@ -9,7 +9,6 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import { ignoreKeys } from "../../constants";
 
 export default function UpdateModal({ open, handleClose, data, onUpdate }) {
   const [formData, setFormData] = useState({});
@@ -30,6 +29,7 @@ export default function UpdateModal({ open, handleClose, data, onUpdate }) {
     onUpdate(formData);
     handleClose();
   };
+  const ignoreKeys = ["_id", "subData", "createdAt", "updatedAt", "__v"];
 
   const textFieldsElements =
     data &&

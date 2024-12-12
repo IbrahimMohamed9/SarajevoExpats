@@ -1,7 +1,6 @@
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
 import CustomTableRow from "../molecules/CustomTableRow";
 import Typography from "@mui/material/Typography";
 import HeaderTableRow from "../atoms/HeaderTableRow";
@@ -24,7 +23,7 @@ export default function CollapsibleTable({ dataList, subDataTitle }) {
   ));
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className="border border-gray-300">
       <Table aria-label="collapsible table">
         <HeaderTableRow data={dataList[0]} includeEmpty={subDataTitle} />
         <TableBody>{dataBodyElement}</TableBody>

@@ -33,25 +33,29 @@ const CustomTableRow = ({ data, subDataTitle }) => {
     handleUpdateClose();
   };
 
-  let firstDefinedElement = data.subData.filter(
-    (item) => typeof item === "object" && item !== undefined
-  )[0];
+  let firstDefinedElement;
+  if (subDataTitle)
+    firstDefinedElement = data.subData.filter(
+      (item) => typeof item === "object" && item !== undefined
+    )[0];
 
   const containSubdata = data.subData && data.subData.length > 0;
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            color={containSubdata ? "success" : "error"}
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
+      <TableRow hover={true}>
+        {subDataTitle && (
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              color={containSubdata ? "success" : "error"}
+              onClick={() => setOpen(!open)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+        )}
         <ValueTableRow value={data} onUpdateClick={handleUpdateClick} />
       </TableRow>
       {subDataTitle && (
