@@ -11,6 +11,16 @@ const nextConfig = {
     };
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3030',
+        pathname: '/photos/**',
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;

@@ -40,7 +40,7 @@ app.use("/api/services/", require("./routes/serviceRoutes"));
 app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/photos", express.static(path.join(__dirname, "photos")));
 app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use(errorHandler);
 

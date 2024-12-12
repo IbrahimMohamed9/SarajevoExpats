@@ -3,21 +3,29 @@ const { USER_TYPES } = require("../constants");
 
 const validateAdminToken = (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-      return res.status(401).json({ error: "No token provided" });
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
     }
 
+    const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded || decoded.user.type !== USER_TYPES.ADMIN) {
-      return res.status(403).json({ error: "Admin access required", decoded });
+
+    if (!decoded.user || decoded.user.type !== USER_TYPES.ADMIN) {
+      return res.status(403).json({ message: "Access denied. Admin only." });
     }
 
     req.user = decoded;
     next();
   } catch (error) {
-    console.error("Admin token validation error:", error);
-    return res.status(401).json({ error: "Token validation failed" });
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ message: "Token expired" });
+    }
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    console.error("Token validation error:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
