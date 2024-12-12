@@ -1,69 +1,171 @@
 "use client";
 
-import { useClickAway } from "react-use";
-import { useRef } from "react";
-import { useState } from "react";
-import { Squash as Hamburger } from "hamburger-react";
-import routes from "../../app/routes";
-import HeaderButtons from "./HeaderButtons";
-import { AnimatePresence, motion } from "framer-motion";
-import NavMobileElement from "../atoms/NavMobileElement";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+  Collapse,
+  IconButton,
+  Box,
+  Button,
+} from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import CloseIcon from "@mui/icons-material/Close";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { useRecoilState } from "recoil";
+import NavOpenAtom from "@/store/atoms/NavOpenAtom";
 
-export const NavMobile = () => {
-  const [isOpen, setOpen] = useState(false);
-  const ref = useRef(null);
-  useClickAway(ref, () => setOpen(false));
+export const NavMobile = ({ routes = [] }) => {
+  const [isOpen, setOpen] = useRecoilState(NavOpenAtom);
+  const onClose = () => {
+    setOpen(false);
+  };
+  const [dropdownItems, setDropdownItems] = useState({});
+  const [openDropdowns, setOpenDropdowns] = useState({});
 
-  const routeElements = routes.map(({ title, href }, index) => (
-    <NavMobileElement
-      key={title}
-      title={title}
-      href={href}
-      setOpen={setOpen}
-      index={index}
-    />
-  ));
+  useEffect(() => {
+    const fetchDropdownItems = async () => {
+      try {
+        const response = await fetch("/api/navigation");
+        const data = await response.json();
+        setDropdownItems({
+          Places: data.places,
+          Services: data.services,
+        });
+      } catch (error) {
+        console.error("Error fetching dropdown items:", error);
+      }
+    };
+
+    fetchDropdownItems();
+  }, []);
+
+  const handleDropdownClick = (title) => {
+    setOpenDropdowns((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }));
+  };
 
   return (
-    <div ref={ref} className="lg:hidden flex items-center">
-      <Hamburger
-        toggled={isOpen}
-        size={30}
-        toggle={setOpen}
-        color="white"
-        aria-label="Toggle mobile navigation"
-      />
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed left-0 shadow-4xl right-0 top-20 p-5 pt-0 bg-blue-950 border-b border-b-white/20"
-          >
-            <ul className="grid gap-2">
-              {routeElements}
-              <motion.li
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                  delay: 0.1 + routeElements.length / 10,
+    <Drawer
+      anchor="right"
+      open={isOpen}
+      onClose={onClose}
+      sx={{
+        display: { xl: "none" },
+        "& .MuiDrawer-paper": {
+          backgroundColor: "#172554", // bg-blue-950
+          color: "white",
+          display: "flex",
+          flexDirection: "column",
+        },
+      }}
+    >
+      <div className="flex justify-between items-center p-4 border-b border-white/20">
+        <h2 className="text-xl font-semibold text-white">Menu</h2>
+        <IconButton onClick={onClose} className="text-white">
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <List sx={{ width: 280, flex: 1 }}>
+        {routes.map((route) => (
+          <div key={route.title}>
+            {route.hasDropdown ? (
+              <>
+                <ListItemButton
+                  onClick={() => handleDropdownClick(route.title)}
+                  sx={{ color: "white" }}
+                >
+                  <ListItemText primary={route.title} />
+                  {openDropdowns[route.title] ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse
+                  in={openDropdowns[route.title]}
+                  timeout="auto"
+                  unmountOnExit
+                >
+                  <List component="div" disablePadding>
+                    {dropdownItems[route.title]?.map((item) => (
+                      <ListItemButton
+                        key={item.href}
+                        component={Link}
+                        href={item.href}
+                        onClick={onClose}
+                        sx={{
+                          pl: 4,
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "rgba(255, 255, 255, 0.1)",
+                          },
+                        }}
+                      >
+                        <ListItemText primary={item.title} />
+                      </ListItemButton>
+                    ))}
+                  </List>
+                </Collapse>
+              </>
+            ) : (
+              <ListItemButton
+                component={Link}
+                href={route.href}
+                onClick={onClose}
+                sx={{
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
                 }}
-                key="buttons"
               >
-                <HeaderButtons
-                  className="flex justify-center"
-                  buttonClassName="mr-2"
-                />
-              </motion.li>
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+                <ListItemText primary={route.title} />
+              </ListItemButton>
+            )}
+          </div>
+        ))}
+      </List>
+      <Box sx={{ p: 2, borderTop: "1px solid rgba(255, 255, 255, 0.2)" }}>
+        <Button
+          component={Link}
+          href="/login"
+          variant="outlined"
+          fullWidth
+          startIcon={<LoginIcon />}
+          sx={{
+            mb: 1,
+            color: "white",
+            borderColor: "white",
+            "&:hover": {
+              borderColor: "white",
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+            },
+          }}
+        >
+          Login
+        </Button>
+        <Button
+          component={Link}
+          href="/register"
+          variant="contained"
+          fullWidth
+          startIcon={<PersonAddIcon />}
+          sx={{
+            backgroundColor: "#22C55E", // green-500
+            "&:hover": {
+              backgroundColor: "#16A34A", // green-600
+            },
+          }}
+        >
+          Register
+        </Button>
+      </Box>
+    </Drawer>
   );
 };
+
+export default NavMobile;

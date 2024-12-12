@@ -1,23 +1,21 @@
 import Link from "next/link";
-import routes from "../../app/routes";
+import Button from "@mui/material/Button";
+import HeaderDropMenu from "@atoms/HeaderDropMenu";
 
-const NavDesktop = () => {
-  const routesElement = routes.map(({ title, href }) => (
-    <li key={title}>
-      <Link
-        href={href}
-        className="flex items-center gap-1 text-xl text-white hover:text-main-green transition-all"
-      >
-        {title}
-      </Link>
-    </li>
+const NavDesktop = ({ routes }) => {
+  const wordsElements = routes.map((route) => (
+    <div key={route.title}>
+      {route.dropdown ? (
+        <HeaderDropMenu route={route} dropdownItems={route.dropdown} />
+      ) : (
+        <Button component={Link} href={route.href} className="text-white">
+          {route.title}
+        </Button>
+      )}
+    </div>
   ));
 
-  return (
-    <ul className="hidden lg:flex lg:items-center gap-5 text-sm">
-      {routesElement}
-    </ul>
-  );
+  return <div className="hidden md:flex gap-1">{wordsElements}</div>;
 };
 
 export default NavDesktop;

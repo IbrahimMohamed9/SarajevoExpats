@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import HeaderTableRow from "@atoms/HeaderTableRow";
 
 const CollapsibleTable = ({ tableKey, subDataTitle, data }) => {
-  if (data.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <Typography variant="h6" component="div" sx={{ p: 2 }}>
         No data available

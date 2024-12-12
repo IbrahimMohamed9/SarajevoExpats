@@ -1,8 +1,18 @@
 import Link from "next/link";
-import routes from "@/app/routes";
 import Logo from "@atoms/Logo";
 
 const Footer = () => {
+  const routes = [
+    {
+      title: "Home",
+      href: "/Home",
+    },
+    {
+      title: "Contact",
+      href: "/contact",
+    },
+  ];
+
   const routesElement = routes.map(({ title, href }) => (
     <li key={title}>
       <Link

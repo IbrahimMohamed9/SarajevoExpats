@@ -33,9 +33,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <Header />
-        <RecoilRootWrapper>{children}</RecoilRootWrapper>
-        <Footer />
+        <RecoilRootWrapper>
+          <Header />
+          {children}
+          <Footer />
+        </RecoilRootWrapper>
       </body>
     </html>
   );

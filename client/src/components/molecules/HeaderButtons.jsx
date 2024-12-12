@@ -1,48 +1,40 @@
 import Link from "next/link";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
-const HeaderButtons = ({ className, buttonClassName }) => {
+const HeaderButtons = ({ className = "" }) => {
   const buttons = [
     {
-      navTo: "/Login",
-      variant: "contained",
-      color: "primary",
-      content: "Login",
+      label: "Login",
+      href: "/login",
+      icon: <LoginIcon />,
+      variant: "outlined",
+      className: "text-white border-white hover:bg-white/10",
     },
     {
-      navTo: "/SignUp",
-      variant: "outlined",
-      color: "inherit",
-      content: "Sign Up",
+      label: "Register",
+      href: "/register",
+      icon: <PersonAddIcon />,
+      variant: "contained",
+      className: "bg-green-500 hover:bg-green-600",
     },
   ];
 
-  return (
-    <div className={`${className} flex gap-4`}>
-      {buttons.map((button, index) => (
-        <Link href={button.navTo} key={index}>
-          <Button
-            variant={button.variant}
-            color={button.color}
-            sx={{
-              minWidth: "100px",
-              fontWeight: "medium",
-              ...(button.color === "inherit" && {
-                color: "#e0e0e0",
-                borderColor: "#e0e0e0",
-                "&:hover": {
-                  borderColor: "#e0e0e0",
-                  backgroundColor: "rgba(0, 0, 0, 0.04)",
-                },
-              }),
-            }}
-          >
-            {button.content}
-          </Button>
-        </Link>
-      ))}
-    </div>
-  );
+  const buttonElements = buttons.map((btn) => (
+    <Button
+      key={btn.label}
+      component={Link}
+      href={btn.href}
+      variant={btn.variant}
+      startIcon={btn.icon}
+      className={btn.className}
+    >
+      {btn.label}
+    </Button>
+  ));
+
+  return <div className={className}>{buttonElements}</div>;
 };
 
 export default HeaderButtons;
