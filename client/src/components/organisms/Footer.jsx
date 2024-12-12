@@ -1,6 +1,6 @@
 import Link from "next/link";
-import routes from "../../app/routes";
-import Logo from "../atoms/Logo";
+import routes from "@/app/routes";
+import Logo from "@/components/atoms/Logo";
 
 const Footer = () => {
   const routesElement = routes.map(({ title, href }) => (
@@ -15,14 +15,10 @@ const Footer = () => {
   ));
 
   return (
-    <footer className="bg-blue-950 py-8 xs:py-12">
-      <div className="container flex flex-col-reverse items-center max-xs:gap-y-4 xs:justify-between xs:flex-row-reverse">
-        <div className="flex items-center flex-col gap-3">
-          <Logo />
-          <ul className="flex gap-10">{routesElement}</ul>
-          <p className="text-white">Copyright © 2024</p>
-        </div>
-      </div>
+    <footer className="bg-blue-950 py-8 xs:py-12 relative z-10 w-full flex items-center flex-col gap-y-3">
+      <Logo />
+      <ul className="flex gap-10">{routesElement}</ul>
+      <p className="text-white">Copyright © 2024</p>
     </footer>
   );
 };
