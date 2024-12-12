@@ -20,7 +20,10 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@molecules": ["./src/components/molecules/*"],
+      "@atoms": ["./src/components/atoms/*"],
+      "@organisms": ["./src/components/organisms/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

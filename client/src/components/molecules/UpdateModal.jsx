@@ -10,7 +10,7 @@ import {
   TextField,
 } from "@mui/material";
 
-export default function UpdateModal({ open, handleClose, data, onUpdate }) {
+export default function UpdateModal({ open, onClose, data, onUpdate }) {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function UpdateModal({ open, handleClose, data, onUpdate }) {
 
   const handleSubmit = () => {
     onUpdate(formData);
-    handleClose();
+    onClose();
   };
   const ignoreKeys = [
     "_id",
@@ -64,11 +64,11 @@ export default function UpdateModal({ open, handleClose, data, onUpdate }) {
     });
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>Update {data?.name}</DialogTitle>
       <DialogContent>{data && textFieldsElements}</DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="error">
+        <Button onClick={onClose} color="error">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary">

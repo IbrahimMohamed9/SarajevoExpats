@@ -1,12 +1,9 @@
 import React from "react";
-import axiosInstance from "@/config/axios";
-import CollapsibleTable from "@/components/organisms/CollapsibleTable";
+import CollapsibleTable from "@organisms/CollapsibleTable";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 
-const AdminTableTemplete = async ({ title, path, subDataTitle }) => {
-  const response = await axiosInstance.get(path);
-
+const AdminTableTemplete = ({ title, tableKey, subDataTitle }) => {
   return (
     <div className="m-auto flex flex-col gap-4 pr-3 pt-4">
       <div className="flex justify-between">
@@ -17,7 +14,7 @@ const AdminTableTemplete = async ({ title, path, subDataTitle }) => {
           Add New
         </Button>
       </div>
-      <CollapsibleTable dataList={response.data} subDataTitle={subDataTitle} />
+      <CollapsibleTable tableKey={tableKey} subDataTitle={subDataTitle} />
     </div>
   );
 };

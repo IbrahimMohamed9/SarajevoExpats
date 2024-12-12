@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Grid from "@mui/material/Grid2";
-import AdminNavbar from "@/components/molecules/AdminNavbar";
+import AdminNavbar from "@molecules/AdminNavbar";
 
 const AdminDashboardGrid = ({ children, navigationItems }) => {
   const [open, setOpen] = useState(true);

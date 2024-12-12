@@ -1,6 +1,6 @@
 import Link from "next/link";
 import routes from "@/app/routes";
-import Logo from "@/components/atoms/Logo";
+import Logo from "@atoms/Logo";
 
 const Footer = () => {
   const routesElement = routes.map(({ title, href }) => (

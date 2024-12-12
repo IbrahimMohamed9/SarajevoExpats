@@ -3,10 +3,13 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': './src'
-    }
-    return config
-  }
-}
+      "@": "./src",
+      "@molecules": "./src/components/molecules/*",
+      "@atoms": "./src/components/atoms/*",
+      "@organisms": "./src/components/organisms/*",
+    };
+    return config;
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
