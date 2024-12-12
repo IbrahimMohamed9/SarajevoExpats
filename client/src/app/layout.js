@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "../components/organisms/Header";
-import Footer from "../components/organisms/Footer";
+import Header from "@/components/organisms/Header";
+import Footer from "@/components/organisms/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,9 +31,10 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // TODO: delete suppressHydrationWarning
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <Header />
         {children}
         <Footer />
