@@ -13,7 +13,7 @@ const AdminNavbar = ({ open, handleDrawerToggle, navigationItems }) => {
     <div className="h-[calc(100vh-80px)] border-r border-solid border-gray-300 fixed transition-all">
       <IconButton
         onClick={handleDrawerToggle}
-        className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-10 border border-solid border-gray-300  hover:bg-gray-100"
+        className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2 z-10 border border-solid border-gray-300  hover:bg-gray-100 mr-3"
       >
         {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
       </IconButton>

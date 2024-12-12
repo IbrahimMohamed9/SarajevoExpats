@@ -29,7 +29,14 @@ export default function UpdateModal({ open, handleClose, data, onUpdate }) {
     onUpdate(formData);
     handleClose();
   };
-  const ignoreKeys = ["_id", "subData", "createdAt", "updatedAt", "__v"];
+  const ignoreKeys = [
+    "_id",
+    "subData",
+    "createdAt",
+    "updatedAt",
+    "__v",
+    "password",
+  ];
 
   const textFieldsElements =
     data &&

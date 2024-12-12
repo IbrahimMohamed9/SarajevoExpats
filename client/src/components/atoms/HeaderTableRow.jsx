@@ -5,13 +5,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 export default function HeaderTableRow({ data, includeEmpty = false }) {
+  const ignoreKeys = ["_id", "subData", "__v", "password"];
+
   const headerCells = Object.entries(data).map(([key, value]) => {
-    if (
-      key === "subData" ||
-      typeof value === "object" ||
-      key === "_id" ||
-      key === "__v"
-    ) {
+    if (ignoreKeys.includes(key) || typeof value === "object") {
       return null;
     }
     return (

@@ -3,7 +3,7 @@ import ActionBtn from "../molecules/ActionBtn";
 import { formatDateTime } from "@/utils/formatters";
 
 export default function ValueTableRow({ value, onUpdateClick }) {
-  const ignoreKeys = ["_id", "subData", "__v"];
+  const ignoreKeys = ["_id", "subData", "__v", "password"];
   const className =
     "max-w-20 overflow-hidden text-ellipsis text-wrap line-clamp-3 min-w-48";
 
