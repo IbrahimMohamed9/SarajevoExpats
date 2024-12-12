@@ -5,6 +5,7 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const errorHandler = require("./middleware/errorHandler");
 const cors = require("cors");
+const path = require("path");
 
 const options = {
   failOnErrors: true,
@@ -39,6 +40,8 @@ app.use("/api/services/", require("./routes/serviceRoutes"));
 app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use(errorHandler);
 
 const host_name = process.env.HOST_NAME || "localhost";

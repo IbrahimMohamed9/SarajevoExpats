@@ -129,6 +129,7 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
         onClose={handleUpdateClose}
         onUpdate={handleUpdate}
         data={selectedItem}
+        tableKey={tableKey}
       />
     </>
   );

@@ -12,11 +12,17 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     if (typeof window !== "undefined" && localStorage) {
+      if (config.data instanceof FormData) {
+        delete config.headers["Content-Type"];
+      }
       const token = localStorage.getItem("token");
-      // config.headers.Authorization = `Bearer ${token}`;
+      if (token) {
+        config.headers.authorization = `Bearer ${token}`;
+      } else {
+        config.headers.authorization =
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3NWFmYTBmNTFmYjg5NmI4OGMyNDk0ZiIsImVtYWlsIjoic3RyaW5nIiwidXNlcm5hbWUiOiJzdHJpbmciLCJ0eXBlIjoiYWRtaW4ifSwiaWF0IjoxNzM0MDE1Njk5LCJleHAiOjE3MzQ0NDc2OTl9.UE-dfIFZDGtWroFcOqVssf0I5Krv5sjeVa7c_GW8jFs";
+      }
     }
-    config.headers.authorization =
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3NWFmYTBmNTFmYjg5NmI4OGMyNDk0ZiIsImVtYWlsIjoic3RyaW5nIiwidXNlcm5hbWUiOiJzdHJpbmciLCJ0eXBlIjoiYWRtaW4ifSwiaWF0IjoxNzM0MDE1Njk5LCJleHAiOjE3MzQ0NDc2OTl9.UE-dfIFZDGtWroFcOqVssf0I5Krv5sjeVa7c_GW8jFs";
     return config;
   },
   (error) => {
