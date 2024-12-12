@@ -17,34 +17,35 @@ const { validateMongoId } = require("../utils");
  *     Place:
  *       type: object
  *       required:
- *         - name
- *         - description
- *         - placeType
+ *         - title
+ *         - content
+ *         - picture
+ *         - link
  *       properties:
- *         name:
+ *         title:
  *           type: string
- *           description: Name of the place
- *         description:
+ *           description: Title of the place
+ *         content:
  *           type: string
- *           description: Description of the place
- *         placeType:
+ *           description: Content or description of the place
+ *         picture:
  *           type: string
- *           description: Type of the place (reference to PlaceType)
- *         address:
+ *           description: URL or path to the place's picture
+ *         pictureDescription:
  *           type: string
- *           description: Physical address of the place
+ *           description: Description of the picture
  *         phone:
  *           type: string
  *           description: Contact phone number
  *         email:
  *           type: string
  *           description: Contact email address
- *         website:
+ *         link:
  *           type: string
- *           description: Website URL
- *         workingHours:
+ *           description: External link or URL for the place
+ *         type:
  *           type: string
- *           description: Operating hours
+ *           description: Type or category of the place
  *   securitySchemes:
  *     BearerAuth:
  *       type: http
