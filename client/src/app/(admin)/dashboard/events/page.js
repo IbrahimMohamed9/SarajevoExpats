@@ -1,21 +1,7 @@
-import React from "react";
-import axiosInstance from "@/config/axios";
-import CollapsibleTable from "@/components/organisms/CollapsibleTable";
-import Button from "@mui/material/Button";
+import AdminTableTemplete from "@/components/templetes/AdminTableTemplete";
 
-const page = async () => {
-  const response = await axiosInstance.get("/events");
-
-  return (
-    <div className="m-auto flex flex-col gap-4 pr-3 pt-4">
-      <div className="flex justify-end">
-        <Button variant="contained" color="primary">
-          Add New
-        </Button>
-      </div>
-      <CollapsibleTable dataList={response.data} />
-    </div>
-  );
+const Page = async () => {
+  return <AdminTableTemplete title="Events" path="/events" />;
 };
 
-export default page;
+export default Page;
