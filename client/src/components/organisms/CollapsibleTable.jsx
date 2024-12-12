@@ -1,12 +1,11 @@
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
-import CustomTableRow from "../molecules/CustomTableRow";
+import CustomTableRows from "@molecules/CustomTableRows";
 import Typography from "@mui/material/Typography";
-import HeaderTableRow from "../atoms/HeaderTableRow";
+import HeaderTableRow from "@atoms/HeaderTableRow";
 
-export default function CollapsibleTable({ dataList, subDataTitle }) {
-  if (!dataList || dataList.length === 0) {
+const CollapsibleTable = ({ tableKey, subDataTitle, data }) => {
+  if (data.length === 0) {
     return (
       <Typography variant="h6" component="div" sx={{ p: 2 }}>
         No data available
@@ -14,20 +13,18 @@ export default function CollapsibleTable({ dataList, subDataTitle }) {
     );
   }
 
-  const dataBodyElement = dataList.map((data, index) => (
-    <CustomTableRow
-      key={data._id || index}
-      data={data}
-      subDataTitle={subDataTitle}
-    />
-  ));
-
   return (
     <TableContainer className="border border-gray-300">
       <Table aria-label="collapsible table">
-        <HeaderTableRow data={dataList[0]} includeEmpty={subDataTitle} />
-        <TableBody>{dataBodyElement}</TableBody>
+        <HeaderTableRow data={data[0]} includeEmpty={subDataTitle} />
+        <CustomTableRows
+          data={data}
+          tableKey={tableKey}
+          subDataTitle={subDataTitle}
+        />
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default CollapsibleTable;

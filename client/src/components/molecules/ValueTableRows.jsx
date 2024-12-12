@@ -4,7 +4,7 @@ import ValueTableRow from "../atoms/ValueTableRow";
 export default function ValueTableRows({ values, onUpdateClick }) {
   return values.map((value, index) => (
     <TableRow key={value._id || index}>
-      <ValueTableRow value={value} onUpdateClick={onUpdateClick} />
+      <ValueTableRow values={value} onUpdateClick={onUpdateClick} />
     </TableRow>
   ));
 }

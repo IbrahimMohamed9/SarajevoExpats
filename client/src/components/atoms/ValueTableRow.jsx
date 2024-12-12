@@ -1,26 +1,22 @@
 import TableCell from "@mui/material/TableCell";
-import ActionBtn from "../molecules/ActionBtn";
+import ActionBtn from "@molecules/ActionBtn";
 import { formatDateTime } from "@/utils/formatters";
 
-export default function ValueTableRow({ value, onUpdateClick }) {
+const ValueTableRow = ({ values, onUpdateClick, onDeleteClick }) => {
   const ignoreKeys = ["_id", "subData", "__v", "password"];
+  const time = ["createdAt", "updatedAt"];
   const className =
     "max-w-20 overflow-hidden text-ellipsis text-wrap line-clamp-3 min-w-48";
 
-  const cells = Object.entries(value).map(([key, val]) => {
+  const cells = Object.entries(values).map(([key, val]) => {
     if (ignoreKeys.includes(key) || typeof val === "object") {
       return null;
     }
-    if (key === "createdAt" || key === "updatedAt") {
-      return (
-        <TableCell key={key} component="th" scope="row">
-          <div className={className}>{formatDateTime(val)}</div>
-        </TableCell>
-      );
-    }
+    const value = time.includes(key) ? formatDateTime(val) : val;
+
     return (
       <TableCell key={key} component="th" scope="row">
-        <div className={className}>{val}</div>
+        <div className={className}>{value}</div>
       </TableCell>
     );
   });
@@ -28,11 +24,13 @@ export default function ValueTableRow({ value, onUpdateClick }) {
   cells.push(
     <TableCell key="actions" align="center">
       <ActionBtn
-        onDelete={() => console.log(value._id)}
-        onUpdate={() => onUpdateClick?.(value)}
+        onDelete={() => onDeleteClick?.(values._id)}
+        onUpdate={() => onUpdateClick?.(values)}
       />
     </TableCell>
   );
 
   return <>{cells}</>;
-}
+};
+
+export default ValueTableRow;
