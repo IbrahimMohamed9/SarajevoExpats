@@ -1,4 +1,14 @@
 import axiosInstance from "@/config/axios";
+
+const checkAdminAccess = async () => {
+  try {
+    const response = await axiosInstance.get("/users/me");
+    return response.data.role === "admin";
+  } catch (error) {
+    return false;
+  }
+};
+
 const routes = async () => {
   const ro = async () => {
     try {
@@ -26,16 +36,15 @@ const routes = async () => {
   };
 
   const { services, places } = await ro();
+  const isAdmin = await checkAdminAccess();
 
   const routes = [
     {
       title: "Places",
-      href: "/places",
       dropdown: places,
     },
     {
       title: "Services",
-      href: "/services",
       dropdown: services,
     },
     {
@@ -49,6 +58,16 @@ const routes = async () => {
     {
       title: "Contact",
       href: "/contact",
+    },
+    {
+      title: "Admin",
+      dropdown: [
+        { href: "/dashboard/events", title: "Manage Events" },
+        { href: "/dashboard/news", title: "Manage News" },
+        { href: "/dashboard/places", title: "Manage Places" },
+        { href: "/dashboard/services", title: "Manage Services" },
+        { href: "/dashboard/users", title: "Manage Users" },
+      ],
     },
   ];
 

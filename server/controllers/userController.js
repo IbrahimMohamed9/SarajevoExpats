@@ -13,6 +13,11 @@ const getUserById = errorHandler(async (req, res) => {
   res.status(200).json(user);
 });
 
+const getMe = errorHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  res.status(200).json(user);
+});
+
 const registerUser = errorHandler(async (req, res) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password) {
@@ -56,8 +61,8 @@ const loggedInUser = errorHandler(async (req, res) => {
       user: {
         _id: user._id,
         email: user.email,
-        username: user.usernames,
-        userType: user.userType,
+        username: user.username,
+        type: user.type,
       },
     },
     process.env.JWT_SECRET,
@@ -87,4 +92,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   loggedInUser,
+  getMe,
 };

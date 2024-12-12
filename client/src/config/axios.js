@@ -15,7 +15,8 @@ axiosInstance.interceptors.request.use(
       const token = localStorage.getItem("token");
       // config.headers.Authorization = `Bearer ${token}`;
     }
-    config.headers.authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3NTg4OGQwY2E0MGZjNzZmMWE3NjkwZCIsImVtYWlsIjoic3RyaW5nIiwidXNlclR5cGUiOiJhZG1pbiJ9LCJpYXQiOjE3MzM4NTU1OTAsImV4cCI6MTczNDI4NzU5MH0.2OHIBEIEfolW7UQk7Mbb0I2ejuXC7P1Pnfx_x_GmXeQ`;
+    config.headers.authorization =
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3NWFmYTBmNTFmYjg5NmI4OGMyNDk0ZiIsImVtYWlsIjoic3RyaW5nIiwidXNlcm5hbWUiOiJzdHJpbmciLCJ0eXBlIjoiYWRtaW4ifSwiaWF0IjoxNzM0MDE1Njk5LCJleHAiOjE3MzQ0NDc2OTl9.UE-dfIFZDGtWroFcOqVssf0I5Krv5sjeVa7c_GW8jFs";
     return config;
   },
   (error) => {

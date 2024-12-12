@@ -1,24 +1,25 @@
 const mongoose = require("mongoose");
+const { USER_TYPES } = require("../constants");
 
 const userSchema = mongoose.Schema(
   {
     username: {
       type: String,
-      required: [true, "Please add the user name"],
-    },
-    userType: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      required: [true, "Please add a username"],
     },
     email: {
       type: String,
-      required: [true, "Please add the user email address"],
-      unique: [true, "Email address already taken"],
+      required: [true, "Please add an email"],
+      unique: true,
     },
     password: {
       type: String,
-      required: [true, "Please add the user password"],
+      required: [true, "Please add a password"],
+    },
+    type: {
+      type: String,
+      enum: Object.values(USER_TYPES),
+      default: USER_TYPES.USER,
     },
   },
   {
@@ -27,5 +28,4 @@ const userSchema = mongoose.Schema(
   }
 );
 
-const User = mongoose.model("Users", userSchema);
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);
