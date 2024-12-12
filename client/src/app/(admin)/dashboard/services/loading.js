@@ -1,4 +1,4 @@
-import AdminTableLoding from "@/components/templetes/AdminTableLoding";
+import AdminTableLoding from "@templates/AdminTableLoding";
 
 const Loading = () => {
   return (

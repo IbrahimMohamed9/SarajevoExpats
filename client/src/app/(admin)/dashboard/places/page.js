@@ -1,13 +1,13 @@
-import AdminTableTemplete from "@/components/templetes/AdminTableTemplete";
+import AdminTableTemplete from "@templates/AdminTableTemplete";
 
 const Page = async () => {
   return (
     <>
-      <AdminTableTemplete title="Places" path="/places" />
+      <AdminTableTemplete title="Places" tableKey="places" />
       <div className="h-4"></div>
       <AdminTableTemplete
         title="Place Types"
-        path="/placetypes/with-places"
+        tableKey="placetypes/with-places"
         subDataTitle="Place"
       />
     </>

@@ -1,5 +1,5 @@
 import axiosInstance from "@/config/axios";
-import CollapsibleTable from "@/components/organisms/CollapsibleTable";
+import CollapsibleTable from "@organisms/CollapsibleTable";
 import Button from "@mui/material/Button";
 
 export default async function Home() {

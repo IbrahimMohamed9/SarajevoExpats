@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "noEmit": true,
-    "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "incremental": true,
     "plugins": [
       {
         "name": "next"
@@ -21,9 +22,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@molecules": ["./src/components/molecules/*"],
-      "@atoms": ["./src/components/atoms/*"],
-      "@organisms": ["./src/components/organisms/*"]
+      "@molecules/*": ["./src/components/molecules/*"],
+      "@atoms/*": ["./src/components/atoms/*"],
+      "@organisms/*": ["./src/components/organisms/*"],
+      "@templates/*": ["./src/components/templates/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

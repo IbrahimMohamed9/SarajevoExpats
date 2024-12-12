@@ -4,9 +4,10 @@ const nextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       "@": "./src",
-      "@molecules": "./src/components/molecules/*",
-      "@atoms": "./src/components/atoms/*",
-      "@organisms": "./src/components/organisms/*",
+      "@molecules": "./src/components/molecules",
+      "@atoms": "./src/components/atoms",
+      "@organisms": "./src/components/organisms",
+      "@templates": "./src/components/templates",
     };
     return config;
   },

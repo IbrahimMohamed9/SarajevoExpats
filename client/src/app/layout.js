@@ -1,9 +1,7 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/organisms/Header";
-import Footer from "@/components/organisms/Footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import Header from "@organisms/Header";
+import Footer from "@organisms/Footer";
+import RecoilRootWrapper from "@atoms/RecoilRootWrapper";
 
 export const metadata = {
   title: "Sarajevo Expats",
@@ -34,9 +32,9 @@ export default function RootLayout({ children }) {
   // TODO: delete suppressHydrationWarning
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body suppressHydrationWarning>
         <Header />
-        {children}
+        <RecoilRootWrapper>{children}</RecoilRootWrapper>
         <Footer />
       </body>
     </html>

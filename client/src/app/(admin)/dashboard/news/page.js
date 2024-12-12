@@ -1,7 +1,7 @@
-import AdminTableTemplete from "@/components/templetes/AdminTableTemplete";
+import AdminTableTemplete from "@templates/AdminTableTemplete";
 
 const Page = async () => {
-  return <AdminTableTemplete title="News" path="/news" />;
+  return <AdminTableTemplete title="News" tableKey="news" />;
 };
 
 export default Page;

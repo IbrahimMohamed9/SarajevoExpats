@@ -1,7 +1,5 @@
-import AdminTableTemplete from "@/components/templetes/AdminTableTemplete";
+import AdminTableTemplete from "@templates/AdminTableTemplete";
 
-const Page = async () => {
-  return <AdminTableTemplete title="Users" path="/users" />;
-};
-
-export default Page;
+export default function Page() {
+  return <AdminTableTemplete title="Users" tableKey="users" />;
+}
