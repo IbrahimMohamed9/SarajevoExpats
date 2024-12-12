@@ -1,5 +1,5 @@
 import Logo from "@atoms/Logo";
-import NavDesktop from "@atoms/NavDesktop";
+import NavDesktop from "@molecules/NavDesktop";
 import { NavMobile } from "@molecules/NavMobile";
 import HeaderButtons from "@molecules/HeaderButtons";
 import HeaderMenuIcon from "@molecules/HeaderMenuIcon";
@@ -9,7 +9,7 @@ const Header = async () => {
   const routes = await routess();
 
   return (
-    <header className="bg-blue-950 sticky top-0 z-50 w-full h-20">
+    <nav className="bg-blue-950 sticky top-0 z-50 w-full h-20">
       <div className="container h-full flex items-center justify-between">
         <Logo />
         <div className="hidden xl:block">
@@ -22,7 +22,7 @@ const Header = async () => {
         <HeaderMenuIcon />
         <NavMobile routes={routes} />
       </div>
-    </header>
+    </nav>
   );
 };
 

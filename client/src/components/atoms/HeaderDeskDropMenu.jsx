@@ -6,7 +6,7 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
-const HeaderDropMenu = ({ route, dropdownItems }) => {
+const HeaderDeskDropMenu = ({ route, dropdownItems }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -56,4 +56,4 @@ const HeaderDropMenu = ({ route, dropdownItems }) => {
   );
 };
 
-export default HeaderDropMenu;
+export default HeaderDeskDropMenu;

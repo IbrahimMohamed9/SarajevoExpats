@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Button from "@mui/material/Button";
-import HeaderDropMenu from "@atoms/HeaderDropMenu";
+import HeaderDeskDropMenu from "@atoms/HeaderDeskDropMenu";
 
 const NavDesktop = ({ routes }) => {
   const wordsElements = routes.map((route) => (
     <div key={route.title}>
       {route.dropdown ? (
-        <HeaderDropMenu route={route} dropdownItems={route.dropdown} />
+        <HeaderDeskDropMenu route={route} dropdownItems={route.dropdown} />
       ) : (
         <Button component={Link} href={route.href} className="text-white">
           {route.title}
