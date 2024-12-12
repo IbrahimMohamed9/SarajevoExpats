@@ -57,10 +57,10 @@ const ValueTableRow = ({ values, onUpdateClick, onDeleteClick }) => {
   return (
     <>
       {cells}
-      <TableCell align="right">
+      <TableCell key="actions" align="center">
         <ActionBtn
-          onUpdateClick={onUpdateClick}
-          onDeleteClick={onDeleteClick}
+          onDelete={() => onDeleteClick?.(values._id)}
+          onUpdate={() => onUpdateClick?.(values)}
         />
       </TableCell>
 

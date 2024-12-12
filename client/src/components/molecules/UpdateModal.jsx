@@ -41,7 +41,11 @@ const UpdateModal = ({ open, onClose, data, onUpdate, tableKey }) => {
       onClose();
     } catch (error) {
       console.error("Submit error:", error);
-      setError(error.response?.data?.message || error.message || "Error submitting form");
+      setError(
+        error.response?.data?.message ||
+          error.message ||
+          "Error submitting form"
+      );
     }
   };
 
@@ -86,10 +90,13 @@ const UpdateModal = ({ open, onClose, data, onUpdate, tableKey }) => {
         },
       });
 
-      setFormData(prev => ({ ...prev, picture: response.data.url }));
+      setFormData((prev) => ({ ...prev, picture: response.data.url }));
       setPreviewUrl(URL.createObjectURL(file));
     } catch (error) {
-      setError(error.response?.data?.message || "Error uploading file. Please try again.");
+      setError(
+        error.response?.data?.message ||
+          "Error uploading file. Please try again."
+      );
       console.error("Upload error:", error);
     } finally {
       setIsUploading(false);
@@ -99,16 +106,10 @@ const UpdateModal = ({ open, onClose, data, onUpdate, tableKey }) => {
 
   const handleRemovePicture = () => {
     setPreviewUrl(null);
-    setFormData(prev => ({ ...prev, picture: null }));
+    setFormData((prev) => ({ ...prev, picture: null }));
   };
 
-  const excludedFields = [
-    "_id",
-    "createdAt",
-    "updatedAt",
-    "__v",
-    "password",
-  ];
+  const excludedFields = ["_id", "createdAt", "updatedAt", "__v", "password"];
 
   const getFieldElement = (key) => {
     switch (key) {
@@ -146,16 +147,21 @@ const UpdateModal = ({ open, onClose, data, onUpdate, tableKey }) => {
                 <Button
                   component="label"
                   variant="outlined"
-                  startIcon={isUploading ? <CircularProgress size={20} /> : <CloudUploadIcon />}
+                  startIcon={
+                    isUploading ? (
+                      <CircularProgress size={20} />
+                    ) : (
+                      <CloudUploadIcon />
+                    )
+                  }
                   disabled={isUploading}
                   className="w-full"
                 >
-                  {isUploading 
+                  {isUploading
                     ? `Uploading... ${uploadProgress}%`
-                    : previewUrl 
-                      ? "Change Picture"
-                      : "Upload Picture"
-                  }
+                    : previewUrl
+                    ? "Change Picture"
+                    : "Upload Picture"}
                   <input
                     type="file"
                     hidden
@@ -217,7 +223,9 @@ const UpdateModal = ({ open, onClose, data, onUpdate, tableKey }) => {
     Object.entries(data).map(([key, value]) => {
       if (
         excludedFields.includes(key) ||
-        (Array.isArray(value) && value.length > 0 && typeof value[0] === "object")
+        (Array.isArray(value) &&
+          value.length > 0 &&
+          typeof value[0] === "object")
       )
         return null;
 
@@ -231,7 +239,11 @@ const UpdateModal = ({ open, onClose, data, onUpdate, tableKey }) => {
       </DialogTitle>
       <DialogContent>
         {error && (
-          <Alert severity="error" onClose={() => setError(null)} className="mb-4">
+          <Alert
+            severity="error"
+            onClose={() => setError(null)}
+            className="mb-4"
+          >
             {error}
           </Alert>
         )}
