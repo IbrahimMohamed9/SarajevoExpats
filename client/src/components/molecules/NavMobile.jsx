@@ -64,7 +64,7 @@ export const NavMobile = ({ routes = [] }) => {
       onClose={onClose}
       className="xl:hidden"
       PaperProps={{
-        className: "bg-blue-950 text-white flex flex-col",
+        className: "bg-main text-white flex flex-col",
       }}
     >
       <div className="flex justify-between items-center p-4 border-b border-white/20">

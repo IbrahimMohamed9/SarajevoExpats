@@ -25,10 +25,10 @@ const Footer = () => {
   ));
 
   return (
-    <footer className="bg-blue-950 py-8 xs:py-12 relative z-10 w-full flex items-center flex-col gap-y-3">
+    <footer className="bg-main py-8 xs:py-12 relative z-10 w-full flex items-center flex-col gap-y-3">
       <Logo />
       <ul className="flex gap-10">{routesElement}</ul>
-      <p className="text-white">Copyright © 2024</p>
+      <p className="text-white">Copyright 2024</p>
     </footer>
   );
 };

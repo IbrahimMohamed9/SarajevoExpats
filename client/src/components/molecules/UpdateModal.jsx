@@ -58,9 +58,9 @@ const UpdateModal = ({ open, onClose, data, onUpdate, tableKey }) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validate file size (5MB limit)
-    if (file.size > 5 * 1024 * 1024) {
-      setError("File size should be less than 5MB");
+    // Validate file size (0.5GB limit)
+    if (file.size > 0.5 * 1024 * 1024 * 1024) {
+      setError("File size should be less than 0.5GB");
       return;
     }
 

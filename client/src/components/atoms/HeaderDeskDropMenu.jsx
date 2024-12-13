@@ -47,7 +47,7 @@ const HeaderDeskDropMenu = ({ route, dropdownItems }) => {
           "aria-labelledby": "basic-button",
         }}
         PaperProps={{
-          className: "bg-blue-950",
+          className: "bg-main",
         }}
       >
         {menuItems}

@@ -30,6 +30,10 @@ const routes = async () => {
 
   const routes = [
     {
+      title: "News",
+      href: "/news",
+    },
+    {
       title: "Places",
       dropdown: places,
     },
@@ -40,10 +44,6 @@ const routes = async () => {
     {
       title: "Events",
       href: "/events",
-    },
-    {
-      title: "News",
-      href: "/news",
     },
     {
       title: "Contact",
@@ -63,5 +63,7 @@ const routes = async () => {
 
   return routes;
 };
+
+// 255, 112, 3;
 
 export default routes;

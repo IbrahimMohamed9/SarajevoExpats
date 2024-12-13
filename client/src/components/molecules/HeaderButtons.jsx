@@ -34,7 +34,7 @@ const HeaderButtons = ({ className = "" }) => {
     </Button>
   ));
 
-  return <div className={className}>{buttonElements}</div>;
+  return <div className={`${className} !hidden`}>{buttonElements}</div>;
 };
 
 export default HeaderButtons;

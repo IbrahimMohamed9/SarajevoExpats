@@ -2,6 +2,12 @@ import "./globals.css";
 import Header from "@organisms/Header";
 import Footer from "@organisms/Footer";
 import RecoilRootWrapper from "@atoms/RecoilRootWrapper";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "Sarajevo Expats",
@@ -28,11 +34,11 @@ export const metadata = {
   // },
 };
 
-export default function RootLayout({ children }) {
+const RootLayout = ({ children }) => {
   // TODO: delete suppressHydrationWarning
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning className={roboto.className}>
         <RecoilRootWrapper>
           <Header />
           {children}
@@ -41,4 +47,5 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+};
+export default RootLayout;
