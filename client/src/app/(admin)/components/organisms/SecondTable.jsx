@@ -5,9 +5,9 @@ import Table from "@mui/material/Table";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import ValueTableRows from "@molecules/ValueTableRows";
+import ValueTableRows from "@adminMol/ValueTableRows";
 import TableBody from "@mui/material/TableBody";
-import HeaderTableRow from "@atoms/HeaderTableRow";
+import HeaderTableRow from "@adminAto/HeaderTableRow";
 
 export default function SecondTable({
   open,

@@ -1,5 +1,5 @@
 import React from "react";
-import CollapsibleTable from "@organisms/CollapsibleTable";
+import CollapsibleTable from "@adminOrg/CollapsibleTable";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 

@@ -1,4 +1,4 @@
-import AdminTableLoding from "@templates/AdminTableLoding";
+import AdminTableLoding from "@adminTem/AdminTableLoding";
 
 const Loading = () => {
   return (

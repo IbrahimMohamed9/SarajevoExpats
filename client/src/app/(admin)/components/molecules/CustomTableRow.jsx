@@ -4,12 +4,12 @@ import { useState } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import UpdateModal from "@molecules/UpdateModal";
-import ValueTableRow from "@atoms/ValueTableRow";
-import SecondTable from "@organisms/SecondTable";
+import UpdateModal from "@adminMol/UpdateModal";
+import ValueTableRow from "@adminAto/ValueTableRow";
+import SecondTable from "@adminOrg/SecondTable";
 import axiosInstance from "@/config/axios";
 import { snackbarState } from "@/store/atoms/snackbarAtom";
-import CollapseIcon from "@atoms/CollapseIcon";
+import CollapseIcon from "@adminAto/CollapseIcon";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
 
 const CustomTableRow = ({ data, tableKey, subDataTitle }) => {

@@ -2,7 +2,7 @@ import List from "@mui/material/List";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import AdminNavigationBtn from "@atoms/AdminNavigationBtn";
+import AdminNavigationBtn from "@adminAto/AdminNavigationBtn";
 
 const AdminNavbar = ({ open, handleDrawerToggle, navigationItems }) => {
   const navIconsElements = navigationItems.map((item) => (

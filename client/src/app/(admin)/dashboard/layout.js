@@ -3,7 +3,7 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import GroupIcon from "@mui/icons-material/Group";
-import AdminDashboardGrid from "@organisms/AdminDashboardGrid";
+import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
 
 export const metadata = {
   title: "Dashboard - Sarajevo Expats",

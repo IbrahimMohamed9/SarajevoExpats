@@ -1,8 +1,8 @@
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
-import CustomTableRows from "@molecules/CustomTableRows";
+import CustomTableRows from "@adminMol/CustomTableRows";
 import Typography from "@mui/material/Typography";
-import HeaderTableRow from "@atoms/HeaderTableRow";
+import HeaderTableRow from "@adminAto/HeaderTableRow";
 
 const CollapsibleTable = ({ tableKey, subDataTitle, data }) => {
   if (!data || data.length === 0) {

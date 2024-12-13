@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { TableBody } from "@mui/material";
-import CustomTableRow from "@molecules/CustomTableRow";
+import CustomTableRow from "@adminMol/CustomTableRow";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
 import { useRecoilState } from "recoil";
 
