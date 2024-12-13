@@ -16,23 +16,69 @@ const getAllPlaces = asyncHandler(async (req, res) => {
 //@route /places
 //@access public
 const createPlace = asyncHandler(async (req, res) => {
-  const { title, content, picture, link, type } = req.body;
+  const {
+    title,
+    content,
+    picture,
+    pictureDescription,
+    type,
+    phone,
+    email,
+    link,
+  } = req.body;
 
-  const validateRequiredFields = title && content && picture && type && link;
-  if (!validateRequiredFields) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
+  const requiredFields = {
+    title,
+    content,
+    picture,
+    type,
+  };
+
+  const missingFields = Object.entries(requiredFields)
+    .filter(([_, value]) => !value)
+    .map(([field]) => field);
+
+  if (missingFields.length > 0) {
+    res.status(400).json({
+      message: `Missing required fields: ${missingFields.join(", ")}`,
+    });
+    throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
+  }
+
+  const contactFields = { phone, email, link };
+  const hasContactMethod = Object.values(contactFields).some((value) => value);
+
+  if (!hasContactMethod) {
+    res.status(400).json({
+      message:
+        "At least one contact method (phone, email, or link) is required",
+    });
+    throw new Error(
+      "At least one contact method (phone, email, or link) is required"
+    );
   }
 
   const placeType = await PlaceType.findOne({ name: type });
   if (!placeType) {
-    res.status(400);
+    res.status(400).json({
+      message: "Invalid place type. Please provide a valid place type name",
+    });
     throw new Error(
       "Invalid place type. Please provide a valid place type name"
     );
   }
 
-  const place = await Place.create({ ...req.body });
+  const place = await Place.create({
+    title,
+    content,
+    picture,
+    pictureDescription,
+    type,
+    phone,
+    email,
+    link,
+  });
+
   res.status(201).json({ message: "The place added successfully", place });
 });
 

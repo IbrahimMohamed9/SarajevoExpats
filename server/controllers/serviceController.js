@@ -15,18 +15,36 @@ const getAllServices = asyncHandler(async (req, res) => {
 //@route /services
 //@access public
 const createService = asyncHandler(async (req, res) => {
-  const { name, content, picture, phone, email } = req.body;
+  const { name, content, picture, pictureDescription, serviceSubtype, phone, email } =
+    req.body;
 
-  const validateRequiredFields = name && content && picture;
-  if (!validateRequiredFields) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
+  const requiredFields = {
+    name,
+    content,
+    picture,
+    serviceSubtype,
+  };
+
+  const missingFields = Object.entries(requiredFields)
+    .filter(([_, value]) => !value)
+    .map(([field]) => field);
+
+  if (missingFields.length > 0) {
+    res.status(400).json({
+      message: `Missing required fields: ${missingFields.join(", ")}`,
+    });
+    throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
   }
 
-  const validateoptionFields = phone && email;
-  if (!validateoptionFields) {
-    res.status(400);
-    throw new Error("At least one of phone or email must be provided");
+  // Check if at least one contact method is provided
+  const contactFields = { phone, email };
+  const hasContactMethod = Object.values(contactFields).some((value) => value);
+
+  if (!hasContactMethod) {
+    res.status(400).json({
+      message: "At least one contact method (phone or email) is required",
+    });
+    throw new Error("At least one contact method (phone or email) is required");
   }
 
   const service = await Service.create({ ...req.body });

@@ -37,22 +37,31 @@ const getAllPlaceTypesWithPlaces = asyncHandler(async (req, res) => {
 //@route /placeTypes
 //@access public
 const createPlaceType = asyncHandler(async (req, res) => {
-  if (!req.body.name) {
+  const { name } = req.body;
+
+  // Check which required fields are missing
+  const requiredFields = { name };
+
+  const missingFields = Object.entries(requiredFields)
+    .filter(([_, value]) => !value)
+    .map(([field]) => field);
+
+  if (missingFields.length > 0) {
     res.status(400);
-    throw new Error("All fields are mandatory");
+    throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
   }
 
-  const placeType = await PlaceType.findOne({ name: req.body.name });
-  if (placeType) {
+  const checkPlaceType = await PlaceType.findOne({ name: req.body.name });
+  if (checkPlaceType) {
     res.status(400);
     throw new Error("Place type already exists");
   }
 
-  const newPlaceType = await PlaceType.create({ ...req.body });
+  const placeType = await PlaceType.create({ ...req.body });
 
   res
     .status(201)
-    .json({ message: "The place type added successfully", newPlaceType });
+    .json({ message: "The place type added successfully", placeType });
 });
 
 //@desc Delete place type by id
@@ -79,13 +88,17 @@ const updatePlaceTypeById = asyncHandler(async (req, res) => {
   const name = req.body.name;
 
   if (!name) {
-    res.status(400);
-    throw new Error("Name field is required");
+    res.status(400).json({
+      message: "Name is required field",
+    });
+    throw new Error("Name is required field");
   }
 
   const placeType = await PlaceType.findById(id);
   if (!placeType) {
-    res.status(404);
+    res.status(404).json({
+      message: "Place type not found",
+    });
     throw new Error("Place type not found");
   }
 

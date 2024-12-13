@@ -6,23 +6,37 @@ const { checkNotFound } = require("../utils");
 //@route /serviceTypes
 //@access public
 const getAllServiceTypes = asyncHandler(async (req, res) => {
-  const serviceType = await ServiceType.find();
+  const serviceTypes = await ServiceType.find();
 
-  res.status(200).json(serviceType);
+  res.status(200).json(serviceTypes);
 });
 
 //@desc Create new service type
 //@route /serviceTypes
 //@access public
 const createServiceType = asyncHandler(async (req, res) => {
-  if (!req.body.name) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
+  const { name } = req.body;
+
+  if (!name) {
+    res.status(400).json({
+      message: "Name is required",
+    });
+    throw new Error("Name is required");
   }
 
-  const serviceType = await ServiceType.create({ ...req.body });
+  // Check if service type with same name already exists
+  const existingType = await ServiceType.findOne({ name });
+  if (existingType) {
+    res.status(400).json({
+      message: "A service type with this name already exists",
+    });
+    throw new Error("A service type with this name already exists");
+  }
+
+  const serviceType = await ServiceType.create({ name });
+
   res.status(201).json({
-    message: "The service type added successfully",
+    message: "Service type created successfully",
     serviceType,
   });
 });
@@ -32,41 +46,61 @@ const createServiceType = asyncHandler(async (req, res) => {
 //@access public
 const deleteServiceTypeById = asyncHandler(async (req, res) => {
   const serviceType = await ServiceType.findById(req.params.id);
-
-  checkNotFound(serviceType)(req, res, async () => {
-    await ServiceType.deleteOne({ _id: req.params.id });
-    res.status(200).json({ message: "The service type deleted successfully" });
-  });
-});
-
-//@desc Update service subtype by id
-//@route /serviceTypes/:id
-//@access public
-const updateServiceTypeById = asyncHandler(async (req, res) => {
-  let serviceType = await ServiceType.findById(req.params.id);
   if (!serviceType) {
-    res.status(404);
+    res.status(404).json({
+      message: "Service type not found",
+    });
     throw new Error("Service type not found");
   }
 
-  const exists = await ServiceType.findOne({ name: req.body.name });
-  if (exists) {
-    res.status(400);
-    throw new Error("Service type already exists");
-  }
+  await ServiceType.findByIdAndDelete(req.params.id);
 
-  serviceType = await ServiceType.findOneAndUpdate(
-    { _id: req.params.id },
-    { $set: req.body },
-    {
-      new: true,
-    }
-  );
-
-  res.status(200).json(serviceType);
+  res.status(200).json({ message: "Service type removed successfully" });
 });
 
-//@desc Get service subtype by id
+//@desc Update service type by id
+//@route /serviceTypes/:id
+//@access public
+const updateServiceTypeById = asyncHandler(async (req, res) => {
+  const serviceType = await ServiceType.findById(req.params.id);
+  if (!serviceType) {
+    res.status(404).json({
+      message: "Service type not found",
+    });
+    throw new Error("Service type not found");
+  }
+
+  // If updating name, validate it's provided and unique
+  if (req.body.name) {
+    if (req.body.name !== serviceType.name) {
+      const existingType = await ServiceType.findOne({ name: req.body.name });
+      if (existingType) {
+        res.status(400).json({
+          message: "A service type with this name already exists",
+        });
+        throw new Error("A service type with this name already exists");
+      }
+    }
+  } else {
+    res.status(400).json({
+      message: "Name is required",
+    });
+    throw new Error("Name is required");
+  }
+
+  const updatedServiceType = await ServiceType.findByIdAndUpdate(
+    req.params.id,
+    { name: req.body.name },
+    { new: true }
+  );
+
+  res.status(200).json({
+    message: "Service type updated successfully",
+    serviceType: updatedServiceType,
+  });
+});
+
+//@desc Get service type by id
 //@route /serviceTypes/:id
 //@access public
 const getServiceTypeById = asyncHandler(async (req, res) => {

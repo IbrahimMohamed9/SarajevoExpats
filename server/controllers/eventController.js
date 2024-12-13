@@ -3,7 +3,7 @@ const Event = require("../models/eventModel");
 const { checkNotFound } = require("../utils");
 
 //@desc Get all events
-//@route /events
+//@route GET /api/events
 //@access public
 const getEvents = asyncHandler(async (req, res) => {
   const events = await Event.find();
@@ -11,7 +11,7 @@ const getEvents = asyncHandler(async (req, res) => {
 });
 
 //@desc Get event by Id
-//@route /events/:id
+//@route /api/events/:id
 //@access public
 const getEventById = asyncHandler(async (req, res) => {
   const event = await Event.findById(req.params.id);
@@ -21,29 +21,45 @@ const getEventById = asyncHandler(async (req, res) => {
 });
 
 //@desc Create new event
-//@route /events
+//@route /api/events
 //@access public
 const createEvent = asyncHandler(async (req, res) => {
-  const { title, content, picture, url, phone, email } = req.body;
+  const { title, content, picture, pictureDescription, url, phone, email } =
+    req.body;
 
-  const validateRequiredFields = title && content && picture && url;
-  if (!validateRequiredFields) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
+  const requiredFields = {
+    title,
+    content,
+    picture,
+    url,
+  };
+
+  const missingFields = Object.entries(requiredFields)
+    .filter(([_, value]) => !value)
+    .map(([field]) => field);
+
+  if (missingFields.length > 0) {
+    res.status(400).json({
+      message: `Missing required fields: ${missingFields.join(", ")}`,
+    });
+    throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
   }
 
-  const validateoptionFields = phone && email;
-  if (!validateoptionFields) {
-    res.status(400);
-    throw new Error("At least one of phone or email must be provided");
-  }
+  const event = await Event.create({
+    title,
+    content,
+    picture,
+    pictureDescription,
+    url,
+    phone,
+    email,
+  });
 
-  const event = await Event.create({ ...req.body });
   res.status(201).json({ message: "The event added successfully", event });
 });
 
 //@desc Delete event by Id
-//@route /events/:id
+//@route /api/events/:id
 //@access public
 const deleteEventById = asyncHandler(async (req, res) => {
   const event = await Event.findById(req.params.id);
@@ -54,7 +70,7 @@ const deleteEventById = asyncHandler(async (req, res) => {
 });
 
 //@desc Update event by Id
-//@route /events/:id
+//@route /api/events/:id
 //@access public
 const updateEventById = asyncHandler(async (req, res) => {
   let event = await Event.findById(req.params.id);
