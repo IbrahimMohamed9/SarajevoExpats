@@ -63,17 +63,14 @@ export const NavMobile = ({ routes = [] }) => {
       open={isOpen}
       onClose={onClose}
       className="xl:hidden"
+      ModalProps={{ className: "z-30" }}
+      BackdropProps={{ className: "bg-black/50 z-20" }}
       PaperProps={{
-        className: "bg-main text-white flex flex-col",
+        className:
+          "bg-main text-white flex flex-col absolute right-0 top-9 w-[280px] h-full z-40",
       }}
     >
-      <div className="flex justify-between items-center p-4 border-b border-white/20">
-        <h2 className="text-xl font-semibold text-white">Menu</h2>
-        <IconButton onClick={onClose} className="text-white">
-          <CloseIcon />
-        </IconButton>
-      </div>
-      <List className="w-[280px] flex-1">{routesElement}</List>
+      <List className="flex-1">{routesElement}</List>
       <Box className="p-4 border-t border-white/20">
         <HeaderButtons className="flex h-full items-center gap-2" />
       </Box>
