@@ -14,13 +14,11 @@ const CustomTableRows = ({ data, tableKey, subDataTitle }) => {
       ...prev,
       [tableKey]: data,
     }));
-  }, []);
-
-  const tableData = tables[tableKey] || data;
+  }, [data, tableKey, setTables]);
 
   return (
     <TableBody>
-      {tableData.map((item) => (
+      {tables[tableKey]?.map((item) => (
         <CustomTableRow
           key={item._id}
           data={item}

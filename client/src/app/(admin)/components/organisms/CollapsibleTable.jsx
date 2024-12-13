@@ -1,8 +1,8 @@
 import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
 import CustomTableRows from "@adminMol/CustomTableRows";
 import Typography from "@mui/material/Typography";
 import HeaderTableRow from "@adminAto/HeaderTableRow";
+import { TableContainer } from "@mui/material";
 
 const CollapsibleTable = ({ tableKey, subDataTitle, data }) => {
   if (!data || data.length === 0) {
@@ -14,8 +14,8 @@ const CollapsibleTable = ({ tableKey, subDataTitle, data }) => {
   }
 
   return (
-    <TableContainer className="border border-gray-300">
-      <Table aria-label="collapsible table">
+    <TableContainer className="border border-gray-300 rounded-lg shadow-sm">
+      <Table stickyHeader>
         <HeaderTableRow data={data[0]} includeEmpty={subDataTitle} />
         <CustomTableRows
           data={data}

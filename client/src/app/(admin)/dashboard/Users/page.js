@@ -3,12 +3,19 @@ import axiosInstance from "@/config/axios";
 
 const Page = async () => {
   const usersResponse = await axiosInstance.get("users");
+  const dataTemp = {
+    username: "",
+    email: "",
+    password: "",
+    type: "",
+  };
 
   return (
     <AdminTableTemplete
       title="Users"
       tableKey="users"
       data={usersResponse.data}
+      dataTemp={dataTemp}
     />
   );
 };

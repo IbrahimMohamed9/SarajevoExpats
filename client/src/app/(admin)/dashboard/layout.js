@@ -4,7 +4,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import GroupIcon from "@mui/icons-material/Group";
 import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
-
+import AdminModal from "@adminMol/AdminModal";
 export const metadata = {
   title: "Dashboard - Sarajevo Expats",
   description: "Admin dashboard for Sarajevo Expats.",
@@ -28,6 +28,8 @@ export default function DashboardLayout({ children }) {
       <AdminDashboardGrid navigationItems={navigationItems}>
         {children}
       </AdminDashboardGrid>
+
+      <AdminModal />
     </main>
   );
 }

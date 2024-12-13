@@ -1,29 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import Grid from "@mui/material/Grid2";
 import AdminNavbar from "@adminMol/AdminNavbar";
 
-const AdminDashboardGrid = ({ children, navigationItems }) => {
+export default function AdminDashboardGrid({ children, navigationItems }) {
   const [open, setOpen] = useState(true);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
+
   return (
-    <Grid container spacing={1}>
-      <Grid size={open ? 2 : 1}>
+    <div
+      className={`grid ${
+        open ? "grid-cols-[130px_1fr]" : "grid-cols-[56px_1fr]"
+      } transition-all duration-300`}
+    >
+      <div>
         <AdminNavbar
           open={open}
           handleDrawerToggle={handleDrawerToggle}
           navigationItems={navigationItems}
         />
-      </Grid>
-      <Grid size={open ? 10 : 11}>
-        <div className="p-1">{children}</div>
-      </Grid>
-    </Grid>
+      </div>
+      <div className="p-2 min-w-0 overflow-x-auto">{children}</div>
+    </div>
   );
-};
-
-export default AdminDashboardGrid;
+}

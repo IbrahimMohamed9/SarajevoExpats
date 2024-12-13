@@ -10,12 +10,30 @@ const Page = async () => {
     "serviceTypes/with-subtypes"
   );
 
+  const dataTemp1 = {
+    name: "",
+    content: "",
+    picture: "",
+    pictureDescription: "",
+    phone: "",
+    email: "",
+    serviceSubtype: "",
+  };
+  const dataTemp2 = {
+    name: "",
+    serviceType: "",
+  };
+  const dataTemp3 = {
+    name: "",
+  };
+
   return (
     <>
       <AdminTableTemplete
         title="Services"
         tableKey="services"
         data={servicesResponse.data}
+        dataTemp={dataTemp1}
       />
       <div className="h-4"></div>
       <AdminTableTemplete
@@ -23,6 +41,7 @@ const Page = async () => {
         tableKey="serviceSubtypes/with-services"
         subDataTitle="Service"
         data={serviceSubtypesResponse.data}
+        dataTemp={dataTemp2}
       />
       <div className="h-4"></div>
       <AdminTableTemplete
@@ -30,6 +49,7 @@ const Page = async () => {
         tableKey="serviceTypes/with-subtypes"
         subDataTitle="Service Subtype"
         data={serviceTypesResponse.data}
+        dataTemp={dataTemp3}
       />
     </>
   );

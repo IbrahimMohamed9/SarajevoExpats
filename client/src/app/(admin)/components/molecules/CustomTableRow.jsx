@@ -1,31 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import UpdateModal from "@adminMol/UpdateModal";
+import AdminModal from "@adminMol/AdminModal";
 import ValueTableRow from "@adminAto/ValueTableRow";
 import SecondTable from "@adminOrg/SecondTable";
 import axiosInstance from "@/config/axios";
 import { snackbarState } from "@/store/atoms/snackbarAtom";
+import { adminModalState } from "@/store/atoms/adminModalAtom";
 import CollapseIcon from "@adminAto/CollapseIcon";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
 
 const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
   const [open, setOpen] = useState(false);
-  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [AdminModalOpen, setAdminModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const setSnackbar = useSetRecoilState(snackbarState);
-  const [tables, setTables] = useRecoilState(tablesAtom);
+  const setAdminModal = useSetRecoilState(adminModalState);
+  const setTables = useSetRecoilState(tablesAtom);
 
   const handleUpdateClick = (item) => {
     setSelectedItem(item);
-    setUpdateModalOpen(true);
+    setAdminModalOpen(true);
   };
 
   const handleUpdateClose = () => {
-    setUpdateModalOpen(false);
+    setAdminModalOpen(false);
     setSelectedItem(null);
   };
 
@@ -98,6 +100,17 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
   let containSubdata;
   if (subDataTitle) containSubdata = data.subData && data.subData.length > 0;
 
+  useEffect(() => {
+    setAdminModal({
+      open: AdminModalOpen,
+      onClose: handleUpdateClose,
+      onSubmit: handleUpdate,
+      data: selectedItem,
+      tableKey: tableKey,
+      update: true,
+    });
+  }, [AdminModalOpen]);
+
   return (
     <>
       <TableRow hover={true}>
@@ -125,13 +138,13 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
         />
       )}
 
-      <UpdateModal
-        open={updateModalOpen}
+      {/* <AdminModal
+        open={AdminModalOpen}
         onClose={handleUpdateClose}
-        onUpdate={handleUpdate}
+        onSubmit={handleUpdate}
         data={selectedItem}
         tableKey={tableKey}
-      />
+      /> */}
     </>
   );
 };

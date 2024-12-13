@@ -3,9 +3,21 @@ import AdminTableTemplete from "@adminTem/AdminTableTemplete";
 
 const Page = async () => {
   const response = await axiosInstance.get("news");
+  const dataTemp = {
+    title: "",
+    content: "",
+    picture: "",
+    pictureDescription: "",
+    sources: "",
+  };
 
   return (
-    <AdminTableTemplete title="News" tableKey="news" data={response.data} />
+    <AdminTableTemplete
+      title="News"
+      tableKey="news"
+      data={response.data}
+      dataTemp={dataTemp}
+    />
   );
 };
 
