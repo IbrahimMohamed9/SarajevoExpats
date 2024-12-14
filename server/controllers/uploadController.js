@@ -4,7 +4,7 @@ const uploadPhoto = async (req, res) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const fileUrl = `${process.env.PHOTOS_URL}/photos/${req.file.filename}`;
+    const fileUrl = `${process.env.PHOTOS_URL}/${req.file.filename}`;
 
     res.json({
       url: fileUrl,
