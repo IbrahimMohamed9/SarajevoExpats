@@ -23,6 +23,12 @@ const nextConfig = {
         port: "3030",
         pathname: "/photos/**",
       },
+      // https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=600
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "/**",
+      },
     ],
   },
 };

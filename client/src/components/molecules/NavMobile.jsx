@@ -67,7 +67,7 @@ export const NavMobile = ({ routes = [] }) => {
       BackdropProps={{ className: "bg-black/50 z-20" }}
       PaperProps={{
         className:
-          "bg-main text-white flex flex-col absolute right-0 top-9 w-[280px] h-full z-40",
+          "bg-main text-white flex flex-col absolute right-0 top-9 w-[150px] h-full z-40",
       }}
     >
       <List className="flex-1">{routesElement}</List>
