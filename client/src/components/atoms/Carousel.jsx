@@ -1,3 +1,5 @@
+"use client";
+
 import { Splide, SplideTrack } from "@splidejs/react-splide";
 // Default theme
 import "@splidejs/react-splide/css";
@@ -7,6 +9,8 @@ import "@splidejs/react-splide/css/sea-green";
 // or only core styles
 import "@splidejs/react-splide/css/core";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const Carousel = ({ children }) => {
   const getWidthWithoutPadding = (el) => {
@@ -35,10 +39,12 @@ const Carousel = ({ children }) => {
       totalWidth > document.documentElement.offsetWidth ||
       totalWidth > 1170
     ) {
-      console.log(Math.floor(splideTrackWidth / widthOfCol));
       setSlidesPerPage(Math.floor(splideTrackWidth / widthOfCol));
     } else console.log("none");
   }, [splide]);
+
+  const arrowClass = "!fill-black !size-7";
+  const ButtonClass = "splide__arrow min-w-0 !bg-main !rounded-lg";
 
   return (
     <Splide
@@ -58,14 +64,19 @@ const Carousel = ({ children }) => {
       }}
     >
       <SplideTrack>{children}</SplideTrack>
-
-      <div className="splide__arrows flex justify-between mt-2">
-        <button className="splide__arrow splide__arrow--prev bg-white border border-gray-300 rounded-full p-2 shadow hover:bg-gray-100 transition">
-          Prev
-        </button>
-        <button className="splide__arrow splide__arrow--next bg-white border border-gray-300 rounded-full p-2 shadow hover:bg-gray-100 transition">
-          Next
-        </button>
+      <div className="splide__arrows flex justify-between">
+        <Button
+          variant="outlined"
+          className={`splide__arrow--prev ${ButtonClass}`}
+        >
+          <ArrowForwardIcon className={arrowClass} />
+        </Button>
+        <Button
+          variant="outlined"
+          className={`splide__arrow--next -mr-2 ${ButtonClass}`}
+        >
+          <ArrowForwardIcon className={arrowClass} />
+        </Button>
       </div>
     </Splide>
   );
