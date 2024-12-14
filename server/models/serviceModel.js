@@ -29,8 +29,6 @@ const serviceSchema = new mongoose.Schema(
       },
       message: "At least one of phone, email, or url must be provided",
     },
-  },
-  {
     timestamps: true,
     versionKey: false,
   }
