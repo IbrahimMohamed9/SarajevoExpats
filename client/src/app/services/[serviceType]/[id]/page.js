@@ -37,7 +37,7 @@ async function getArticle(id) {
 const Page = async ({ params }) => {
   const article = await getArticle(params.id);
 
-  return <ArticleTemplete article={article} />;
+  return <ArticleTemplete article={article} contentType="Service" />;
 };
 
 export default Page;

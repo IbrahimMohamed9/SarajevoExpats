@@ -1,16 +1,7 @@
-import BaseCard from "@atoms/BaseCard";
-import axiosInstance from "@/config/axios";
+import CardsTemplete from "@templates/CardsTemplete";
 
-const Events = async () => {
-  const events = await axiosInstance.get("/events");
-  const eventsColumnElements = events.data.map((event, index) => (
-    <BaseCard item={event} key={index} />
-  ));
-  return (
-    <div className="flex flex-wrap justify-center py-5">
-      {eventsColumnElements}
-    </div>
-  );
+const Events = () => {
+  return <CardsTemplete url="/events" type="events" />;
 };
 
 export default Events;
