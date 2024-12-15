@@ -11,9 +11,12 @@ const serviceSubtypeSchema = new mongoose.Schema(
       type: String,
       required: [true, "please add the serviceType"],
       validate: {
-        validator: async (value) => {
-          const count = await ServiceType.countDocuments({ name: value });
-          return count > 0;
+        validator: async function (value) {
+          const subtype = await ServiceType.findOne({ name: value });
+          if (!subtype) return false;
+
+          this.serviceType = subtype.serviceType;
+          return true;
         },
         message: "The specified type does not exist in ServiceTypes collection",
       },
@@ -49,7 +52,6 @@ serviceSubtypeSchema.pre("findOneAndUpdate", async function (next) {
       { serviceSubtype: oldData.name },
       { $set: { serviceSubtype: newName } }
     );
-    console.log("Services update result:", result);
 
     next();
   } catch (error) {

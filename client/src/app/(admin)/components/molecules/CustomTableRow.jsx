@@ -61,7 +61,6 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
   };
 
   const handleDelete = async (_id) => {
-    console.log(_id);
     const key = tableKey.split("/")[0];
 
     const title = data.title || data.username || data._id;

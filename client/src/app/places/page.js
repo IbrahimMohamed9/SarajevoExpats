@@ -1,4 +1,4 @@
-import BaseCard from "@atoms/BaseCard";
+import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
 
 const Places = async () => {

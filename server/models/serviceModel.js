@@ -9,13 +9,17 @@ const serviceSchema = new mongoose.Schema(
     pictureDescription: { type: String },
     phone: { type: String },
     email: { type: String },
+    serviceType: { type: String },
     serviceSubtype: {
       type: String,
       required: [true, "please add the serviceType"],
       validate: {
-        validator: async (value) => {
-          const count = await serviceSubtype.countDocuments({ name: value });
-          return count > 0;
+        validator: async function (value) {
+          const subtype = await serviceSubtype.findOne({ name: value });
+          if (!subtype) return false;
+
+          this.serviceType = subtype.serviceType;
+          return true;
         },
         message:
           "The specified type does not exist in ServiceSubtypes collection",

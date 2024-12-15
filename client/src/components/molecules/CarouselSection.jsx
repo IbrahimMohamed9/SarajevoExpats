@@ -2,7 +2,7 @@
 
 import { Typography } from "@mui/material";
 import Carousel from "@atoms/Carousel";
-import BaseCard from "@atoms/BaseCard";
+import BaseCard from "@organisms/BaseCard";
 import { SplideSlide } from "@splidejs/react-splide";
 import SectionHeder from "@atoms/SectionHeder";
 

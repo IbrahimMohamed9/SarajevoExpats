@@ -40,7 +40,7 @@ const Carousel = ({ children }) => {
       totalWidth > 1170
     ) {
       setSlidesPerPage(Math.floor(splideTrackWidth / widthOfCol));
-    } else console.log("none");
+    }
   }, [splide]);
 
   const arrowClass = "!fill-black !size-7";

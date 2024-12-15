@@ -1,4 +1,3 @@
-import React from "react";
 import { CardContent, Typography } from "@mui/material";
 import BaseCardTitle from "@atoms/BaseCardTitle";
 import BaseCardEnd from "@atoms/BaseCardEnd";

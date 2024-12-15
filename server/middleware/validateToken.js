@@ -6,7 +6,6 @@ const validateToken = errorHandler(async (req, res, next) => {
   let authHeader = req.headers.authorization;
 
   if (!(authHeader && authHeader.startsWith("Bearer"))) {
-    console.log(req.header);
     res.status(401);
     throw new Error("User is not authorized or token is missing");
   }

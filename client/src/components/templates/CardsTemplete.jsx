@@ -1,7 +1,6 @@
-import BaseCard from "@/components/atoms/BaseCard";
+import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
 import ErrorDisplay from "@molecules/ErrorDisplay";
-import { title } from "process";
 
 const CardsTemplete = async ({ url, type }) => {
   try {
