@@ -7,6 +7,7 @@ const {
   createPlace,
   updatePlaceById,
   deletePlaceById,
+  getPlacesByPlaceType,
 } = require("../controllers/placeController");
 const { validateMongoId } = require("../utils");
 
@@ -88,6 +89,36 @@ const { validateMongoId } = require("../utils");
  *         description: Invalid input
  */
 router.route("/").get(getAllPlaces).post(validateAdminToken, createPlace);
+
+/**
+ * @swagger
+ * /api/places/by-place-type/{placeType}:
+ *   get:
+ *     summary: Get places by place type
+ *     description: Retrieves all places that match the specified place type
+ *     tags: [Places]
+ *     parameters:
+ *       - in: path
+ *         name: placeType
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Type of place to filter by (e.g., restaurant, cafe, park)
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Place'
+ *       404:
+ *         description: No places found for the specified type
+ *       500:
+ *         description: Server error
+ */
+router.get("/by-place-type/:placeType", getPlacesByPlaceType);
 
 /**
  * @swagger

@@ -26,21 +26,35 @@ const serviceSubtypeSchema = new mongoose.Schema(
 );
 
 serviceSubtypeSchema.pre("findOneAndUpdate", async function (next) {
-  const update = this.getUpdate().$set;
-  const oldData = await ServiceSubtype.findOne(this._conditions);
+  try {
+    const update = this.getUpdate();
+    const newName = update.name || (update.$set && update.$set.name);
 
-  if (!update.name) {
+    if (!newName) {
+      return next();
+    }
+
+    const oldData = await ServiceSubtype.findOne(this._conditions);
+    if (!oldData) {
+      throw new Error("Service subtype not found");
+    }
+
+    if (oldData.name === newName) {
+      return next();
+    }
+
+    const Service = mongoose.model("Services");
+
+    const result = await Service.updateMany(
+      { serviceSubtype: oldData.name },
+      { $set: { serviceSubtype: newName } }
+    );
+    console.log("Services update result:", result);
+
     next();
+  } catch (error) {
+    next(error);
   }
-
-  const Service = mongoose.model("Services");
-
-  await Service.updateMany(
-    { serviceSubtype: oldData.name },
-    { $set: { serviceSubtype: update.name } }
-  );
-
-  next();
 });
 
 const ServiceSubtype = mongoose.model("ServiceSubtypes", serviceSubtypeSchema);

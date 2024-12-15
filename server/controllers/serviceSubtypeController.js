@@ -40,7 +40,9 @@ const createServiceSubtype = asyncHandler(async (req, res) => {
     res.status(400).json({
       message: "Invalid service type. Please provide a valid service type name",
     });
-    throw new Error("Invalid service type. Please provide a valid service type name");
+    throw new Error(
+      "Invalid service type. Please provide a valid service type name"
+    );
   }
 
   // Check if service subtype with same name already exists
@@ -97,15 +99,20 @@ const updateServiceSubtypeById = asyncHandler(async (req, res) => {
     const type = await ServiceType.findOne({ name: req.body.serviceType });
     if (!type) {
       res.status(400).json({
-        message: "Invalid service type. Please provide a valid service type name",
+        message:
+          "Invalid service type. Please provide a valid service type name",
       });
-      throw new Error("Invalid service type. Please provide a valid service type name");
+      throw new Error(
+        "Invalid service type. Please provide a valid service type name"
+      );
     }
   }
 
   // If updating name, check for duplicates
   if (req.body.name && req.body.name !== serviceSubtype.name) {
-    const existingSubtype = await ServiceSubtype.findOne({ name: req.body.name });
+    const existingSubtype = await ServiceSubtype.findOne({
+      name: req.body.name,
+    });
     if (existingSubtype) {
       res.status(400).json({
         message: "A service subtype with this name already exists",
@@ -114,8 +121,8 @@ const updateServiceSubtypeById = asyncHandler(async (req, res) => {
     }
   }
 
-  const updatedServiceSubtype = await ServiceSubtype.findByIdAndUpdate(
-    req.params.id,
+  const updatedServiceSubtype = await ServiceSubtype.findOneAndUpdate(
+    { _id: req.params.id },
     req.body,
     { new: true }
   );

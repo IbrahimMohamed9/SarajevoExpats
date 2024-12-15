@@ -8,6 +8,8 @@ const {
   deleteServiceById,
   updateServiceById,
   getServiceById,
+  getServicesByServiceSubtype,
+  getServicesByServiceType,
 } = require("../controllers/serviceController");
 
 /**
@@ -95,6 +97,75 @@ const {
  *         description: Unauthorized
  */
 router.route("/").get(getAllServices).post(validateAdminToken, createService);
+
+/**
+ * @swagger
+ * /api/services/by-service-subtype/{serviceSubtype}:
+ *   get:
+ *     summary: Get services by service subtype
+ *     description: Retrieves all services that match the specified service subtype
+ *     tags: [Services]
+ *     parameters:
+ *       - in: path
+ *         name: serviceSubtype
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Subtype of service to filter by (e.g., restaurant, cafe, park)
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Service'
+ *       404:
+ *         description: No services found for the specified type
+ *       500:
+ *         description: Server error
+ */
+router.get("/by-service-subtype/:serviceSubtype", getServicesByServiceSubtype);
+
+/**
+ * @swagger
+ * /api/services/by-service-type/{serviceType}:
+ *   get:
+ *     summary: Get all services under a specific service type
+ *     tags: [Services]
+ *     parameters:
+ *       - in: path
+ *         name: serviceType
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The service type to filter services by
+ *     responses:
+ *       200:
+ *         description: List of services found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 services:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Service'
+ *       404:
+ *         description: No services or service subtypes found for the given service type
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Server error
+ */
+router.get("/by-service-type/:serviceType", getServicesByServiceType);
 
 /**
  * @swagger

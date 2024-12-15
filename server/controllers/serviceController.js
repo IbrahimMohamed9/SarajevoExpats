@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Service = require("../models/serviceModel");
 const { checkNotFound } = require("../utils");
+const ServiceSubtype = require("../models/serviceSubtypeModel");
 
 //@desc Get all services
 //@route /services
@@ -11,12 +12,53 @@ const getAllServices = asyncHandler(async (req, res) => {
   res.status(200).json(service);
 });
 
+//@desc Get all under spacific serviceSubtype
+//@route /services
+//@access public
+const getServicesByServiceSubtype = asyncHandler(async (req, res) => {
+  const service = await Service.find({
+    serviceSubtype: req.params.serviceSubtype,
+  });
+
+  res.status(200).json(service);
+});
+
+//@desc Get all under spacific serviceType
+//@route /services
+//@access public
+const getServicesByServiceType = asyncHandler(async (req, res) => {
+  const serviceSubtypes = await ServiceSubtype.find({
+    serviceType: req.params.serviceType,
+  });
+
+  if (!serviceSubtypes.length) {
+    res.status(404);
+    throw new Error(
+      `No service subtypes found for type: ${req.params.serviceType}`
+    );
+  }
+
+  const subtypeNames = serviceSubtypes.map((subtype) => subtype.name);
+
+  const services = await Service.find({
+    serviceSubtype: { $in: subtypeNames },
+  });
+
+  if (!services.length) {
+    res.status(404);
+    throw new Error(
+      `No services found for service type: ${req.params.serviceType}`
+    );
+  }
+
+  res.status(200).json(services);
+});
+
 //@desc Create new service
 //@route /services
 //@access public
 const createService = asyncHandler(async (req, res) => {
-  const { name, content, picture, pictureDescription, serviceSubtype, phone, email } =
-    req.body;
+  const { name, content, picture, serviceSubtype, phone, email } = req.body;
 
   const requiredFields = {
     name,
@@ -94,4 +136,6 @@ module.exports = {
   deleteServiceById,
   updateServiceById,
   getServiceById,
+  getServicesByServiceSubtype,
+  getServicesByServiceType,
 };

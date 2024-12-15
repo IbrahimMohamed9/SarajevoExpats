@@ -12,6 +12,15 @@ const getAllPlaces = asyncHandler(async (req, res) => {
   res.status(200).json(places);
 });
 
+//@desc Get all under spacific placeType
+//@route /places
+//@access public
+const getPlacesByPlaceType = asyncHandler(async (req, res) => {
+  const places = await Place.find({ type: req.params.placeType });
+
+  res.status(200).json(places);
+});
+
 //@desc Create new place
 //@route /places
 //@access public
@@ -125,4 +134,5 @@ module.exports = {
   deletePlaceById,
   updatePlaceById,
   getPlaceById,
+  getPlacesByPlaceType,
 };
