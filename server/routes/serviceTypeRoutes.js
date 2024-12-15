@@ -7,6 +7,7 @@ const {
   updateServiceTypeById,
   getServiceTypeById,
   getAllServiceTypesWithSubtypes,
+  getAllServiceSubtypesByServiceType,
 } = require("../controllers/serviceTypeController");
 const { validateMongoId } = require("../utils");
 const validateAdminToken = require("../middleware/validateAdminToken");
@@ -117,8 +118,44 @@ router
  *       401:
  *         description: Unauthorized
  */
-
 router.get("/with-subtypes", getAllServiceTypesWithSubtypes);
+
+/**
+ * @swagger
+ * /api/serviceTypes/subtypes/{name}:
+ *   get:
+ *     summary: Get all service subtypes for a specific service type
+ *     tags: [Service Types]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The name of the service type
+ *     responses:
+ *       200:
+ *         description: List of service subtypes for the specified service type
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The subtype ID
+ *                   name:
+ *                     type: string
+ *                     description: The subtype name
+ *                   serviceType:
+ *                     type: string
+ *                     description: The parent service type ID
+ *       404:
+ *         description: Service type not found
+ */
+router.get("/subtypes/:name", getAllServiceSubtypesByServiceType);
 /**
  * @swagger
  * /api/serviceTypes/{id}:

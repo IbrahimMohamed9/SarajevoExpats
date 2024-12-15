@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const ServiceType = require("../models/serviceTypeModel");
 const { checkNotFound } = require("../utils");
+const ServiceSubtype = require("../models/serviceSubtypeModel");
 
 //@desc Get all service types
 //@route /serviceTypes
@@ -9,6 +10,17 @@ const getAllServiceTypes = asyncHandler(async (req, res) => {
   const serviceTypes = await ServiceType.find();
 
   res.status(200).json(serviceTypes);
+});
+
+//@desc Get all service subtypes by service type
+//@route /serviceTypes/:name
+//@access public
+const getAllServiceSubtypesByServiceType = asyncHandler(async (req, res) => {
+  const serviceSubtypes = await ServiceSubtype.find({
+    serviceType: req.params.name,
+  });
+
+  res.status(200).json(serviceSubtypes);
 });
 
 //@desc Create new service type
@@ -141,4 +153,5 @@ module.exports = {
   updateServiceTypeById,
   getServiceTypeById,
   getAllServiceTypesWithSubtypes,
+  getAllServiceSubtypesByServiceType,
 };
