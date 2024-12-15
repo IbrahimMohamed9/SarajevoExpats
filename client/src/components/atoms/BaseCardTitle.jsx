@@ -7,7 +7,7 @@ const BaseCardTitle = ({ title, isHovered }) => {
       <Typography
         variant="subtitle1"
         component="div"
-        className={`line-clamp-2 mb-1 font-medium text-sm transition-colors duration-300
+        className={`line-clamp-2 max-h-fit mb-1 font-medium text-sm transition-colors duration-300
                 ${isHovered ? "text-main" : "text-gray-800"}`}
       >
         {title || "Untitled"}

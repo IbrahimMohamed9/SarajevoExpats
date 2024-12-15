@@ -13,7 +13,7 @@ const BaseCardContent = ({ title, content, date, values, isHovered }) => {
 
       <Typography
         variant="body2"
-        className={`line-clamp-3 flex-1 text-xs text-secondary transition-all duration-300 ${
+        className={`line-clamp-3 max-h-fit flex-1 text-xs text-secondary transition-all duration-300 ${
           isHovered ? "text-gray-700" : "text-gray-600"
         }`}
       >

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Card } from "@mui/material";
 import BaseCardImage from "@atoms/BaseCardImage";
 import BaseCardContent from "@molecules/BaseCardContent";
+import Link from "next/link";
 
-const BaseCard = ({ item }) => {
+const BaseCard = ({ item, type }) => {
   const title = item?.title || item?.name;
   const image = item?.picture;
   const content = item?.content;
@@ -51,9 +51,25 @@ const BaseCard = ({ item }) => {
     }, 150);
   };
 
+  const getHref = () => {
+    switch (type) {
+      case "news":
+        return `/news/${item._id}`;
+      case "services":
+        return `/services/${item.serviceSubtype}/${item._id}`;
+      case "places":
+        return `/places/${item.type}/${item._id}`;
+      case "events":
+        return `/events/${item._id}`;
+      default:
+        return "/";
+    }
+  };
+
   return (
-    <Card
-      className={`relative m-2 h-[300px] min-w-[200px] w-[200px] flex flex-col transition-all duration-300 
+    <Link
+      href={getHref()}
+      className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 
           ${
             isPressed
               ? "scale-[0.98] shadow-sm"
@@ -89,7 +105,7 @@ const BaseCard = ({ item }) => {
         className={`absolute inset-0 bg-main/5 transition-opacity duration-150
             ${isPressed ? "opacity-100" : "opacity-0"}`}
       />
-    </Card>
+    </Link>
   );
 };
 

@@ -7,12 +7,9 @@ import { SplideSlide } from "@splidejs/react-splide";
 import SectionHeder from "@atoms/SectionHeder";
 
 const CarouselSection = ({ items = [], type, title }) => {
-  const validateItems = (items) => {
-    if (!Array.isArray(items)) return [];
-    return items.filter((item) => item && typeof item === "object");
-  };
-
-  const validatedItems = validateItems(items);
+  const validatedItems = items.filter(
+    (item) => item && typeof item === "object"
+  );
 
   let carouselElements;
   if (validatedItems.length > 0) {
@@ -35,7 +32,7 @@ const CarouselSection = ({ items = [], type, title }) => {
   return (
     <div className="w-full">
       <SectionHeder title={title} />
-      {carouselElements}
+      <div className="mt-4">{carouselElements}</div>
     </div>
   );
 };
