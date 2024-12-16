@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import AdminModal from "@adminMol/AdminModal";
 import ValueTableRow from "@adminAto/ValueTableRow";
 import SecondTable from "@adminOrg/SecondTable";
 import axiosInstance from "@/config/axios";
@@ -136,14 +135,6 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
           onUpdateClick={handleUpdateClick}
         />
       )}
-
-      {/* <AdminModal
-        open={AdminModalOpen}
-        onClose={handleUpdateClose}
-        onSubmit={handleUpdate}
-        data={selectedItem}
-        tableKey={tableKey}
-      /> */}
     </>
   );
 };

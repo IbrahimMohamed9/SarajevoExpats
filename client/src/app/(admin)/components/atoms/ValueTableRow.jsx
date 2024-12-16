@@ -7,7 +7,12 @@ import { formatDateTime } from "@/utils/formatters";
 import Image from "next/image";
 import ImageDialog from "./ImageDialog";
 
-const ValueTableRow = ({ values, onUpdateClick, onDeleteClick }) => {
+const ValueTableRow = ({
+  values,
+  onUpdateClick,
+  onDeleteClick,
+  actions = true,
+}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const ignoreKeys = ["_id", "subData", "__v", "password"];
   const time = ["createdAt", "updatedAt"];
@@ -57,12 +62,14 @@ const ValueTableRow = ({ values, onUpdateClick, onDeleteClick }) => {
   return (
     <>
       {cells}
-      <TableCell key="actions" align="center">
-        <ActionBtn
-          onDelete={() => onDeleteClick?.(values._id)}
-          onUpdate={() => onUpdateClick?.(values)}
-        />
-      </TableCell>
+      {actions && (
+        <TableCell key="actions" align="center">
+          <ActionBtn
+            onDelete={() => onDeleteClick?.(values._id)}
+            onUpdate={() => onUpdateClick?.(values)}
+          />
+        </TableCell>
+      )}
 
       <ImageDialog
         open={!!selectedImage}

@@ -34,9 +34,16 @@ export default function SecondTable({
               {subDataTitle}
             </Typography>
             <Table size="small" aria-label="purchases">
-              <HeaderTableRow data={firstDefinedElement || {}} />
+              <HeaderTableRow
+                data={firstDefinedElement || {}}
+                actions={false}
+              />
               <TableBody>
-                <ValueTableRows values={data} onUpdateClick={onUpdateClick} />
+                <ValueTableRows
+                  values={data}
+                  onUpdateClick={onUpdateClick}
+                  actions={false}
+                />
               </TableBody>
             </Table>
           </div>

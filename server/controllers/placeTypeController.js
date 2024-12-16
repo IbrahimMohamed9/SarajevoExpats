@@ -23,10 +23,7 @@ const getAllPlaceTypesWithPlaces = asyncHandler(async (req, res) => {
       return {
         _id: placeType._id,
         name: placeType.name,
-        subData: places.map((place) => ({
-          _id: place._id,
-          name: place.title,
-        })),
+        subData: places,
       };
     })
   );
