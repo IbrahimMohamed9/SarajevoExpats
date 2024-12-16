@@ -46,10 +46,6 @@ const routes = async () => {
       href: "/events",
     },
     {
-      title: "Contact",
-      href: "/contact",
-    },
-    {
       title: "Admin",
       dropdown: [
         { href: "/dashboard/events", title: "Manage Events" },

@@ -5,7 +5,7 @@ const Footer = () => {
   const routes = [
     {
       title: "Home",
-      href: "/Home",
+      href: "/",
     },
     {
       title: "Contact",
