@@ -41,7 +41,6 @@ const RootLayout = ({ children }) => {
       <body suppressHydrationWarning className={roboto.className}>
         <RecoilRootWrapper>
           <Header />
-          <div className="h-7" />
           {children}
           <Footer />
         </RecoilRootWrapper>

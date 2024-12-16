@@ -1,5 +1,6 @@
 import CardsTemplete from "@templates/CardsTemplete";
 import axiosInstance from "@/config/axios";
+import { formatDateTime } from "@/utils/formatters";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,16 +9,8 @@ const News = async () => {
   const news = response.data;
   const latestNews = news[0];
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
   return (
-    <div className="space-y-8">
+    <div className="-mt-7">
       {latestNews && (
         <div className="overflow-hidden">
           <Link href={`/news/${latestNews._id}`} className="block group">
@@ -35,7 +28,7 @@ const News = async () => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 text-gray-300">
                     <time dateTime={latestNews.createdAt} className="text-sm">
-                      {formatDate(latestNews.createdAt)}
+                      {formatDateTime(latestNews.createdAt)}
                     </time>
                     <span className="text-main font-medium px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-sm">
                       Latest News
@@ -70,7 +63,7 @@ const News = async () => {
         </div>
       )}
       <div className="max-w-7xl mx-auto px-4">
-        <CardsTemplete url="/news" type="news" />
+        <CardsTemplete data={news} type="news" />
       </div>
     </div>
   );

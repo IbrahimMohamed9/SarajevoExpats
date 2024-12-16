@@ -1,16 +1,15 @@
-import BaseCard from "@organisms/BaseCard";
-import axiosInstance from "@/config/axios";
+import ContactInfo from "@/components/atoms/ContactInfo";
 
-const Places = async () => {
-  const places = await axiosInstance.get("/places");
-  const placesColumnElements = places.data.map((place, index) => (
-    <BaseCard item={place} key={index} />
-  ));
+const Contact = () => {
+  const phone = "123-456-789";
+  const email = "contact@example.com";
+  const whatsappLink = "https://chat.whatsapp.com/K7yBPN5rYs7K4d2uNg1dHT";
+
   return (
-    <div className="flex flex-wrap justify-center py-5">
-      {placesColumnElements}
+    <div className="container mx-auto px-4 py-12">
+      <ContactInfo phone={phone} email={email} whatsappLink={whatsappLink} />
     </div>
   );
 };
 
-export default Places;
+export default Contact;

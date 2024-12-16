@@ -1,16 +1,7 @@
-import BaseCard from "@organisms/BaseCard";
-import axiosInstance from "@/config/axios";
+import CardsTemplete from "@templates/CardsTemplete";
 
 const Places = async () => {
-  const places = await axiosInstance.get("/places");
-  const placesColumnElements = places.data.map((place, index) => (
-    <BaseCard item={place} key={index} type="places" />
-  ));
-  return (
-    <div className="flex flex-wrap justify-center py-5">
-      {placesColumnElements}
-    </div>
-  );
+  return <CardsTemplete url="/places" type="places" />;
 };
 
 export default Places;
