@@ -1,15 +1,27 @@
 "use client";
 
 import FilterButton from "@atoms/FilterButton";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const FilterSection = ({ types, counts, onTypeSelect, selectedType }) => {
+const getSelectedType = () => {
+  const pathname = usePathname();
+  const path = pathname.split("/");
+
+  if (path.length === 4) path.pop();
+  return path.join("/");
+};
+
+const FilterSection = ({ types, counts, selectedType }) => {
+  const pathname = getSelectedType();
+
   const filterBtnElements = types.map((type) => (
     <FilterButton
       key={type._id}
       label={type.name}
       count={counts[type.name] || 0}
       isSelected={selectedType === type.name}
-      onTypeSelect={onTypeSelect}
+      pathname={pathname}
     />
   ));
 
@@ -19,12 +31,12 @@ const FilterSection = ({ types, counts, onTypeSelect, selectedType }) => {
         <div className="flex justify-between mb-4">
           <h3 className="font-semibold text-gray-900">Filter by Type</h3>
           {selectedType && (
-            <button
-              onClick={() => onTypeSelect(null)}
+            <Link
+              href={pathname}
               className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
             >
               Clear filters
-            </button>
+            </Link>
           )}
         </div>
         <div className="flex flex-wrap gap-2">{filterBtnElements}</div>

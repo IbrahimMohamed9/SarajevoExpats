@@ -1,6 +1,8 @@
-const FilterButton = ({ label, count, isSelected, onTypeSelect }) => (
-  <button
-    onClick={() => onTypeSelect(label)}
+import Link from "next/link";
+
+const FilterButton = ({ label, count, isSelected, pathname }) => (
+  <Link
+    href={`${pathname}/${label}`}
     className={`
       inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium
       transition-all duration-200
@@ -21,7 +23,7 @@ const FilterButton = ({ label, count, isSelected, onTypeSelect }) => (
     >
       {count}
     </span>
-  </button>
+  </Link>
 );
 
 export default FilterButton;

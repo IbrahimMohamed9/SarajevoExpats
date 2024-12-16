@@ -56,7 +56,7 @@ const BaseCard = ({ item, type }) => {
       case "news":
         return `/news/${item._id}`;
       case "services":
-        return `/services/${item.serviceSubtype}/${item._id}`;
+        return `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`;
       case "places":
         return `/places/${item.type}/${item._id}`;
       case "events":

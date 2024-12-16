@@ -1,33 +1,56 @@
-"use client";
-import { useState } from "react";
 import FilterSection from "@molecules/FilterSection";
 import CardsTemplete from "@templates/CardsTemplete";
+import axiosInstance from "@/config/axios";
+import ErrorDisplay from "@molecules/ErrorDisplay";
 
-function ServiceContent({ initialServices, serviceSubtypes, typeCounts }) {
-  const [selectedSubtype, setSelectedSubtype] = useState(null);
+const ServiceContent = async ({ type, subtype }) => {
+  try {
+    const servicesRes = await axiosInstance.get(
+      `/services/by-service-type/${type}`
+    );
+    const serviceSubtypesRes = await axiosInstance.get(
+      `/serviceTypes/subtypes/${type}`
+    );
 
-  const filteredServices = selectedSubtype
-    ? initialServices.filter(
-        (service) =>
-          serviceSubtypes.find((type) => type._id === service.serviceSubtype)
-            ?.name === selectedSubtype
-      )
-    : initialServices;
+    const services = servicesRes.data;
+    const serviceSubtypes = serviceSubtypesRes.data;
 
-  // console.log(filteredServices);
+    // Calculate counts for each subtype
+    const typeCounts = services.reduce((acc, service) => {
+      const subtypeName =
+        serviceSubtypes.find((type) => type.name === service.serviceSubtype)
+          ?.name || service.serviceSubtype;
+      acc[subtypeName] = (acc[subtypeName] || 0) + 1;
+      return acc;
+    }, {});
 
-  return (
-    <div>
-      <FilterSection
-        types={serviceSubtypes}
-        counts={typeCounts}
-        onTypeSelect={(value) => setSelectedSubtype(value)}
-        selectedType={selectedSubtype}
+    const filteredServices = subtype
+      ? services.filter(
+          (service) =>
+            serviceSubtypes.find((type) => type.name === service.serviceSubtype)
+              ?.name === subtype
+        )
+      : services;
+
+    return (
+      <>
+        <FilterSection
+          types={serviceSubtypes}
+          counts={typeCounts}
+          selectedType={subtype || null}
+        />
+
+        <CardsTemplete data={filteredServices} type="services" />
+      </>
+    );
+  } catch (err) {
+    return (
+      <ErrorDisplay
+        message={"No service found. Please try again later."}
+        title={`No service Found`}
       />
-
-      <CardsTemplete data={filteredServices} type="services" />
-    </div>
-  );
-}
+    );
+  }
+};
 
 export default ServiceContent;
