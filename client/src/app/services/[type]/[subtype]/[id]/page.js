@@ -1,19 +1,9 @@
-import axiosInstance from "@/config/axios";
 import ArticleTemplete from "@templates/ArticleTemplete";
 import { notFound } from "next/navigation";
-
-async function getArticle(id) {
-  try {
-    const response = await axiosInstance.get(`/services/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching service:", error);
-    return null;
-  }
-}
+import getArticle from "@/utils/getArticle";
 
 export async function generateMetadata({ params }) {
-  const article = await getArticle(params.id);
+  const article = await getArticle(`/services/${params.id}`);
 
   if (!article) {
     notFound();
@@ -63,7 +53,7 @@ export async function generateMetadata({ params }) {
 }
 
 const Page = async ({ params }) => {
-  const article = await getArticle(params.id);
+  const article = await getArticle(`/services/${params.id}`);
 
   if (!article) {
     notFound();

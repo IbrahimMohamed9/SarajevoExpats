@@ -1,41 +1,82 @@
-import axiosInstance from "@/config/axios";
 import ArticleTemplete from "@templates/ArticleTemplete";
+import getArticle from "@/utils/getArticle";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const article = await getArticle(params.id);
+  const article = await getArticle(`/news/${params.id}`);
 
   if (!article) {
-    return {
-      title: "Service Not Found",
-      description: "The requested service could not be found.",
-    };
+    notFound();
   }
 
+  const metaDescription =
+    article.content
+      .replace(/<[^>]*>/g, "") // Remove HTML tags
+      .substring(0, 155) // Get first 155 characters
+      .trim() + "..."; // Add ellipsis
+
+  const keywords = [
+    article.title,
+    "Sarajevo news",
+    "expat news",
+    "Sarajevo updates",
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  const publishDate = new Date(article.createdAt).toISOString();
+  const modifyDate = article.updatedAt
+    ? new Date(article.updatedAt).toISOString()
+    : publishDate;
+
   return {
-    title: `${article.name} | Sarajevo Expats`,
-    description: article.content.substring(0, 160),
+    metadataBase: new URL("https://sarajevoexpats.com"),
+    title: `${article.title} | Sarajevo Expats News`,
+    description: metaDescription,
+    keywords: keywords,
     openGraph: {
-      title: article.name,
-      description: article.content.substring(0, 160),
-      images: [article.picture],
+      title: article.title,
+      description: metaDescription,
+      images: [
+        {
+          url: article.picture,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
       type: "article",
       locale: "en_US",
+      siteName: "Sarajevo Expats",
+      publishedTime: publishDate,
+      modifiedTime: modifyDate,
+      section: "News",
+      authors: ["Sarajevo Expats"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: metaDescription,
+      images: [article.picture],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    alternates: {
+      canonical: `https://sarajevoexpats.com/news/${params.id}`,
     },
   };
 }
 
-async function getArticle(id) {
-  try {
-    const response = await axiosInstance.get(`/news/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching article:", error);
-    return null;
-  }
-}
-
 const Page = async ({ params }) => {
-  const article = await getArticle(params.id);
+  const article = await getArticle(`/news/${params.id}`);
 
   return <ArticleTemplete article={article} contentType="News" />;
 };

@@ -1,41 +1,93 @@
-import axiosInstance from "@/config/axios";
 import ArticleTemplete from "@templates/ArticleTemplete";
+import getArticle from "@/utils/getArticle";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
-  const article = await getArticle(params.id);
+  const article = await getArticle(`/events/${params.id}`);
 
   if (!article) {
-    return {
-      title: "Service Not Found",
-      description: "The requested service could not be found.",
-    };
+    notFound();
   }
 
+  const metaDescription =
+    article.content
+      .replace(/<[^>]*>/g, "")
+      .substring(0, 155)
+      .trim() + "...";
+
+  const eventDate = new Date(article.eventDate).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  const keywords = [
+    article.title,
+    "Sarajevo events",
+    "events in Sarajevo",
+    article.category,
+    "expat events",
+    "community events",
+    article.location,
+    ...(article.tags || []),
+  ]
+    .filter(Boolean)
+    .join(", ");
+
+  const publishDate = new Date(article.createdAt).toISOString();
+  const modifyDate = article.updatedAt
+    ? new Date(article.updatedAt).toISOString()
+    : publishDate;
+
   return {
-    title: `${article.name} | Sarajevo Expats`,
-    description: article.content.substring(0, 160),
+    metadataBase: new URL("https://sarajevoexpats.com"),
+    title: `${article.title} | Events in Sarajevo | Sarajevo Expats`,
+    description: `Join us for ${article.title} on ${eventDate} at ${article.location}. ${metaDescription}`,
+    keywords: keywords,
     openGraph: {
-      title: article.name,
-      description: article.content.substring(0, 160),
-      images: [article.picture],
-      type: "article",
+      title: article.title,
+      description: `Join us for ${article.title} on ${eventDate} at ${article.location}. ${metaDescription}`,
+      images: [
+        {
+          url: article.picture,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+      type: "event",
       locale: "en_US",
+      siteName: "Sarajevo Expats",
+      publishedTime: publishDate,
+      modifiedTime: modifyDate,
+      section: "Events",
+      authors: ["Sarajevo Expats"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${article.title} | Event in Sarajevo`,
+      description: `Join us on ${eventDate} at ${article.location}. ${metaDescription}`,
+      images: [article.picture],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+    alternates: {
+      canonical: `https://sarajevoexpats.com/events/${params.id}`,
     },
   };
 }
 
-async function getArticle(id) {
-  try {
-    const response = await axiosInstance.get(`/events/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching article:", error);
-    return null;
-  }
-}
-
 const Page = async ({ params }) => {
-  const article = await getArticle(params.id);
+  const article = await getArticle(`/events/${params.id}`);
 
   return <ArticleTemplete article={article} contentType="Event" />;
 };

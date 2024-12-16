@@ -1,5 +1,5 @@
-import axiosInstance from "@/config/axios";
 import ArticleTemplete from "@templates/ArticleTemplete";
+import getArticle from "@/utils/getArticle";
 
 export async function generateMetadata({ params }) {
   const type = params.type;
@@ -31,18 +31,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-async function getArticle(id) {
-  try {
-    const response = await axiosInstance.get(`/places/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching article:", error);
-    return null;
-  }
-}
-
 const Page = async ({ params }) => {
-  const article = await getArticle(params.id);
+  const article = await getArticle(`/places/${params.id}`);
 
   return <ArticleTemplete article={article} contentType="Place" />;
 };
