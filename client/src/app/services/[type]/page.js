@@ -1,43 +1,26 @@
-import axiosInstance from "@/config/axios";
-import ErrorDisplay from "@molecules/ErrorDisplay";
 import ServiceContent from "./ServiceContent";
 
+export async function generateMetadata({ params }) {
+  const type = params.type;
+  const Type = type.charAt(0).toUpperCase() + type.slice(1);
+
+  return {
+    metadataBase: new URL("https://sarajevoexpats.com"),
+    title: `${Type} Services in Sarajevo | Sarajevo Expats`,
+    description: `Find trusted ${type} services in Sarajevo. Browse our curated list of verified ${type} service providers, recommended by the expat community. Get reliable assistance for all your ${type} needs in Sarajevo.`,
+    keywords: `${type} services Sarajevo, ${type} providers Bosnia, expat ${type} services, Sarajevo ${type}, Bosnia ${type}, trusted ${type} Sarajevo`,
+    openGraph: {
+      title: `${Type} Services in Sarajevo | Sarajevo Expats`,
+      description: `Find trusted ${type} services in Sarajevo. Browse our curated list of verified ${type} service providers, recommended by the expat community.`,
+      type: "website",
+      locale: "en_US",
+      siteName: "Sarajevo Expats",
+    },
+  };
+}
+
 const Page = async ({ params }) => {
-  try {
-    const servicesRes = await axiosInstance.get(
-      `/services/by-service-type/${params.type}`
-    );
-    const serviceSubtypesRes = await axiosInstance.get(
-      `/serviceTypes/subtypes/${params.type}`
-    );
-
-    const services = servicesRes.data;
-    const serviceSubtypes = serviceSubtypesRes.data;
-
-    // Calculate counts for each subtype
-    const typeCounts = services.reduce((acc, service) => {
-      const subtypeName =
-        serviceSubtypes.find((type) => type.name === service.serviceSubtype)
-          ?.name || service.serviceSubtype;
-      acc[subtypeName] = (acc[subtypeName] || 0) + 1;
-      return acc;
-    }, {});
-
-    return (
-      <ServiceContent
-        initialServices={services}
-        serviceSubtypes={serviceSubtypes}
-        typeCounts={typeCounts}
-      />
-    );
-  } catch (err) {
-    return (
-      <ErrorDisplay
-        message={"No service found. Please try again later."}
-        title={`No service Found`}
-      />
-    );
-  }
+  return <ServiceContent type={params.type} />;
 };
 
 export default Page;

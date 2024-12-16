@@ -2,7 +2,23 @@ import CarouselSection from "@molecules/CarouselSection";
 import BaseCard from "@organisms/BaseCard";
 import SectionHeder from "@atoms/SectionHeder";
 import axiosInstance from "@/config/axios";
-import { Suspense } from "react";
+
+export const metadata = {
+  metadataBase: new URL("https://sarajevoexpats.com"),
+  title: "Sarajevo Expats | Your Guide to Life in Sarajevo",
+  description:
+    "Your ultimate expat community platform in Sarajevo. Connect with local services, discover upcoming events, stay updated with news, and explore the best places. Join our community for authentic experiences and practical resources for living in Sarajevo.",
+  keywords:
+    "Sarajevo expats community, expat life Sarajevo, Sarajevo events, local services Sarajevo, Sarajevo city guide, living in Bosnia, Sarajevo news, Sarajevo places to visit",
+  openGraph: {
+    title: "Sarajevo Expats | Your Guide to Life in Sarajevo",
+    description:
+      "Your ultimate expat community platform in Sarajevo. Connect with local services, discover upcoming events, stay updated with news, and explore the best places.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Sarajevo Expats",
+  },
+};
 
 const Home = async () => {
   const [newsRes, placesRes, servicesRes, eventsRes] = await Promise.all([
@@ -25,10 +41,6 @@ const Home = async () => {
     </div>
   ));
 
-  const EventCardSkeleton = () => (
-    <div className="animate-pulse w-48 h-80 bg-main/10 rounded-lg" />
-  );
-
   return (
     <div className="grid md:grid-cols-[1fr,240px] gap-4">
       <div className="flex flex-col pt-4 gap-8 overflow-hidden">
@@ -39,10 +51,8 @@ const Home = async () => {
             title="Upcoming Events"
           />
         </div>
-
         <CarouselSection items={news} type="news" title="Latest News" />
         <CarouselSection items={places} type="places" title="Featured Places" />
-
         <CarouselSection
           items={services}
           type="services"
@@ -59,17 +69,7 @@ const Home = async () => {
             scrollbarColor: "#ff7003 transparent",
           }}
         >
-          <Suspense
-            fallback={
-              <div className="space-y-4">
-                {[...Array(3)].map((_, i) => (
-                  <EventCardSkeleton key={i} />
-                ))}
-              </div>
-            }
-          >
-            {eventsColumnElements}
-          </Suspense>
+          {eventsColumnElements}
         </div>
       </div>
     </div>
