@@ -53,7 +53,7 @@ const ValueTableRow = ({
 
     const value = time.includes(key) ? formatDateTime(val) : val;
     return (
-      <TableCell key={key} component="th" scope="row">
+      <TableCell key={key} component="th" scope="row" align="center">
         <div className={cellClass}>{value}</div>
       </TableCell>
     );

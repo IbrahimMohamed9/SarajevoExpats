@@ -5,7 +5,7 @@ const routes = async () => {
     try {
       let [serviceType, placeType] = await Promise.all([
         axiosInstance.get("/serviceTypes"),
-        axiosInstance.get("/placetypes"),
+        axiosInstance.get("/placeTypes"),
       ]);
       serviceType = serviceType.data;
       placeType = placeType.data;

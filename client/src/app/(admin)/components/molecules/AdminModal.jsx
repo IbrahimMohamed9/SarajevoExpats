@@ -12,6 +12,10 @@ import {
   Box,
   Typography,
   TextareaAutosize,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -21,6 +25,7 @@ import axiosInstance from "@/config/axios";
 import { snackbarState } from "@/store/atoms/snackbarAtom";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { adminModalState } from "@/store/atoms/adminModalAtom";
+import { tablesAtom } from "@/store/atoms/tablesAtom";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -55,6 +60,10 @@ export default function AdminModal() {
   const excludeFields = ["_id", "__v", "createdAt", "updatedAt", "subData"];
   const setSnackbar = useSetRecoilState(snackbarState);
   const title = tableKey?.split("/")[0] || "";
+  const [tables, setTables] = useRecoilState(tablesAtom);
+  const keys = Object.keys(formData).filter(
+    (key) => !excludeFields.includes(key)
+  );
 
   useEffect(() => {
     setFormData(data || {});
@@ -185,15 +194,53 @@ export default function AdminModal() {
   };
 
   const getFieldElement = (key) => {
-    if (excludeFields.includes(key)) return null;
-
+    const lowerKey = key.toLowerCase();
     const isRequired = title && requiredFields[title]?.includes(key);
     const isTextArea = [
       "description",
       "content",
       "picturedescription",
       "text",
-    ].includes(key.toLowerCase());
+    ].includes(lowerKey);
+
+    const isDropList = ["type", "serviceSubtype", "serviceType"].includes(key);
+
+    if (isDropList) {
+      const tableKey = {
+        type: "placeTypes/with-places",
+        servicesubtype: "serviceSubtypes/with-services",
+        servicetype: "serviceTypes/with-subtypes",
+      };
+      if (
+        keys.includes("serviceSubtype") &&
+        key === "serviceType" &&
+        keys.includes("serviceType")
+      ) {
+        return null;
+      }
+      return (
+        <FormControl key={key} fullWidth sx={{ mt: 2 }}>
+          <InputLabel id={`${key}-label`}>
+            {key.charAt(0).toUpperCase() + key.slice(1)}
+          </InputLabel>
+          <Select
+            labelId={`${key}-label`}
+            id={key}
+            name={key}
+            value={formData[key] || ""}
+            onChange={handleChange}
+            label={key.charAt(0).toUpperCase() + key.slice(1)}
+            required={isRequired}
+          >
+            {tables[tableKey[lowerKey]].map((option) => (
+              <MenuItem key={option._id} value={option.name}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      );
+    }
 
     if (isTextArea) {
       return (
@@ -207,7 +254,7 @@ export default function AdminModal() {
               fieldErrors[key] ? "border-red-500" : "border-gray-300"
             } focus:ring-blue-500 focus:border-blue-500`}
             minRows={4}
-            placeholder={`Enter ${key.toLowerCase()}...`}
+            placeholder={`Enter ${lowerKey}...`}
             name={key}
             value={formData[key] || ""}
             onChange={handleChange}
@@ -299,7 +346,7 @@ export default function AdminModal() {
       </DialogTitle>
       <DialogContent dividers>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {Object.keys(formData).map(getFieldElement)}
+          {keys.map(getFieldElement)}
         </form>
       </DialogContent>
       <DialogActions>

@@ -3,7 +3,7 @@ import axiosInstance from "@/config/axios";
 
 const Page = async () => {
   const placesResponse = await axiosInstance.get("places");
-  const placeTypesResponse = await axiosInstance.get("placetypes/with-places");
+  const placeTypesResponse = await axiosInstance.get("placeTypes/with-places");
   const dataTemp1 = {
     title: "",
     content: "",
@@ -29,7 +29,7 @@ const Page = async () => {
       <div className="h-4"></div>
       <AdminTableTemplete
         title="Place Types"
-        tableKey="placetypes/with-places"
+        tableKey="placeTypes/with-places"
         subDataTitle="Place"
         data={placeTypesResponse.data}
         dataTemp={dataTemp2}

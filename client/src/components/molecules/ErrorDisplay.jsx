@@ -1,4 +1,4 @@
-const ErrorDisplay = ({ title, message, icon: Icon }) => (
+const ErrorDisplay = ({ title, message }) => (
   <div className="min-h-[60vh] flex items-center justify-center animate-fade-in">
     <div className="text-center space-y-4 p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg">
       <svg
