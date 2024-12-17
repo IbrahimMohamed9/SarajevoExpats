@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const ServiceSubtype = require("../models/serviceSubtypeModel");
 const ServiceType = require("../models/serviceTypeModel");
 const { checkNotFound } = require("../utils");
+const Service = require("../models/serviceModel");
 
 //@desc Get all service subtypes
 //@route /serviceSubtypes
@@ -74,6 +75,10 @@ const deleteServiceSubtypeById = asyncHandler(async (req, res) => {
     });
     throw new Error("Service subtype not found");
   }
+
+  const services = await Service.deleteMany({
+    serviceSubtype: serviceSubtype.name,
+  });
 
   await ServiceSubtype.findByIdAndDelete(req.params.id);
 
