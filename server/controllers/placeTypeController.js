@@ -12,7 +12,7 @@ const getAllPlaceTypes = asyncHandler(async (req, res) => {
 });
 
 //@desc Get all place types with places
-//@route /placeTypes
+//@route /placeTypes/with-places
 //@access public
 const getAllPlaceTypesWithPlaces = asyncHandler(async (req, res) => {
   const placeTypes = await PlaceType.find();
@@ -23,6 +23,8 @@ const getAllPlaceTypesWithPlaces = asyncHandler(async (req, res) => {
       return {
         _id: placeType._id,
         name: placeType.name,
+        createdAt: placeType.createdAt,
+        updatedAt: placeType.updatedAt,
         subData: places,
       };
     })

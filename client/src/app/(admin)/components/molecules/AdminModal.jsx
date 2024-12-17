@@ -16,6 +16,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  FormHelperText,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -42,7 +43,7 @@ const VisuallyHiddenInput = styled("input")({
 // Define required fields for each table type
 const requiredFields = {
   events: ["title", "content", "picture", "url"],
-  places: ["title", "content", "picture", "type"],
+  places: ["title", "content", "picture", "type", "link"],
   news: ["title", "content", "picture", "sources"],
   services: ["name", "content", "picture", "serviceSubtype"],
   serviceTypes: ["name"],
@@ -219,7 +220,12 @@ export default function AdminModal() {
         return null;
 
       return (
-        <FormControl key={key} fullWidth sx={{ mt: 2 }}>
+        <FormControl
+          key={key}
+          fullWidth
+          sx={{ mt: 2 }}
+          error={!!fieldErrors[key]}
+        >
           <InputLabel id={`${key}-label`}>
             {key.charAt(0).toUpperCase() + key.slice(1)}
           </InputLabel>
@@ -238,6 +244,9 @@ export default function AdminModal() {
               </MenuItem>
             ))}
           </Select>
+          {fieldErrors[key] && (
+            <FormHelperText>{fieldErrors[key]}</FormHelperText>
+          )}
         </FormControl>
       );
     }

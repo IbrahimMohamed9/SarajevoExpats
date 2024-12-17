@@ -16,9 +16,9 @@ export default function SecondTable({
   onUpdateClick,
 }) {
   let firstDefinedElement;
-  firstDefinedElement = data.filter(
-    (item) => typeof item === "object" && item !== undefined
-  )[0];
+  if (data) {
+    firstDefinedElement = data.filter((item) => item !== undefined)[0];
+  }
 
   return (
     <TableRow>

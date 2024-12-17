@@ -151,6 +151,8 @@ const getAllServiceTypesWithSubtypes = asyncHandler(async (req, res) => {
       return {
         _id: serviceType._id,
         name: serviceType.name,
+        createdAt: serviceType.createdAt,
+        updatedAt: serviceType.updatedAt,
         subData: subtypes,
       };
     })

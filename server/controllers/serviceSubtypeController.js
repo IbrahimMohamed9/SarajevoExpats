@@ -159,6 +159,8 @@ const getAllServiceSubtypesWithServices = asyncHandler(async (req, res) => {
         _id: subtype._id,
         name: subtype.name,
         serviceType: subtype.serviceType,
+        createdAt: subtype.createdAt,
+        updatedAt: subtype.updatedAt,
         subData: services,
       };
     })

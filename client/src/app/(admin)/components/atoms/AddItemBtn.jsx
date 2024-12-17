@@ -14,21 +14,22 @@ const AddItemBtn = ({ tableKey, data }) => {
   const setSnackbar = useSetRecoilState(snackbarState);
   const setTables = useSetRecoilState(tablesAtom);
 
-  let title = tableKey.split("/")[0];
+  const title = tableKey.split("/")[0];
+  let titleWithoutS = title;
 
-  if (!(title === "news") && title.endsWith("s")) title = title.slice(0, -1);
+  if (!(title === "news") && title.endsWith("s"))
+    titleWithoutS = title.slice(0, -1);
 
   const handleClose = () => {
     setAdminModal({
       open: false,
     });
   };
-  console.log(title);
 
-  const handleUpdate = async (newData) => {
+  const handlePost = async (newData) => {
     try {
       const response = await axiosInstance.post(title, newData);
-      const newItem = response.data[title];
+      const newItem = response.data[titleWithoutS];
 
       if (!newItem) {
         throw new Error("Invalid response format");
@@ -49,7 +50,9 @@ const AddItemBtn = ({ tableKey, data }) => {
 
       return response.data;
     } catch (error) {
-      console.error("Error in handleUpdate:", error);
+      console.log(error.data);
+
+      console.error("Error in handlePost:", error);
       setSnackbar({
         open: true,
         message:
@@ -64,7 +67,7 @@ const AddItemBtn = ({ tableKey, data }) => {
       open: true,
       onClose: handleClose,
       data: selectedItem,
-      onSubmit: handleUpdate,
+      onSubmit: handlePost,
       tableKey,
       update: false,
     });
