@@ -11,6 +11,22 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    if (typeof window !== "undefined" && localStorage) {
+      if (config.data instanceof FormData) {
+        delete config.headers["Content-Type"];
+      }
+      const token = localStorage.getItem("token");
+      if (token) {
+        config.headers.authorization = `Bearer ${token}`;
+      }
+    } else {
+      const { cookies } = require("next/headers");
+      const cookie = cookies();
+      const token = cookie.get("access_token")?.value;
+
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
   (error) => {
