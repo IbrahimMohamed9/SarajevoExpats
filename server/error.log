@@ -1,4 +1,0 @@
- [2024-12-12T19:48:47.255Z] IP: ::1 "POST /api/places" 400 - Invalid place type. Please provide a valid place type name
- Stack: Error: Invalid place type. Please provide a valid place type name
-    at D:\sarajevo-expats\server\controllers\placeController.js:30:11
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
