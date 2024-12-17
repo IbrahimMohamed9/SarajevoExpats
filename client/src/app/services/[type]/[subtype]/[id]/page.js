@@ -1,19 +1,18 @@
 import ArticleTemplete from "@templates/ArticleTemplete";
-import { notFound } from "next/navigation";
 import getArticle from "@/utils/getArticle";
 
 export async function generateMetadata({ params }) {
   const article = await getArticle(`/services/${params.id}`);
 
   if (!article) {
-    notFound();
+    return null;
   }
 
   const metaDescription =
     article.content
-      .replace(/<[^>]*>/g, "") // Remove HTML tags
-      .substring(0, 155) // Get first 155 characters
-      .trim() + "..."; // Add ellipsis
+      .replace(/<[^>]*>/g, "")
+      .substring(0, 155)
+      .trim() + "...";
 
   const keywords = [
     article.name,
@@ -54,10 +53,6 @@ export async function generateMetadata({ params }) {
 
 const Page = async ({ params }) => {
   const article = await getArticle(`/services/${params.id}`);
-
-  if (!article) {
-    notFound();
-  }
 
   return <ArticleTemplete article={article} contentType="Service" />;
 };

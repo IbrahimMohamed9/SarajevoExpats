@@ -1,19 +1,18 @@
 import ArticleTemplete from "@templates/ArticleTemplete";
 import getArticle from "@/utils/getArticle";
-import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
   const article = await getArticle(`/news/${params.id}`);
 
   if (!article) {
-    notFound();
+    return null;
   }
 
   const metaDescription =
     article.content
-      .replace(/<[^>]*>/g, "") // Remove HTML tags
-      .substring(0, 155) // Get first 155 characters
-      .trim() + "..."; // Add ellipsis
+      .replace(/<[^>]*>/g, "")
+      .substring(0, 155)
+      .trim() + "...";
 
   const keywords = [
     article.title,

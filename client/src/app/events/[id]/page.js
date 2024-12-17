@@ -1,12 +1,11 @@
 import ArticleTemplete from "@templates/ArticleTemplete";
 import getArticle from "@/utils/getArticle";
-import { notFound } from "next/navigation";
 
 export async function generateMetadata({ params }) {
   const article = await getArticle(`/events/${params.id}`);
 
   if (!article) {
-    notFound();
+    return null;
   }
 
   const metaDescription =
@@ -56,7 +55,7 @@ export async function generateMetadata({ params }) {
           alt: article.title,
         },
       ],
-      type: "event",
+      type: "website",
       locale: "en_US",
       siteName: "Sarajevo Expats",
       publishedTime: publishDate,
