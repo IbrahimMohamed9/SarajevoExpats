@@ -33,7 +33,7 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
   const handleUpdate = async (updatedData) => {
     try {
       const path = `/${tableKey.split("/")[0]}/${data._id}`;
-      await axiosInstance.put(path, updatedData);
+      const res = await axiosInstance.put(path, updatedData);
 
       setTables((prev) => ({
         ...prev,
@@ -44,10 +44,11 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
 
       setSnackbar({
         open: true,
-        message: "Item updated successfully!",
+        message: res.data.message,
         severity: "success",
       });
       handleUpdateClose();
+      return res.data;
     } catch (error) {
       console.error("Error updating item:", error);
       setSnackbar({
@@ -71,7 +72,7 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
 
     try {
       const path = `/${key}/${_id}`;
-      await axiosInstance.delete(path);
+      const res = await axiosInstance.delete(path);
 
       setTables((prev) => ({
         ...prev,
@@ -80,10 +81,12 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
 
       setSnackbar({
         open: true,
-        message: "Item deleted successfully!",
+        message: res.data.message,
         severity: "success",
       });
+
       handleUpdateClose();
+      return res.data;
     } catch (error) {
       console.error("Error deleting item:", error);
       setSnackbar({

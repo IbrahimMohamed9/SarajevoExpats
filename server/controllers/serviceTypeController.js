@@ -74,6 +74,13 @@ const deleteServiceTypeById = asyncHandler(async (req, res) => {
 //@route /serviceTypes/:id
 //@access public
 const updateServiceTypeById = asyncHandler(async (req, res) => {
+  if (!req.body.name) {
+    res.status(400).json({
+      message: "Name is required",
+    });
+    throw new Error("Name is required");
+  }
+
   const serviceType = await ServiceType.findById(req.params.id);
   if (!serviceType) {
     res.status(404).json({
@@ -82,32 +89,29 @@ const updateServiceTypeById = asyncHandler(async (req, res) => {
     throw new Error("Service type not found");
   }
 
-  // If updating name, validate it's provided and unique
-  if (req.body.name) {
-    if (req.body.name !== serviceType.name) {
-      const existingType = await ServiceType.findOne({ name: req.body.name });
-      if (existingType) {
-        res.status(400).json({
-          message: "A service type with this name already exists",
-        });
-        throw new Error("A service type with this name already exists");
-      }
-    }
-  } else {
-    res.status(400).json({
-      message: "Name is required",
+  if (req.body.name === serviceType.name) {
+    res.status(200).json({
+      message: "Service type updated successfully",
+      serviceType: serviceType,
     });
-    throw new Error("Name is required");
   }
 
-  const updatedServiceType = await ServiceType.findByIdAndUpdate(
-    req.params.id,
-    { name: req.body.name },
+  const existingType = await ServiceType.findOne({ name: req.body.name });
+  if (existingType) {
+    res.status(400).json({
+      message: "A service type with this name already exists",
+    });
+    throw new Error("A service type with this name already exists");
+  }
+
+  const updatedServiceType = await ServiceType.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: { name: req.body.name } },
     { new: true }
   );
 
   res.status(200).json({
-    message: "Service type updated successfully",
+    message: "Service type updated successfully341",
     serviceType: updatedServiceType,
   });
 });

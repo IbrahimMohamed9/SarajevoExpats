@@ -168,11 +168,11 @@ export default function AdminModal() {
         throw new Error("Table key is required");
       }
 
-      await onSubmit(formData);
+      const data = await onSubmit(formData);
       handleClose();
 
       setSnackbar({
-        message: `${title} ${update ? "updated" : "created"} successfully!`,
+        message: data.message,
         open: true,
         severity: "success",
       });

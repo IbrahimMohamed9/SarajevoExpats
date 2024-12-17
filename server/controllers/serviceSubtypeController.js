@@ -34,7 +34,6 @@ const createServiceSubtype = asyncHandler(async (req, res) => {
     throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
   }
 
-  // Check if service type exists
   const type = await ServiceType.findOne({ name: serviceType });
   if (!type) {
     res.status(400).json({
@@ -45,7 +44,6 @@ const createServiceSubtype = asyncHandler(async (req, res) => {
     );
   }
 
-  // Check if service subtype with same name already exists
   const existingSubtype = await ServiceSubtype.findOne({ name });
   if (existingSubtype) {
     res.status(400).json({
@@ -94,7 +92,6 @@ const updateServiceSubtypeById = asyncHandler(async (req, res) => {
     throw new Error("Service subtype not found");
   }
 
-  // If updating service type, validate it exists
   if (req.body.serviceType) {
     const type = await ServiceType.findOne({ name: req.body.serviceType });
     if (!type) {
@@ -108,7 +105,6 @@ const updateServiceSubtypeById = asyncHandler(async (req, res) => {
     }
   }
 
-  // If updating name, check for duplicates
   if (req.body.name && req.body.name !== serviceSubtype.name) {
     const existingSubtype = await ServiceSubtype.findOne({
       name: req.body.name,
@@ -123,7 +119,7 @@ const updateServiceSubtypeById = asyncHandler(async (req, res) => {
 
   const updatedServiceSubtype = await ServiceSubtype.findOneAndUpdate(
     { _id: req.params.id },
-    req.body,
+    { $set: req.body },
     { new: true }
   );
 
@@ -158,10 +154,7 @@ const getAllServiceSubtypesWithServices = asyncHandler(async (req, res) => {
         _id: subtype._id,
         name: subtype.name,
         serviceType: subtype.serviceType,
-        subData: services.map((service) => ({
-          _id: service._id,
-          name: service.name,
-        })),
+        subData: services,
       };
     })
   );

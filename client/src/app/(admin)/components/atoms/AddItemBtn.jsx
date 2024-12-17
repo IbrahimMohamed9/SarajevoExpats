@@ -24,11 +24,6 @@ const AddItemBtn = ({ tableKey, data }) => {
   const handleUpdateClose = () => {
     setAdminModal({
       open: false,
-      onClose: handleUpdateClose,
-      data: selectedItem,
-      onSubmit: handleUpdate,
-      tableKey,
-      update: true,
     });
   };
 
@@ -53,6 +48,8 @@ const AddItemBtn = ({ tableKey, data }) => {
         message: response.data.message,
         severity: "success",
       });
+
+      return response.data;
     } catch (error) {
       console.error("Error in handleUpdate:", error);
       setSnackbar({
