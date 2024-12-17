@@ -14,23 +14,21 @@ const AddItemBtn = ({ tableKey, data }) => {
   const setSnackbar = useSetRecoilState(snackbarState);
   const setTables = useSetRecoilState(tablesAtom);
 
-  const title = tableKey.split("/")[0];
+  let title = tableKey.split("/")[0];
 
-  const getResponseKey = (title) => {
-    if (title === "news") return "news";
-    return title.endsWith("s") ? title.slice(0, -1) : title;
-  };
+  if (!(title === "news") && title.endsWith("s")) title = title.slice(0, -1);
 
-  const handleUpdateClose = () => {
+  const handleClose = () => {
     setAdminModal({
       open: false,
     });
   };
+  console.log(title);
 
   const handleUpdate = async (newData) => {
     try {
-      const response = await axiosInstance.post(tableKey, newData);
-      const newItem = response.data[getResponseKey(title)];
+      const response = await axiosInstance.post(title, newData);
+      const newItem = response.data[title];
 
       if (!newItem) {
         throw new Error("Invalid response format");
@@ -64,7 +62,7 @@ const AddItemBtn = ({ tableKey, data }) => {
   const handleClick = () => {
     setAdminModal({
       open: true,
-      onClose: handleUpdateClose,
+      onClose: handleClose,
       data: selectedItem,
       onSubmit: handleUpdate,
       tableKey,
@@ -79,9 +77,8 @@ const AddItemBtn = ({ tableKey, data }) => {
       </Typography>
       <Button
         variant="contained"
-        className="bg-main"
+        className="bg-main mb-2"
         onClick={handleClick}
-        sx={{ mb: 2 }}
       >
         Add {title}
       </Button>

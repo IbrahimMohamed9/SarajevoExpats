@@ -195,7 +195,7 @@ export default function AdminModal() {
 
   const getFieldElement = (key) => {
     const lowerKey = key.toLowerCase();
-    const isRequired = title && requiredFields[title]?.includes(key);
+    const isRequired = (title && requiredFields[title]?.includes(key)) || false;
     const isTextArea = [
       "description",
       "content",
@@ -230,7 +230,7 @@ export default function AdminModal() {
             value={formData[key] || ""}
             onChange={handleChange}
             label={key.charAt(0).toUpperCase() + key.slice(1)}
-            required={isRequired}
+            required={Boolean(isRequired)}
           >
             {tables[tableKey[lowerKey]].map((option) => (
               <MenuItem key={option._id} value={option.name}>
@@ -258,7 +258,7 @@ export default function AdminModal() {
             name={key}
             value={formData[key] || ""}
             onChange={handleChange}
-            required={isRequired}
+            required={Boolean(isRequired)}
           />
           {fieldErrors[key] && (
             <Typography color="error" variant="caption" display="block">
@@ -287,7 +287,7 @@ export default function AdminModal() {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              required={isRequired}
+              required={Boolean(isRequired)}
             />
           </Button>
           {(error || fieldErrors[key]) && (
@@ -319,7 +319,7 @@ export default function AdminModal() {
         onChange={handleChange}
         variant="outlined"
         className="mb-4"
-        required={isRequired}
+        required={Boolean(isRequired)}
         error={!!fieldErrors[key]}
         helperText={fieldErrors[key]}
       />
