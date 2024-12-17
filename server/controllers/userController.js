@@ -108,7 +108,7 @@ const loggedInUser = errorHandler(async (req, res) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "5d",
+      expiresIn: "1000d",
     }
   );
   res.status(200).json({ token });
