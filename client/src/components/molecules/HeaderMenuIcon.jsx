@@ -17,7 +17,8 @@ const HeaderMenuIcon = () => {
   return (
     <IconButton
       onClick={toggleMobileNav}
-      className="min-[820px]:hidden text-white z-30 relative w-10 h-10 flex items-center justify-center"
+      // className="min-[820px]:hidden text-white z-30 relative w-10 h-10 flex items-center justify-center"
+      className="min-[1100px]:hidden text-white z-30 relative w-10 h-10 flex items-center justify-center"
       aria-label="Toggle mobile navigation"
     >
       <AnimatePresence mode="wait">
