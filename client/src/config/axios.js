@@ -11,18 +11,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    // if (typeof window !== "undefined" && localStorage) {
-    //   if (config.data instanceof FormData) {
-    //     delete config.headers["Content-Type"];
-    //   }
-    //   const token = localStorage.getItem("token");
-    //   if (token) {
-    //     config.headers.authorization = `Bearer ${token}`;
-    //   } else {
-    config.headers.authorization =
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3NWFmYTBmNTFmYjg5NmI4OGMyNDk0ZiIsImVtYWlsIjoic3RyaW5nIiwidXNlcm5hbWUiOiJzdHJpbmciLCJ0eXBlIjoiYWRtaW4ifSwiaWF0IjoxNzM0MDMxMzc1LCJleHAiOjE3MzQ0NjMzNzV9.HbRpvia0_FVxut1DJUD4RelpPNooGMUjkCvHCZgxhWU";
-    //   }
-    // }
     return config;
   },
   (error) => {

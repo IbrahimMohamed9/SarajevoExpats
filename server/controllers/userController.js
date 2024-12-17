@@ -25,7 +25,6 @@ const registerUser = errorHandler(async (req, res) => {
     username,
     email,
     password,
-    type,
   };
 
   const missingFields = Object.entries(requiredFields)
@@ -136,11 +135,9 @@ const updateUserById = errorHandler(async (req, res) => {
     req.body.password = await bcrypt.hash(req.body.password, salt);
   }
 
-  const updatedUser = await User.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true }
-  ).select("-password");
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  }).select("-password");
 
   res.status(200).json({ message: "User updated successfully", updatedUser });
 });

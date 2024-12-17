@@ -1,4 +1,5 @@
 import axiosInstance from "@/config/axios";
+import { verifyAdmin } from "@/utils";
 
 const routes = async () => {
   const ro = async () => {
@@ -45,7 +46,11 @@ const routes = async () => {
       title: "Events",
       href: "/events",
     },
-    {
+    ,
+  ];
+
+  if (verifyAdmin())
+    routes.push({
       title: "Admin",
       dropdown: [
         { href: "/dashboard/events", title: "Manage Events" },
@@ -54,8 +59,7 @@ const routes = async () => {
         { href: "/dashboard/services", title: "Manage Services" },
         { href: "/dashboard/users", title: "Manage Users" },
       ],
-    },
-  ];
+    });
 
   return routes;
 };

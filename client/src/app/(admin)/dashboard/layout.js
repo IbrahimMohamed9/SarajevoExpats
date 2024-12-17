@@ -5,12 +5,21 @@ import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import GroupIcon from "@mui/icons-material/Group";
 import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
 import AdminModal from "@adminMol/AdminModal";
+import { notFound } from "next/navigation";
+import { verifyAdmin } from "@/utils/";
+
 export const metadata = {
   title: "Dashboard - Sarajevo Expats",
   description: "Admin dashboard for Sarajevo Expats.",
 };
 
 export default function DashboardLayout({ children }) {
+  const isAdmin = verifyAdmin();
+
+  if (!isAdmin) {
+    notFound();
+  }
+
   const navigationItems = [
     { text: "Events", icon: <EventIcon />, href: "/dashboard/events" },
     { text: "News", icon: <NewspaperIcon />, href: "/dashboard/news" },
