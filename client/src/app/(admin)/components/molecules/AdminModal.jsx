@@ -215,9 +215,9 @@ export default function AdminModal() {
         keys.includes("serviceSubtype") &&
         key === "serviceType" &&
         keys.includes("serviceType")
-      ) {
+      )
         return null;
-      }
+
       return (
         <FormControl key={key} fullWidth sx={{ mt: 2 }}>
           <InputLabel id={`${key}-label`}>

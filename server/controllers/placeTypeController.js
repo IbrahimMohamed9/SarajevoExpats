@@ -102,6 +102,15 @@ const updatePlaceTypeById = asyncHandler(async (req, res) => {
   if (placeType.name === name) {
     return res.status(200).json(placeType);
   }
+
+  const checkPlaceType = await PlaceType.findOne({ name: name });
+  if (checkPlaceType) {
+    res.status(400).json({
+      message: "A place type with this name already exists",
+    });
+    throw new Error("A place type with this name already exists");
+  }
+
   const updatedPlaceType = await PlaceType.findOneAndUpdate(
     { _id: id },
     { $set: { name: name } },

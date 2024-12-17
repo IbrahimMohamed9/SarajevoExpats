@@ -51,11 +51,11 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
     } catch (error) {
       console.error("Error updating item:", error);
       setSnackbar({
-        open: true,
         message:
           error.customMessage || "Error updating item. Please try again.",
         severity: "error",
       });
+      throw error;
     }
   };
 
