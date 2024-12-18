@@ -18,15 +18,18 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "3030",
-        pathname: "/**",
-      },
-      // https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=600
-      {
         protocol: "https",
         hostname: "images.pexels.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "rest.sarajevoexpats.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "rest.sarajevoexpats.com",
         pathname: "/**",
       },
     ],
