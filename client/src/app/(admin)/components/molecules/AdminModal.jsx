@@ -218,7 +218,14 @@ export default function AdminModal() {
         keys.includes("serviceType")
       )
         return null;
-
+      if (!tables[tableKey[lowerKey]]) {
+        setSnackbar({
+          message: `Please add ${key} first`,
+          open: true,
+          severity: "error",
+        });
+        return null;
+      }
       return (
         <FormControl
           key={key}
@@ -338,7 +345,6 @@ export default function AdminModal() {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
       maxWidth="sm"
       fullWidth
       PaperProps={{
