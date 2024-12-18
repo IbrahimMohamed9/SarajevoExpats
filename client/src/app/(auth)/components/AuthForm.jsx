@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import axiosInstance from "@/config/axios";
 import { useCookies } from "react-cookie";
 import Link from "next/link";
+import { snackbarState } from "@/store/atoms/snackbarAtom";
+import { useSetRecoilState } from "recoil";
 
 const AuthForm = ({ login, fields }) => {
   const router = useRouter();
   const [_, setCookies] = useCookies(["access_token"]);
   const [formData, setFormData] = useState({});
   const [success, setSuccess] = useState(false);
+  const setSnackbar = useSetRecoilState(snackbarState);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +59,7 @@ const AuthForm = ({ login, fields }) => {
 
         router.push("/");
       } else {
-        await axiosInstance.post("/users", {
+        const response = await axiosInstance.post("/users", {
           username: formData.username,
           email: formData.email,
           password: formData.password,
@@ -67,7 +70,12 @@ const AuthForm = ({ login, fields }) => {
         }, 1000);
       }
     } catch (error) {
-      console.error(error);
+      setSnackbar({
+        open: true,
+        message: error.response.data.message,
+        severity: "error",
+      });
+      console.error(error.response.data.message);
     }
   };
 
