@@ -83,18 +83,16 @@ const registerUser = errorHandler(async (req, res) => {
 const loggedInUser = errorHandler(async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "All fields are mandatory",
     });
-    throw new Error("All fields are mandatory");
   }
 
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "The email or password is incorrect",
     });
-    throw new Error("The email or password is incorrect");
   }
 
   const token = jwt.sign(
