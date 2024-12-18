@@ -2,17 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Drawer,
-  List,
-  ListItemButton,
-  ListItemText,
-  IconButton,
-  Box,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Drawer, List, ListItemButton, ListItemText, Box } from "@mui/material";
 import { useRecoilState } from "recoil";
-import NavOpenAtom from "@/store/atoms/NavOpenAtom";
+import NavOpenAtom from "@/store/atoms/navOpenAtom";
 import HeaderButtons from "@molecules/HeaderButtons";
 import HeaderMobiDropMenu from "@atoms/HeaderMobiDropMenu";
 

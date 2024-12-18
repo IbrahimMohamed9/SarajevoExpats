@@ -5,7 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSetRecoilState, useRecoilValue } from "recoil";
-import NavOpenAtom from "@/store/atoms/NavOpenAtom";
+import NavOpenAtom from "@/store/atoms/navOpenAtom";
 
 const HeaderMenuIcon = () => {
   const setIsNavOpen = useSetRecoilState(NavOpenAtom);
