@@ -56,6 +56,7 @@ const AuthForm = ({ login, fields }) => {
         });
 
         setCookies("access_token", response.data.token);
+        localStorage.setItem("access_token", response.data.token);
 
         router.push("/");
       } else {

@@ -15,7 +15,7 @@ axiosInstance.interceptors.request.use(
       if (config.data instanceof FormData) {
         delete config.headers["Content-Type"];
       }
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       if (token) {
         config.headers.authorization = `Bearer ${token}`;
       }
