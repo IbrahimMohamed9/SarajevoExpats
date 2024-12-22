@@ -16,12 +16,12 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['rest.sarajevoexpats.com'],
+    domains: ["rest.sarajevoexpats.com"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "images.pexels.com",
-        pathname: "/**",
+        pathname: "/photos/**",
       },
       {
         protocol: "http",
