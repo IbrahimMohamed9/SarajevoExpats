@@ -33,6 +33,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/events/", require("./routes/eventRoutes"));
+app.use("/api/qaas/", require("./routes/QaARoutes"));
 app.use("/api/news/", require("./routes/newsRoutes"));
 app.use("/api/places/", require("./routes/placeRoutes"));
 app.use("/api/placeTypes/", require("./routes/placeTypeRoutes"));
