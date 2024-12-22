@@ -10,7 +10,7 @@ const Logo = () => {
   return (
     <Link
       href="/"
-      className={`flex text-white items-center gap-1 text-2xl h-full min-[430px]:text-4xl text-nowrap ${dynaPuff.className}`}
+      className={`flex text-white items-center gap-1 text-2xl h-full min-[430px]:text-4xl text-nowrap ${dynaPuff.className} relative -top-[3px]`}
     >
       Sarajevo Expats
     </Link>
