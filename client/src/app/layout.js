@@ -2,6 +2,7 @@ import "./globals.css";
 import Header from "@organisms/Header";
 import Footer from "@organisms/Footer";
 import RecoilRootWrapper from "@atoms/RecoilRootWrapper";
+import AdSense from "@atoms/AdSense";
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
@@ -38,6 +39,9 @@ const RootLayout = ({ children }) => {
   // TODO: delete suppressHydrationWarning
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <AdSense />
+      </head>
       <body suppressHydrationWarning className={roboto.className}>
         <RecoilRootWrapper>
           <Header />

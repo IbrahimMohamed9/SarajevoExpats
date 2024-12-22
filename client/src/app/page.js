@@ -3,6 +3,7 @@ import BaseCard from "@organisms/BaseCard";
 import SectionHeder from "@atoms/SectionHeder";
 import axiosInstance from "@/config/axios";
 import LatestNewsLayout from "@molecules/LatestNewsLayout";
+import AdBanner from "@atoms/AdBanner";
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
@@ -37,16 +38,19 @@ const Home = async () => {
   ];
 
   const eventsColumnElements = events.map((event, index) => (
-    <div key={index} className="w-fit">
-      <BaseCard item={event} type="events" />
+    <div key={index} className=" w-full">
+      <BaseCard item={event} type="events" className="!w-11/12 mx-auto" />
     </div>
   ));
 
   return (
     <>
+      <div className="bg-gray-50">
+        <AdBanner slot="1234567890" format="auto" responsive={true} />
+      </div>
       {news[0] && <LatestNewsLayout latestNews={news[0]} />}
 
-      <div className="grid md:grid-cols-[1fr,240px] gap-4">
+      <div className="grid md:grid-cols-[1fr,340px] gap-4">
         <div className="flex flex-col pt-4 gap-8 overflow-hidden">
           <div className="md:hidden">
             <CarouselSection
