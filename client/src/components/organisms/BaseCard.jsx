@@ -52,19 +52,27 @@ const BaseCard = ({ item, type }) => {
   };
 
   const getHref = () => {
+    if (!item || !item._id) return "/";
+    
     switch (type) {
       case "news":
-        return `/news/${item._id}`;
+        return item.serviceType ? `/news/${item._id}` : "/";
       case "services":
-        return `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`;
+        return (item.serviceType && item.serviceSubtype) 
+          ? `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`
+          : "/";
       case "places":
-        return `/places/${item.type}/${item._id}`;
+        return item.type 
+          ? `/places/${item.type}/${item._id}`
+          : "/";
       case "events":
         return `/events/${item._id}`;
       default:
         return "/";
     }
   };
+
+  if (!item) return null;
 
   return (
     <Link
