@@ -47,7 +47,7 @@ const routes = async () => {
       href: "/events",
     },
     {
-      title: "QaAs",
+      title: "Q&A",
       href: "/qaas",
     },
     ,
