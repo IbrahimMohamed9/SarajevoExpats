@@ -20,7 +20,7 @@ const Header = async () => {
       </div>
       <HeaderButtons
         // className="hidden min-[820px]:flex h-full justify-end gap-2 flex-1"
-        className="hidden min-[1100px]:flex h-full justify-end gap-2 flex-1"
+        className="max-[1100px]:hidden flex h-full justify-end gap-2 flex-1"
         buttonClassName="ml-4"
       />
       <HeaderMenuIcon />
