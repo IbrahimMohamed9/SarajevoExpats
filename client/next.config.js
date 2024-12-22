@@ -16,6 +16,7 @@ const nextConfig = {
     return config;
   },
   images: {
+    domains: ['rest.sarajevoexpats.com'],
     remotePatterns: [
       {
         protocol: "https",
@@ -25,12 +26,12 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "rest.sarajevoexpats.com",
-        pathname: "/**",
+        pathname: "/photos/**",
       },
       {
         protocol: "https",
         hostname: "rest.sarajevoexpats.com",
-        pathname: "/**",
+        pathname: "/photos/**",
       },
     ],
   },
