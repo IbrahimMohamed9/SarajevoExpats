@@ -5,7 +5,7 @@ import BaseCardImage from "@atoms/BaseCardImage";
 import BaseCardContent from "@molecules/BaseCardContent";
 import Link from "next/link";
 
-const BaseCard = ({ item, type }) => {
+const BaseCard = ({ item, type, className = "" }) => {
   const title = item?.title || item?.name;
   const image = item?.picture;
   const content = item?.content;
@@ -53,18 +53,16 @@ const BaseCard = ({ item, type }) => {
 
   const getHref = () => {
     if (!item || !item._id) return "/";
-    
+
     switch (type) {
       case "news":
         return item.serviceType ? `/news/${item._id}` : "/";
       case "services":
-        return (item.serviceType && item.serviceSubtype) 
+        return item.serviceType && item.serviceSubtype
           ? `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`
           : "/";
       case "places":
-        return item.type 
-          ? `/places/${item.type}/${item._id}`
-          : "/";
+        return item.type ? `/places/${item.type}/${item._id}` : "/";
       case "events":
         return `/events/${item._id}`;
       default:
@@ -77,16 +75,15 @@ const BaseCard = ({ item, type }) => {
   return (
     <Link
       href={getHref()}
-      className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 
-          ${
-            isPressed
-              ? "scale-[0.98] shadow-sm"
-              : isHovered
-              ? "scale-[1.02] shadow-xl -translate-y-1"
-              : "shadow-md hover:shadow-xl"
-          }
-          ${isHovered ? "bg-gray-50" : "bg-white"}
-          rounded-lg overflow-hidden cursor-pointer select-none`}
+      className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 ${
+        isPressed
+          ? "scale-[0.98] shadow-sm"
+          : isHovered
+          ? "scale-[1.02] shadow-xl -translate-y-1"
+          : "shadow-md hover:shadow-xl"
+      } ${
+        isHovered ? "bg-gray-50" : "bg-white"
+      } rounded-lg overflow-hidden cursor-pointer select-none ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onTouchStart={handleTouchStart}

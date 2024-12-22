@@ -17,7 +17,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:3030",
+        url: "http://rest.sarajevoexpats.com/",
       },
     ],
   },
