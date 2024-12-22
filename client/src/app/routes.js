@@ -46,6 +46,10 @@ const routes = async () => {
       title: "Events",
       href: "/events",
     },
+    {
+      title: "QaAs",
+      href: "/qaas",
+    },
     ,
   ];
 
