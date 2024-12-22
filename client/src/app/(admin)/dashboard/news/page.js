@@ -13,7 +13,6 @@ const Page = async () => {
 
   return (
     <AdminTableTemplete
-      title="News"
       tableKey="news"
       data={response.data}
       dataTemp={dataTemp}

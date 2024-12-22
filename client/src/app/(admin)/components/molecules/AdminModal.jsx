@@ -24,7 +24,7 @@ import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import axiosInstance from "@/config/axios";
 import { snackbarState } from "@/store/atoms/snackbarAtom";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import { adminModalState } from "@/store/atoms/adminModalAtom";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
 
@@ -52,7 +52,7 @@ const requiredFields = {
 };
 
 export default function AdminModal() {
-  const [info, setInfo] = useRecoilState(adminModalState);
+  const info = useRecoilValue(adminModalState);
   const { open, onClose, data, onSubmit, tableKey, update } = info;
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
@@ -61,7 +61,7 @@ export default function AdminModal() {
   const excludeFields = ["_id", "__v", "createdAt", "updatedAt", "subData"];
   const setSnackbar = useSetRecoilState(snackbarState);
   const title = tableKey?.split("/")[0] || "";
-  const [tables, setTables] = useRecoilState(tablesAtom);
+  const tables = useRecoilValue(tablesAtom);
   const keys = Object.keys(formData).filter(
     (key) => !excludeFields.includes(key)
   );
@@ -171,6 +171,8 @@ export default function AdminModal() {
 
       const data = await onSubmit(formData);
       handleClose();
+
+      console.log(data);
 
       setSnackbar({
         message: data.message,

@@ -3,6 +3,7 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import GroupIcon from "@mui/icons-material/Group";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
 import AdminModal from "@adminMol/AdminModal";
 import { notFound } from "next/navigation";
@@ -30,6 +31,7 @@ export default function DashboardLayout({ children }) {
       href: "/dashboard/services",
     },
     { text: "Users", icon: <GroupIcon />, href: "/dashboard/users" },
+    { text: "QaAs", icon: <QuestionAnswerIcon />, href: "/dashboard/qaas" },
   ];
 
   return (

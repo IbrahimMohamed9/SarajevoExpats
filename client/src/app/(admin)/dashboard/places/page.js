@@ -21,14 +21,12 @@ const Page = async () => {
   return (
     <>
       <AdminTableTemplete
-        title="Places"
         tableKey="places"
         data={placesResponse.data}
         dataTemp={dataTemp1}
       />
       <div className="h-4"></div>
       <AdminTableTemplete
-        title="Place Types"
         tableKey="placeTypes/with-places"
         subDataTitle="Place"
         data={placeTypesResponse.data}

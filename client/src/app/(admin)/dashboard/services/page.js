@@ -30,14 +30,12 @@ const Page = async () => {
   return (
     <>
       <AdminTableTemplete
-        title="Services"
         tableKey="services"
         data={servicesResponse.data}
         dataTemp={dataTemp1}
       />
       <div className="h-4"></div>
       <AdminTableTemplete
-        title="Service Subtypes"
         tableKey="serviceSubtypes/with-services"
         subDataTitle="Service"
         data={serviceSubtypesResponse.data}
@@ -45,7 +43,6 @@ const Page = async () => {
       />
       <div className="h-4"></div>
       <AdminTableTemplete
-        title="Service Types"
         tableKey="serviceTypes/with-subtypes"
         subDataTitle="Service Subtype"
         data={serviceTypesResponse.data}

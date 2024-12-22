@@ -15,7 +15,6 @@ const Page = async () => {
 
   return (
     <AdminTableTemplete
-      title="Events"
       tableKey="events"
       data={response.data}
       dataTemp={dataTemp}

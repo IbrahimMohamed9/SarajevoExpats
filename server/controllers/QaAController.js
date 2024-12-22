@@ -6,17 +6,17 @@ const QaA = require("../models/QaAModel");
 //@route GET /api/QaAs
 //@access public
 const getQaAs = asyncHandler(async (req, res) => {
-  const qaAs = await QaA.find();
-  res.status(200).json(qaAs);
+  const qaas = await QaA.find();
+  res.status(200).json(qaas);
 });
 
 //@desc Get QaA by Id
 //@route /api/QaAs/:id
 //@access public
 const getQaAById = asyncHandler(async (req, res) => {
-  const qaA = await QaA.findById(req.params.id);
-  checkNotFound(qaA)(req, res, () => {
-    res.status(200).json(qaA);
+  const qaa = await QaA.findById(req.params.id);
+  checkNotFound(qaa)(req, res, () => {
+    res.status(200).json(qaa);
   });
 });
 
@@ -42,20 +42,20 @@ const createQaA = asyncHandler(async (req, res) => {
     throw new Error(`Missing required fields: ${missingFields.join(", ")}`);
   }
 
-  const qaA = await QaA.create({
+  const qaa = await QaA.create({
     question,
     answer,
   });
 
-  res.status(201).json({ message: "The QaA added successfully", qaA });
+  res.status(201).json({ message: "The QaA added successfully", qaa });
 });
 
 //@desc Delete QaA by Id
 //@route /api/QaAs/:id
 //@access public
 const deleteQaAById = asyncHandler(async (req, res) => {
-  const qaA = await QaA.findById(req.params.id);
-  checkNotFound(qaA)(req, res, async () => {
+  const qaa = await QaA.findById(req.params.id);
+  checkNotFound(qaa)(req, res, async () => {
     await QaA.deleteOne({ _id: req.params.id });
     res.status(200).json({ message: "The QaA deleted successfully" });
   });
@@ -65,13 +65,13 @@ const deleteQaAById = asyncHandler(async (req, res) => {
 //@route /api/QaAs/:id
 //@access public
 const updateQaAById = asyncHandler(async (req, res) => {
-  let qaA = await QaA.findById(req.params.id);
+  let qaa = await QaA.findById(req.params.id);
 
-  checkNotFound(qaA)(req, res, async () => {
-    qaA = await QaA.findByIdAndUpdate(req.params.id, req.body, {
+  checkNotFound(qaa)(req, res, async () => {
+    qaa = await QaA.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    res.status(200).json({ message: "The QaA updated successfully", qaA });
+    res.status(200).json({ message: "The QaA updated successfully", qaa });
   });
 });
 
