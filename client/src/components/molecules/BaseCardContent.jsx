@@ -1,4 +1,4 @@
-import { CardContent, Typography } from "@mui/material";
+import { CardContent } from "@mui/material";
 import BaseCardTitle from "@atoms/BaseCardTitle";
 import BaseCardEnd from "@atoms/BaseCardEnd";
 
@@ -10,14 +10,12 @@ const BaseCardContent = ({ title, content, date, values, isHovered }) => {
     >
       <BaseCardTitle title={title} isHovered={isHovered} />
 
-      <Typography
-        variant="body2"
+      <div
         className={`line-clamp-3 max-h-fit flex-1 text-xs text-secondary transition-all duration-300 ${
           isHovered ? "text-gray-700" : "text-gray-600"
         }`}
-      >
-        <div dangerouslySetInnerHTML={{ __html: content }} />
-      </Typography>
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
 
       <BaseCardEnd isHovered={isHovered} date={date} values={values} />
     </CardContent>
