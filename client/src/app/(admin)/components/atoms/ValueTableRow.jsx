@@ -57,7 +57,7 @@ const ValueTableRow = ({
         <div
           className={cellClass}
           dangerouslySetInnerHTML={{ __html: value }}
-        ></div>
+        />
       </TableCell>
     );
   });
