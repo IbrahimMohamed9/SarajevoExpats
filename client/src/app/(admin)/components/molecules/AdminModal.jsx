@@ -7,38 +7,15 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  TextField,
   IconButton,
-  Box,
-  Typography,
-  TextareaAutosize,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  FormHelperText,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { styled } from "@mui/material/styles";
-import Image from "next/image";
 import axiosInstance from "@/config/axios";
 import { snackbarState } from "@/store/atoms/snackbarAtom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { adminModalState } from "@/store/atoms/adminModalAtom";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import AdminModalField from "@adminAto/AdminModalField";
 
 // Define required fields for each table type
 const requiredFields = {
@@ -76,53 +53,6 @@ export default function AdminModal() {
     setError("");
     setFieldErrors({});
     onClose();
-  };
-
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (file.size > 0.5 * 1024 * 1024 * 1024) {
-      setError("File size should be less than 0.5GB");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const imageForm = new FormData();
-      imageForm.append("file", file, file.name);
-
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      const response = await axiosInstance.post("/upload", imageForm, config);
-      const imageUrl = response.data.url;
-
-      setFormData((prev) => ({ ...prev, picture: imageUrl }));
-      setFieldErrors((prev) => ({ ...prev, picture: "" }));
-      setSnackbar({
-        message: "Image uploaded successfully!",
-        open: true,
-        severity: "success",
-      });
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      setError(
-        error.response?.data?.message ||
-          error.message ||
-          "Error uploading image"
-      );
-      setSnackbar({
-        message: "Failed to upload image",
-        open: true,
-        severity: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleChange = (e) => {
@@ -196,153 +126,24 @@ export default function AdminModal() {
     }
   };
 
-  const getFieldElement = (key) => {
-    const lowerKey = key.toLowerCase();
-    const isRequired = (title && requiredFields[title]?.includes(key)) || false;
-    const isTextArea = [
-      "description",
-      "content",
-      "picturedescription",
-      "text",
-    ].includes(lowerKey);
-
-    const isDropList = ["type", "serviceSubtype", "serviceType"].includes(key);
-
-    if (isDropList) {
-      const tableKey = {
-        type: "placeTypes/with-places",
-        servicesubtype: "serviceSubtypes/with-services",
-        servicetype: "serviceTypes/with-subtypes",
-      };
-      if (
-        keys.includes("serviceSubtype") &&
-        key === "serviceType" &&
-        keys.includes("serviceType")
-      )
-        return null;
-      if (!tables[tableKey[lowerKey]]) {
-        setSnackbar({
-          message: `Please add ${key} first`,
-          open: true,
-          severity: "error",
-        });
-        return null;
-      }
-      return (
-        <FormControl
-          key={key}
-          fullWidth
-          sx={{ mt: 2 }}
-          error={!!fieldErrors[key]}
-        >
-          <InputLabel id={`${key}-label`}>
-            {key.charAt(0).toUpperCase() + key.slice(1)}
-          </InputLabel>
-          <Select
-            labelId={`${key}-label`}
-            id={key}
-            name={key}
-            value={formData[key] || ""}
-            onChange={handleChange}
-            label={key.charAt(0).toUpperCase() + key.slice(1)}
-            required={Boolean(isRequired)}
-          >
-            {tables[tableKey[lowerKey]].map((option) => (
-              <MenuItem key={option._id} value={option.name}>
-                {option.name}
-              </MenuItem>
-            ))}
-          </Select>
-          {fieldErrors[key] && (
-            <FormHelperText>{fieldErrors[key]}</FormHelperText>
-          )}
-        </FormControl>
-      );
-    }
-
-    if (isTextArea) {
-      return (
-        <div key={key} className="mt-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            {key.charAt(0).toUpperCase() + key.slice(1)}
-            {isRequired && " *"}
-          </label>
-          <TextareaAutosize
-            className={`w-full p-3 border rounded-md shadow-sm resize-y ${
-              fieldErrors[key] ? "border-red-500" : "border-gray-300"
-            } focus:ring-blue-500 focus:border-blue-500`}
-            minRows={4}
-            placeholder={`Enter ${lowerKey}...`}
-            name={key}
-            value={formData[key] || ""}
-            onChange={handleChange}
-            required={Boolean(isRequired)}
-          />
-          {fieldErrors[key] && (
-            <Typography color="error" variant="caption" display="block">
-              {fieldErrors[key]}
-            </Typography>
-          )}
-        </div>
-      );
-    }
-
-    if (key === "picture") {
-      return (
-        <Box key={key} className="mb-6">
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-            className={`${
-              fieldErrors[key] ? "bg-red-500" : "bg-main"
-            } hover:bg-main/90 mb-2 w-full`}
-            disabled={loading}
-          >
-            {loading ? "Uploading..." : "Upload Image"}
-            {isRequired && " *"}
-            <VisuallyHiddenInput
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              required={Boolean(isRequired)}
-            />
-          </Button>
-          {(error || fieldErrors[key]) && (
-            <Typography color="error" variant="caption" display="block">
-              {fieldErrors[key] || error}
-            </Typography>
-          )}
-          {formData[key]?.includes("http") && (
-            <Box className="relative w-full h-48 mt-2 rounded-lg overflow-hidden">
-              <Image
-                src={formData[key]}
-                alt="Preview"
-                fill
-                className="object-cover"
-              />
-            </Box>
-          )}
-        </Box>
-      );
-    }
-
-    return (
-      <TextField
-        key={key}
-        fullWidth
-        label={key.charAt(0).toUpperCase() + key.slice(1)}
-        name={key}
-        value={formData[key] || ""}
-        onChange={handleChange}
-        variant="outlined"
-        className="mb-4"
-        required={Boolean(isRequired)}
-        error={!!fieldErrors[key]}
-        helperText={fieldErrors[key]}
-      />
-    );
-  };
+  const formElements = keys.map((key) => (
+    <AdminModalField
+      keyVal={key}
+      keys={keys}
+      formData={formData}
+      handleChange={handleChange}
+      title={title}
+      requiredFields={requiredFields}
+      fieldErrors={fieldErrors}
+      loading={loading}
+      error={error}
+      setError={setError}
+      setLoading={setLoading}
+      setFieldErrors={setFieldErrors}
+      setSnackbar={setSnackbar}
+      tables={tables}
+    />
+  ));
 
   return (
     <Dialog
@@ -363,7 +164,7 @@ export default function AdminModal() {
       </DialogTitle>
       <DialogContent dividers>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {keys.map(getFieldElement)}
+          {formElements}
         </form>
       </DialogContent>
       <DialogActions>
