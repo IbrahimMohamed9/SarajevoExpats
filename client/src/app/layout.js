@@ -38,7 +38,7 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   // TODO: delete suppressHydrationWarning
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <AdSense />
       </head>

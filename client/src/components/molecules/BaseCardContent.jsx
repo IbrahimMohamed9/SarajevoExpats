@@ -1,7 +1,8 @@
 import { CardContent } from "@mui/material";
 import BaseCardTitle from "@atoms/BaseCardTitle";
 import BaseCardEnd from "@atoms/BaseCardEnd";
-import SafeHtml from "@atoms/SafeHtml";
+import dynamic from "next/dynamic";
+const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const BaseCardContent = ({ title, content, date, values, isHovered }) => {
   return (

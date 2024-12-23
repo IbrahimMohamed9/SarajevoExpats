@@ -1,5 +1,6 @@
 import { formatDateTime } from "@/utils/formatters";
-import SafeHtml from "@atoms/SafeHtml";
+import dynamic from "next/dynamic";
+const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const LatestNewsContent = ({ latestNews }) => {
   return (

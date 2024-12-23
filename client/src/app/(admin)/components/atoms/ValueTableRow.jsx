@@ -6,7 +6,8 @@ import ActionBtn from "@adminMol/ActionBtn";
 import { formatDateTime } from "@/utils/formatters";
 import Image from "next/image";
 import ImageDialog from "./ImageDialog";
-import SafeHtml from "@atoms/SafeHtml";
+import dynamic from "next/dynamic";
+const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const ValueTableRow = ({
   values,

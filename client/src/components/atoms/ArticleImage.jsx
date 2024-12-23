@@ -1,5 +1,6 @@
 import Image from "next/image";
-import SafeHtml from "@atoms/SafeHtml";
+import dynamic from "next/dynamic";
+const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const ArticleImage = ({ src, alt, description }) => (
   <div className="space-y-4 mb-12 animate-fade-in">

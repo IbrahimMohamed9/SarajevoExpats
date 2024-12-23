@@ -1,4 +1,5 @@
-import SafeHtml from "@atoms/SafeHtml";
+import dynamic from "next/dynamic";
+const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const ArticleContent = ({ content }) => (
   <div className="prose prose-lg max-w-none animate-fade-in">
