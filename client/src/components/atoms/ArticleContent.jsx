@@ -5,9 +5,8 @@ const ArticleContent = ({ content }) => (
         key={index}
         className="mb-6 text-xl leading-relaxed text-gray-900 first-letter:text-4xl 
           first-letter:font-bold first-letter:text-main"
-      >
-        {paragraph}
-      </p>
+        dangerouslySetInnerHTML={{ __html: paragraph }}
+      />
     ))}
   </div>
 );

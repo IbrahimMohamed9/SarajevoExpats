@@ -41,9 +41,8 @@ const ArticleImage = ({ src, alt, description }) => (
           <p
             className="text-gray-700 leading-relaxed text-lg group-hover:text-gray-900 
             transition-colors duration-300"
-          >
-            {description}
-          </p>
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
         </div>
       </div>
     )}

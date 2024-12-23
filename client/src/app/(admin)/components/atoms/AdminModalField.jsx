@@ -1,9 +1,10 @@
+"use client";
+
 import {
   Button,
   TextField,
   Box,
   Typography,
-  TextareaAutosize,
   Select,
   MenuItem,
   FormControl,
@@ -12,7 +13,11 @@ import {
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Image from "next/image";
+import axiosInstance from "@/config/axios";
 import { styled } from "@mui/material/styles";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -50,6 +55,8 @@ const AdminModalField = ({
     "content",
     "picturedescription",
     "text",
+    "question",
+    "answer",
   ].includes(lowerKey);
 
   const isDropList = ["type", "serviceSubtype", "serviceType"].includes(keyVal);
@@ -77,7 +84,7 @@ const AdminModalField = ({
       const response = await axiosInstance.post("/upload", imageForm, config);
       const imageUrl = response.data.url;
 
-      setFormData((prev) => ({ ...prev, picture: imageUrl }));
+      handleChange("picture", imageUrl);
       setFieldErrors((prev) => ({ ...prev, picture: "" }));
       setSnackbar({
         message: "Image uploaded successfully!",
@@ -136,7 +143,7 @@ const AdminModalField = ({
           id={keyVal}
           name={keyVal}
           value={formData[keyVal] || ""}
-          onChange={handleChange}
+          onChange={(e) => handleChange(keyVal, e.target.value)}
           label={keyVal.charAt(0).toUpperCase() + keyVal.slice(1)}
           required={Boolean(isRequired)}
         >
@@ -160,16 +167,14 @@ const AdminModalField = ({
           {keyVal.charAt(0).toUpperCase() + keyVal.slice(1)}
           {isRequired && " *"}
         </label>
-        <TextareaAutosize
-          className={`w-full p-3 border rounded-md shadow-sm resize-y ${
-            fieldErrors[keyVal] ? "border-red-500" : "border-gray-300"
-          } focus:ring-blue-500 focus:border-blue-500`}
-          minRows={4}
-          placeholder={`Enter ${lowerKey}...`}
-          name={keyVal}
+        <ReactQuill
           value={formData[keyVal] || ""}
-          onChange={handleChange}
-          required={Boolean(isRequired)}
+          onChange={(value) => handleChange(keyVal, value)}
+          modules={{
+            toolbar: [["bold", "italic", "underline"], ["link"]],
+          }}
+          placeholder="Write something here..."
+          className="border rounded-md shadow-sm"
         />
         {fieldErrors[keyVal] && (
           <Typography color="error" variant="caption" display="block">
@@ -227,7 +232,7 @@ const AdminModalField = ({
       label={keyVal.charAt(0).toUpperCase() + keyVal.slice(1)}
       name={keyVal}
       value={formData[keyVal] || ""}
-      onChange={handleChange}
+      onChange={(e) => handleChange(keyVal, e.target.value)}
       variant="outlined"
       className="mb-4"
       required={Boolean(isRequired)}

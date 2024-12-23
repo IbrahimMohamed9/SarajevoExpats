@@ -16,7 +16,7 @@ const BaseCardContent = ({ title, content, date, values, isHovered }) => {
           isHovered ? "text-gray-700" : "text-gray-600"
         }`}
       >
-        {content}
+        <div dangerouslySetInnerHTML={{ __html: content }} />
       </Typography>
 
       <BaseCardEnd isHovered={isHovered} date={date} values={values} />

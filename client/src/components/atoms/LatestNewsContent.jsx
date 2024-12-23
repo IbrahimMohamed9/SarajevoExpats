@@ -15,9 +15,10 @@ const LatestNewsContent = ({ latestNews }) => {
         <h1 className="text-4xl md:text-5xl font-bold text-white group-hover:text-main transition-colors">
           {latestNews.title}
         </h1>
-        <p className="line-clamp-3 text-lg text-gray-200 max-w-3xl">
-          {latestNews.content}
-        </p>
+        <p
+          className="line-clamp-3 text-lg text-gray-200 max-w-3xl"
+          dangerouslySetInnerHTML={{ __html: latestNews.content }}
+        />
         <button className="inline-flex items-center gap-2 text-main hover:text-white transition-colors">
           Read More
           <svg

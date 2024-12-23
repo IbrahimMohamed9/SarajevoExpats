@@ -10,7 +10,6 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import axiosInstance from "@/config/axios";
 import { snackbarState } from "@/store/atoms/snackbarAtom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { adminModalState } from "@/store/atoms/adminModalAtom";
@@ -55,10 +54,9 @@ export default function AdminModal() {
     onClose();
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+  const handleChange = (key, value) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+    setFieldErrors((prev) => ({ ...prev, [key]: "" }));
   };
 
   const validateForm = () => {
