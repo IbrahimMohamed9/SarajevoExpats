@@ -1,3 +1,5 @@
+import SafeHtml from "@atoms/SafeHtml";
+
 const ArticleContent = ({ content }) => (
   <div className="prose prose-lg max-w-none animate-fade-in">
     {content.split("\\n").map((paragraph, index) => (
@@ -6,7 +8,7 @@ const ArticleContent = ({ content }) => (
         className="mb-6 text-xl leading-relaxed text-gray-900 first-letter:text-4xl 
           first-letter:font-bold first-letter:text-main"
       >
-        <div dangerouslySetInnerHTML={{ __html: paragraph }} />
+        <SafeHtml content={paragraph} />
       </p>
     ))}
   </div>

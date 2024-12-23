@@ -1,6 +1,7 @@
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import QABadge from "./QABadge";
+import SafeHtml from "@atoms/SafeHtml";
 
 const QAAccordion = ({ question, answer, index }) => {
   return (
@@ -39,17 +40,19 @@ const QAAccordion = ({ question, answer, index }) => {
         <div className="flex items-center space-x-4">
           <QABadge type="Q" number={index + 1} />
           <h3 className="text-lg font-medium text-gray-900 group-open:text-main">
-            <div dangerouslySetInnerHTML={{ __html: question }} />
+            <SafeHtml as="span" content={question} />
           </h3>
         </div>
       </AccordionSummary>
       <AccordionDetails className="px-8 pb-8 pt-2">
-        <div className="flex space-x-4">
+        <div className="flex gap-4">
           <QABadge type="A" />
           <div className="flex-1">
-            <p className="text-gray-600 leading-relaxed">
-              <div dangerouslySetInnerHTML={{ __html: answer }} />
-            </p>
+            <SafeHtml
+              as="p"
+              content={answer}
+              className="text-gray-600 leading-relaxed"
+            />
           </div>
         </div>
       </AccordionDetails>

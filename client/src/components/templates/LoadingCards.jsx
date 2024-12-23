@@ -1,3 +1,5 @@
+"use client";
+
 const CardSkeleton = () => (
   <div className="w-72 h-80 bg-main/10 rounded-lg animate-pulse m-4" />
 );

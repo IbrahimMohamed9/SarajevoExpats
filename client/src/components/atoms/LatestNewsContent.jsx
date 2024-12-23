@@ -1,4 +1,5 @@
 import { formatDateTime } from "@/utils/formatters";
+import SafeHtml from "@atoms/SafeHtml";
 
 const LatestNewsContent = ({ latestNews }) => {
   return (
@@ -16,7 +17,7 @@ const LatestNewsContent = ({ latestNews }) => {
           {latestNews.title}
         </h1>
         <p className="line-clamp-3 text-lg text-gray-200 max-w-3xl">
-          <div dangerouslySetInnerHTML={{ __html: latestNews.content }} />
+          <SafeHtml content={latestNews.content} />
         </p>
         <button className="inline-flex items-center gap-2 text-main hover:text-white transition-colors">
           Read More

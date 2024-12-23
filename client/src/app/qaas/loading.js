@@ -1,7 +1,7 @@
-import LoadingCards from "@templates/LoadingCards";
+import LoadingQA from "@templates/LoadingQA";
 
 const Loading = () => {
-  return <LoadingCards />;
+  return <LoadingQA />;
 };
 
 export default Loading;

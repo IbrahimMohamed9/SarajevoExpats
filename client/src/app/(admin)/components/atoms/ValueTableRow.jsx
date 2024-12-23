@@ -6,6 +6,7 @@ import ActionBtn from "@adminMol/ActionBtn";
 import { formatDateTime } from "@/utils/formatters";
 import Image from "next/image";
 import ImageDialog from "./ImageDialog";
+import SafeHtml from "@atoms/SafeHtml";
 
 const ValueTableRow = ({
   values,
@@ -54,10 +55,7 @@ const ValueTableRow = ({
     const value = time.includes(key) ? formatDateTime(val) : val;
     return (
       <TableCell key={key} component="th" scope="row" align="center">
-        <div
-          className={cellClass}
-          dangerouslySetInnerHTML={{ __html: value }}
-        />
+        <SafeHtml className={cellClass} content={value} />
       </TableCell>
     );
   });

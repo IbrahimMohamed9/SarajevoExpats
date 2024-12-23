@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SafeHtml from "@atoms/SafeHtml";
 
 const ArticleImage = ({ src, alt, description }) => (
   <div className="space-y-4 mb-12 animate-fade-in">
@@ -42,7 +43,7 @@ const ArticleImage = ({ src, alt, description }) => (
             className="text-gray-700 leading-relaxed text-lg group-hover:text-gray-900 
             transition-colors duration-300"
           >
-            <div dangerouslySetInnerHTML={{ __html: description }} />
+            <SafeHtml content={description} />
           </p>
         </div>
       </div>
