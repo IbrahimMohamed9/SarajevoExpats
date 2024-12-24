@@ -1,12 +1,17 @@
 import axios from "axios";
+import https from "https";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3030/api",
+  baseURL: "https://sarajevoexpats.com/api",
   timeout: 10000,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
   },
+  withCredentials: true,
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+  }),
 });
 
 axiosInstance.interceptors.request.use(
@@ -14,6 +19,7 @@ axiosInstance.interceptors.request.use(
     if (typeof window !== "undefined" && localStorage) {
       if (config.data instanceof FormData) {
         delete config.headers["Content-Type"];
+        config.headers["Accept"] = "multipart/form-data";
       }
       const token = localStorage.getItem("access_token");
       if (token) {
