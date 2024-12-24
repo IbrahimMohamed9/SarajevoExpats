@@ -31,13 +31,15 @@ const app = express();
 app.use(express.json());
 
 // Configure CORS
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://sarajevoexpats.com'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true,
-  maxAge: 600
-}));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://sarajevoexpats.com"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    credentials: true,
+    maxAge: 600,
+  })
+);
 
 app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/events/", require("./routes/eventRoutes"));
@@ -50,6 +52,20 @@ app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
+
+const photosDir = path.join(__dirname, "photos");
+console.log("Serving photos from:", photosDir);
+app.use(
+  "/api/photos",
+  express.static(photosDir, {
+    dotfiles: "deny",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Cross-Origin-Resource-Policy": "cross-origin",
+    },
+  })
+);
+
 app.use(errorHandler);
 
 const host_name = process.env.HOST_NAME || "localhost";
