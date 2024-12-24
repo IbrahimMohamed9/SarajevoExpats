@@ -30,6 +30,15 @@ connectDb();
 const app = express();
 app.use(express.json());
 
+// Configure CORS
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://sarajevoexpats.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
+  maxAge: 600
+}));
+
 app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/events/", require("./routes/eventRoutes"));
 app.use("/api/qaas/", require("./routes/QaARoutes"));
