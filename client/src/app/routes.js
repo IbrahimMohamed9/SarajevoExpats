@@ -14,11 +14,11 @@ const routes = async () => {
       return {
         services: serviceType.map((service) => ({
           title: service.name,
-          href: `/services/${service.name.toLowerCase()}`,
+          href: `/services/${service.name}`,
         })),
         places: placeType.map((place) => ({
           title: place.name,
-          href: `/places/${place.name.toLowerCase()}`,
+          href: `/places/${place.name}`,
         })),
       };
     } catch (error) {
