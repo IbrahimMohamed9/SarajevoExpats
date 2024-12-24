@@ -16,7 +16,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["rest.sarajevoexpats.com"],
+    domains: ["sarajevoexpats.com", "images.pexels.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -26,9 +26,11 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "sarajevoexpats.com",
-        pathname: "/api/photos/**",
+        pathname: "/**",
       },
     ],
+    minimumCacheTTL: 60,
+    formats: ["image/webp"],
   },
 };
 
