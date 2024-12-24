@@ -1,12 +1,16 @@
 import axios from "axios";
+import https from "https";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3030/api",
+  baseURL: "https://sarajevoexpats.com/api",
   timeout: 10000,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
   },
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+  }),
 });
 
 axiosInstance.interceptors.request.use(

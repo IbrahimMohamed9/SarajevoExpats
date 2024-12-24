@@ -1,7 +1,7 @@
 import AuthTemplate from "@/app/(auth)/components/AuthTemplate";
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_API_URL),
+  metadataBase: new URL("https://sarajevoexpats.com"),
   title: "Login | Sarajevo Expats",
   description:
     "Access your Sarajevo Expats account. Connect with the expat community, discover events, and explore services in Sarajevo.",

@@ -17,7 +17,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://rest.sarajevoexpats.com/",
+        url: "https://sarajevoexpats.com/api",
       },
     ],
   },
