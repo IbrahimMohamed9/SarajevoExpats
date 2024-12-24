@@ -30,13 +30,6 @@ connectDb();
 const app = express();
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://sarajevoexpats.com"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
 app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/events/", require("./routes/eventRoutes"));
 app.use("/api/qaas/", require("./routes/QaARoutes"));
@@ -47,20 +40,6 @@ app.use("/api/services/", require("./routes/serviceRoutes"));
 app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
-// Serve static files with proper CORS headers
-app.use(
-  "/api/photos",
-  (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
-    next();
-  },
-  express.static(path.join(__dirname, "photos"), {
-    maxAge: "1d",
-    etag: true,
-    lastModified: true,
-  })
-);
 app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use(errorHandler);
 

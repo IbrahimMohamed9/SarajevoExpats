@@ -16,6 +16,7 @@ const nextConfig = {
     return config;
   },
   images: {
+    unoptimized: true,
     domains: ["sarajevoexpats.com", "images.pexels.com"],
     remotePatterns: [
       {
