@@ -3,10 +3,11 @@ import BaseCardExtraContent from "@atoms/BaseCardExtraContent";
 
 const BaseCardEnd = ({ isHovered, date, values }) => {
   const readableDate = date
-    ? new Date(date).toLocaleDateString("en-US", {
+    ? new Date(date).toLocaleString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
+        timeZone: "Europe/Sarajevo",
       })
     : null;
   return (
