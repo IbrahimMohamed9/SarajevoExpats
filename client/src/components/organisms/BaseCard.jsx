@@ -56,7 +56,7 @@ const BaseCard = ({ item, type, className = "" }) => {
 
     switch (type) {
       case "news":
-        return item.serviceType ? `/news/${item._id}` : "/";
+        return `/news/${item._id}`;
       case "services":
         return item.serviceType && item.serviceSubtype
           ? `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`
