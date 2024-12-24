@@ -24,14 +24,9 @@ const nextConfig = {
         pathname: "/photos/**",
       },
       {
-        protocol: "http",
-        hostname: "rest.sarajevoexpats.com",
-        pathname: "/photos/**",
-      },
-      {
         protocol: "https",
-        hostname: "rest.sarajevoexpats.com",
-        pathname: "/photos/**",
+        hostname: "sarajevoexpats.com",
+        pathname: "/api/photos/**",
       },
     ],
   },
