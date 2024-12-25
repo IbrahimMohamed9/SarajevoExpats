@@ -41,7 +41,7 @@ export const NavMobile = ({ routes = [] }) => {
           component={Link}
           href={route.href}
           onClick={onClose}
-          className="text-white hover:bg-white/10"
+          className="!text-white hover:bg-white/10"
         >
           <ListItemText primary={route.title} />
         </ListItemButton>
@@ -59,8 +59,8 @@ export const NavMobile = ({ routes = [] }) => {
       BackdropProps={{ className: "bg-black/50 z-20" }}
       PaperProps={{
         className:
-          // "bg-main text-white flex flex-col absolute right-0 top-9 w-[150px] h-full z-40",
-          "bg-main text-white flex flex-col absolute right-0 top-9 w-[250px] h-full z-40",
+          "bg-main text-white flex flex-col absolute right-0 top-9 w-[150px] h-full z-40",
+        // "bg-main text-white flex flex-col absolute right-0 top-9 w-[250px] h-full z-40",
       }}
     >
       <List className="flex-1">{routesElement}</List>

@@ -19,7 +19,9 @@ export default function AdminNavigationBtn({ item, open }) {
         </ListItemIcon>
         <ListItemText
           primary={item.text}
-          className={`${open ? "block" : "hidden"} opacity-${open ? 100 : 0}`}
+          className={`${open ? "block" : "hidden"} !text-black opacity-${
+            open ? 100 : 0
+          }`}
         />
       </ListItemButton>
     </ListItem>

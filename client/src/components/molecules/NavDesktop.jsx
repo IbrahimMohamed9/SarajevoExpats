@@ -8,7 +8,12 @@ const NavDesktop = ({ routes }) => {
       {route.dropdown ? (
         <HeaderDeskDropMenu route={route} dropdownItems={route.dropdown} />
       ) : (
-        <Button component={Link} href={route.href} sx={{ color: "white" }}>
+        <Button
+          component={Link}
+          href={route.href}
+          className="!text-white"
+          disableRipple
+        >
           {route.title}
         </Button>
       )}
