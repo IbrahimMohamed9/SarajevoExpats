@@ -4,6 +4,7 @@ import SectionHeder from "@atoms/SectionHeder";
 import axiosInstance from "@/config/axios";
 import LatestNewsLayout from "@molecules/LatestNewsLayout";
 import AdBanner from "@atoms/AdBanner";
+import WhatsappLink from "@atoms/WhatsappLink";
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
@@ -57,6 +58,7 @@ const Home = async () => {
             title="Upcoming Events"
           />
         </div>
+        <WhatsappLink className="md:hidden" />
         <CarouselSection items={news} type="news" title="Latest News" />
         <CarouselSection items={places} type="places" title="Featured Places" />
         <CarouselSection
@@ -67,6 +69,7 @@ const Home = async () => {
       </div>
 
       <div className="hidden md:flex flex-col gap-6 border-l border-gray-200 h-[calc(100vh-2rem)] max-h-[1200px] sticky top-12">
+        <WhatsappLink />
         <SectionHeder title="Upcoming Events" />
         <div
           className="flex flex-col items-center gap-4 overflow-y-auto -mt-2"
