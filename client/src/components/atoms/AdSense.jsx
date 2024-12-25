@@ -20,6 +20,7 @@ const AdSense = () => {
           console.error('Error initializing ads:', err);
         }
       }}
+      data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
     />
   );
 };
