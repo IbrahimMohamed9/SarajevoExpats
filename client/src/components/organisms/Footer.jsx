@@ -17,7 +17,7 @@ const Footer = () => {
     <li key={title}>
       <Link
         href={href}
-        className="flex items-center gap-1 text-xl text-white hover:text-main-green transition-all"
+        className="flex items-center gap-1 text-xl !text-white hover:text-main-green transition-all"
       >
         {title}
       </Link>
