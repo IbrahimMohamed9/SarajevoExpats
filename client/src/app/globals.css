@@ -10,6 +10,14 @@
   outline: 1px solid red !important;
 } */
 
+a {
+  @apply text-blue-500;
+}
+
+a:visited {
+  @apply text-purple-600;
+}
+
 .splide__pagination__page {
   @apply size-2 !important;
 }

@@ -24,8 +24,7 @@ const HeaderDeskDropMenu = ({ route, dropdownItems }) => {
       onClick={handleClose}
       component={Link}
       href={item.href}
-      className="hover:bg-white/10"
-      sx={{ color: "white" }}
+      className="!text-white"
     >
       {item.title}
     </MenuItem>
