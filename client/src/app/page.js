@@ -51,6 +51,8 @@ const Home = async () => {
           <AdBanner slot="1234567890" format="auto" responsive={true} />
         </div>
         {news[0] && <LatestNewsLayout latestNews={news[news.length - 1]} />}
+        <WhatsappLink className="md:hidden text-center border border-main flex justify-center max-w-80 mx-auto" />
+
         <div className="md:hidden">
           <CarouselSection
             items={events}
@@ -58,7 +60,6 @@ const Home = async () => {
             title="Upcoming Events"
           />
         </div>
-        <WhatsappLink className="md:hidden" />
         <CarouselSection items={news} type="news" title="Latest News" />
         <CarouselSection items={places} type="places" title="Featured Places" />
         <CarouselSection
@@ -68,8 +69,8 @@ const Home = async () => {
         />
       </div>
 
-      <div className="hidden md:flex flex-col gap-6 border-l border-gray-200 h-[calc(100vh-2rem)] max-h-[1200px] sticky top-12">
-        <WhatsappLink />
+      <div className="hidden md:flex flex-col items-center gap-6 border-l border-gray-200 h-[calc(100vh-2rem)] max-h-[1200px] sticky top-12">
+        <WhatsappLink className="text-center border border-main flex justify-center" />
         <SectionHeder title="Upcoming Events" />
         <div
           className="flex flex-col items-center gap-4 overflow-y-auto -mt-2"

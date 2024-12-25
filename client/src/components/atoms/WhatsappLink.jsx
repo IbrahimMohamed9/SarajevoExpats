@@ -23,7 +23,7 @@ const WhatsappLink = ({ className = "" }) => {
       <div>
         <p className="text-sm font-medium text-gray-500">WhatsApp Group</p>
         <p className="text-lg font-semibold text-gray-800 group-hover:text-main transition-colors duration-300">
-          Join Community
+          Join Our Community
         </p>
       </div>
     </a>
