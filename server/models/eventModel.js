@@ -16,16 +16,5 @@ const eventSchema = new mongoose.Schema(
   }
 );
 
-function validator() {
-  return this.phone || this.email;
-}
-
-eventSchema
-  .path("phone")
-  .validate(validator, "At least one of phone or email must be provided");
-eventSchema
-  .path("email")
-  .validate(validator, "At least one of phone or email must be provided");
-
 const Event = mongoose.model("Events", eventSchema);
 module.exports = Event;
