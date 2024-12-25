@@ -1,5 +1,4 @@
 import ContactInfo from "@atoms/ContactInfo";
-import WhatsappLink from "@atoms/WhatsappLink";
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
