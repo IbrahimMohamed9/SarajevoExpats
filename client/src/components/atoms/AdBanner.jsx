@@ -15,29 +15,29 @@ const AdBanner = ({ slot, format = "auto", responsive = true }) => {
 
     const loadAd = async () => {
       try {
+        let attempts = 0;
+        while (typeof window.adsbygoogle === "undefined" && attempts < 10) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          attempts++;
+        }
+
         if (typeof window.adsbygoogle === "undefined") {
-          console.warn("AdSense not loaded yet");
+          console.warn("AdSense not loaded after multiple attempts");
           return;
         }
 
         (window.adsbygoogle = window.adsbygoogle || []).push({});
-
-        if (adRef.current) {
-          adRef.current.addEventListener("load", () => {
-            console.debug("Ad loaded successfully");
-          });
-        }
+        console.debug("Ad push successful");
       } catch (error) {
         console.error("Error loading AdSense ad:", error.message);
       }
     };
 
-    const timer = setTimeout(loadAd, 100);
+    loadAd();
 
     return () => {
-      clearTimeout(timer);
       if (adRef.current) {
-        adRef.current.removeEventListener("load", () => {});
+        adRef.current.remove();
       }
     };
   }, [slot, isClient]);

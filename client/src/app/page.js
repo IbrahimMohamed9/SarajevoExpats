@@ -44,48 +44,41 @@ const Home = async () => {
   ));
 
   return (
-    <>
-      <div className="bg-gray-50">
-        <AdBanner slot="1234567890" format="auto" responsive={true} />
-      </div>
-
-      <div className="grid md:grid-cols-[1fr,340px] gap-4  max-w-7xl mx-auto">
-        <div className="flex flex-col pt-4 gap-8 overflow-hidden -mt-11">
-          {news[0] && <LatestNewsLayout latestNews={news[news.length - 1]} />}
-          <div className="md:hidden">
-            <CarouselSection
-              items={events}
-              type="events"
-              title="Upcoming Events"
-            />
-          </div>
-          <CarouselSection items={news} type="news" title="Latest News" />
+    <div className="grid md:grid-cols-[1fr,340px] gap-4  max-w-7xl mx-auto -mt-11">
+      <div className="flex flex-col pt-4 gap-8 overflow-hidden -mt-11">
+        <div className="bg-gray-50">
+          <AdBanner slot="1234567890" format="auto" responsive={true} />
+        </div>
+        {news[0] && <LatestNewsLayout latestNews={news[news.length - 1]} />}
+        <div className="md:hidden">
           <CarouselSection
-            items={places}
-            type="places"
-            title="Featured Places"
-          />
-          <CarouselSection
-            items={services}
-            type="services"
-            title="Popular Services"
+            items={events}
+            type="events"
+            title="Upcoming Events"
           />
         </div>
+        <CarouselSection items={news} type="news" title="Latest News" />
+        <CarouselSection items={places} type="places" title="Featured Places" />
+        <CarouselSection
+          items={services}
+          type="services"
+          title="Popular Services"
+        />
+      </div>
 
-        <div className="hidden md:flex flex-col gap-6 border-l border-gray-200 h-[calc(100vh-2rem)] max-h-[1200px] sticky top-16">
-          <SectionHeder title="Upcoming Events" />
-          <div
-            className="flex flex-col items-center gap-4 overflow-y-auto -mt-2"
-            style={{
-              scrollbarWidth: "thin",
-              scrollbarColor: "#ff7003 transparent",
-            }}
-          >
-            {eventsColumnElements}
-          </div>
+      <div className="hidden md:flex flex-col gap-6 border-l border-gray-200 h-[calc(100vh-2rem)] max-h-[1200px] sticky top-12">
+        <SectionHeder title="Upcoming Events" />
+        <div
+          className="flex flex-col items-center gap-4 overflow-y-auto -mt-2"
+          style={{
+            scrollbarWidth: "thin",
+            scrollbarColor: "#ff7003 transparent",
+          }}
+        >
+          {eventsColumnElements}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

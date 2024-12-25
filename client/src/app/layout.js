@@ -11,28 +11,66 @@ const roboto = Roboto({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://sarajevoexpats.com"),
   title: "Sarajevo Expats",
-  description: "A description of your site.",
-  // openGraph: {
-  //   title: "Sarajevo Expats",
-  //   description: "A description of your site.",
-  //   url: "https://yoursite.com",
-  //   siteName: "Your Site Name",
-  //   images: [
-  //     {
-  //       url: "https://yoursite.com/image.jpg",
-  //       width: 800,
-  //       height: 600,
-  //       alt: "Your Image Description",
-  //     },
-  //   ],
-  // },
-  // twitter: {
-  //   card: "summary_large_image",
-  //   site: "@yoursite",
-  //   title: "Your Site Title",
-  //   description: "A description of your site.",
-  // },
+  description: "Your comprehensive guide to living in Sarajevo as an expat",
+  icons: {
+    icon: [
+      {
+        url: "/favicon_io/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: "/favicon_io/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      { url: "/favicon_io/favicon.ico", sizes: "48x48" },
+    ],
+    apple: [
+      {
+        url: "/favicon_io/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+    other: [
+      {
+        rel: "android-chrome-192",
+        url: "/favicon_io/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        rel: "android-chrome-512",
+        url: "/favicon_io/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  },
+  manifest: "/favicon_io/site.webmanifest",
+  openGraph: {
+    title: "Sarajevo Expats",
+    description: "Your comprehensive guide to living in Sarajevo as an expat",
+    url: "https://sarajevoexpats.com",
+    siteName: "Sarajevo Expats",
+    images: [
+      {
+        url: "/favicon_io/android-chrome-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Sarajevo Expats Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sarajevo Expats",
+    description: "Your comprehensive guide to living in Sarajevo as an expat",
+    images: ["/favicon_io/android-chrome-512x512.png"],
+  },
 };
 
 const RootLayout = ({ children }) => {
