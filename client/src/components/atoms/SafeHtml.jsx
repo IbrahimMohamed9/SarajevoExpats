@@ -7,7 +7,11 @@ const SafeHtml = ({ content, className, as: Component = "span" }) => {
 
   useEffect(() => {
     if (containerRef.current) {
-      containerRef.current.innerHTML = content;
+      const cleanContent = content.replace(
+        /style="color:\s*rgb\(\d+,\s*\d+,\s*\d+\);?"/g,
+        ""
+      );
+      containerRef.current.innerHTML = cleanContent;
     }
   }, [content]);
 
