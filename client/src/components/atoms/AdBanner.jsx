@@ -4,30 +4,39 @@ import { useEffect, useRef } from "react";
 
 const AdBanner = ({ slot, format = "auto", responsive = true }) => {
   const adRef = useRef(null);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    try {
-      const pushAd = () => {
-        try {
-          if (window.adsbygoogle) {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          }
-        } catch (innerError) {
-          console.error('Error pushing ad:', innerError);
-        }
-      };
+    if (initialized.current) return;
 
-      // If script is already loaded
-      if (window.adsbygoogle) {
-        pushAd();
-      } else {
-        // Wait for script to load
-        window.addEventListener('load', pushAd);
-        return () => window.removeEventListener('load', pushAd);
+    const pushAd = () => {
+      try {
+        if (window.adsbygoogle && adRef.current && !adRef.current.hasAttribute('data-ad-status')) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          initialized.current = true;
+        }
+      } catch (error) {
+        console.error('Error pushing ad:', error);
       }
-    } catch (error) {
-      console.error('AdSense error:', error);
+    };
+
+    // Try to initialize immediately if script is loaded
+    if (window.adsbygoogle) {
+      pushAd();
     }
+
+    // Also listen for script load event
+    const handleScriptLoad = () => {
+      if (!initialized.current) {
+        pushAd();
+      }
+    };
+
+    window.addEventListener('load', handleScriptLoad);
+
+    return () => {
+      window.removeEventListener('load', handleScriptLoad);
+    };
   }, []);
 
   return (
