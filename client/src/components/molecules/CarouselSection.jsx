@@ -10,6 +10,7 @@ const CarouselSection = ({ items = [], type, title }) => {
   const validatedItems = items.filter(
     (item) => item && typeof item === "object"
   );
+  validatedItems.reverse();
 
   let carouselElements;
   if (validatedItems.length > 0) {
