@@ -28,7 +28,7 @@ const Home = async () => {
     axiosInstance.get("/news"),
     axiosInstance.get("/places"),
     axiosInstance.get("/services"),
-    axiosInstance.get("/events"),
+    axiosInstance.get("/events/pinned"),
   ]);
 
   const [news, places, services, events] = [
@@ -73,7 +73,7 @@ const Home = async () => {
         <WhatsappLink className="text-center border border-main flex justify-center" />
         <SectionHeder title="Upcoming Events" />
         <div
-          className="flex flex-col items-center gap-4 overflow-y-auto -mt-2"
+          className="flex flex-col items-center gap-4 overflow-y-auto -mt-2 w-full"
           style={{
             scrollbarWidth: "thin",
             scrollbarColor: "#ff7003 transparent",

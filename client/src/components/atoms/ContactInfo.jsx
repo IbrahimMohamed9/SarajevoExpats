@@ -15,7 +15,7 @@ const ContactInfo = ({ phone, email, location, whatsappLink }) => {
         Get in Touch
       </h2>
       <div className="space-y-4">
-        <WhatsappLink />
+        {phone && <WhatsappLink phone={phone} title={phone} />}
 
         {email && (
           <a

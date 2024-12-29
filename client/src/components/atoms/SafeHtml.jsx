@@ -2,11 +2,11 @@
 
 import { useEffect, useRef } from "react";
 
-const SafeHtml = ({ content, className, as: Component = "span" }) => {
+const SafeHtml = ({ content = "", className, as: Component = "span" }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && typeof content === 'string') {
       const cleanContent = content.replace(
         /style="color:\s*rgb\(\d+,\s*\d+,\s*\d+\);?"/g,
         ""

@@ -1,9 +1,12 @@
 import React from "react";
 
-const WhatsappLink = ({ className = "" }) => {
+const WhatsappLink = ({ className = "", title, phone }) => {
+  const href = phone
+    ? `https://wa.me/${phone}`
+    : "https://chat.whatsapp.com/K7yBPN5rYs7K4d2uNg1dHT";
   return (
     <a
-      href="https://chat.whatsapp.com/K7yBPN5rYs7K4d2uNg1dHT"
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={`flex items-center space-x-3 p-4 bg-white/80 rounded-lg shadow-sm 
@@ -23,7 +26,7 @@ const WhatsappLink = ({ className = "" }) => {
       <div>
         <p className="text-sm font-medium text-gray-500">WhatsApp Group</p>
         <p className="text-lg font-semibold text-gray-800 group-hover:text-main transition-colors duration-300">
-          Join Our Community
+          {title || "Join Our Community"}
         </p>
       </div>
     </a>
