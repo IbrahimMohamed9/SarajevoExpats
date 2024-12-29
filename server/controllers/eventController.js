@@ -10,6 +10,14 @@ const getEvents = asyncHandler(async (req, res) => {
   res.status(200).json(events);
 });
 
+//@desc Get all pinned events
+//@route GET /api/events
+//@access public
+const getPinnedEvents = asyncHandler(async (req, res) => {
+  const events = await Event.find({ pinned: true });
+  res.status(200).json(events);
+});
+
 //@desc Get event by Id
 //@route /api/events/:id
 //@access public
@@ -88,5 +96,6 @@ module.exports = {
   getEventById,
   createEvent,
   deleteEventById,
+  getPinnedEvents,
   updateEventById,
 };

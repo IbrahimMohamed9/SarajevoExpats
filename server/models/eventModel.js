@@ -9,6 +9,7 @@ const eventSchema = new mongoose.Schema(
     phone: { type: String },
     email: { type: String },
     url: { type: String, required: [true, "Please add the url"] },
+    pinned: { type: Boolean, default: false },
   },
   {
     timestamps: true,

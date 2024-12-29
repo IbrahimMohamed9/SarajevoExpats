@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getEvents,
   createEvent,
+  getPinnedEvents,
   deleteEventById,
   updateEventById,
   getEventById,
@@ -43,6 +44,9 @@ const validateAdminToken = require("../middleware/validateAdminToken");
  *         email:
  *           type: string
  *           description: Contact email address (either phone or email must be provided)
+ *         pinned:
+ *           type: boolean
+ *           description: Indicates if the event is pinned
  *   securitySchemes:
  *     BearerAuth:
  *       type: http
@@ -100,7 +104,37 @@ const validateAdminToken = require("../middleware/validateAdminToken");
  *                   type: string
  *                   example: All fields are mandatory
  */
+
+/**
+ * @swagger
+ * /api/events/pinned:
+ *   get:
+ *     summary: Returns all pinned events
+ *     tags: [Events]
+ *     responses:
+ *       200:
+ *         description: List of pinned events
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Event'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
 router.route("/").get(getEvents).post(validateAdminToken, createEvent);
+
+router.route("/pinned").get(getPinnedEvents);
 
 /**
  * @swagger
