@@ -107,7 +107,7 @@ const validateAdminToken = require("../middleware/validateAdminToken");
 
 /**
  * @swagger
- * /api/events/pinned:
+ * /events/pinned:
  *   get:
  *     summary: Returns all pinned events
  *     tags: [Events]
