@@ -1,7 +1,5 @@
-"use client";
-
 import axiosInstance from "@/config/axios";
-import QAAccordion from "@/components/atoms/QAAccordion";
+import QAAccordions from "@molecules/QAAccordions";
 
 const QaAs = async () => {
   const response = await axiosInstance.get("/qaas");
@@ -20,14 +18,7 @@ const QaAs = async () => {
         </div>
 
         <div className="max-w-3xl mx-auto space-y-4">
-          {qaAs.map((qaA, index) => (
-            <QAAccordion
-              key={qaA.id || index}
-              question={qaA.question}
-              answer={qaA.answer}
-              index={index}
-            />
-          ))}
+          <QAAccordions data={qaAs} />
         </div>
       </div>
     </div>

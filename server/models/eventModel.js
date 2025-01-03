@@ -9,23 +9,13 @@ const eventSchema = new mongoose.Schema(
     phone: { type: String },
     email: { type: String },
     url: { type: String, required: [true, "Please add the url"] },
+    pinned: { type: Boolean, default: false },
   },
   {
     timestamps: true,
     versionKey: false,
   }
 );
-
-function validator() {
-  return this.phone || this.email;
-}
-
-eventSchema
-  .path("phone")
-  .validate(validator, "At least one of phone or email must be provided");
-eventSchema
-  .path("email")
-  .validate(validator, "At least one of phone or email must be provided");
 
 const Event = mongoose.model("Events", eventSchema);
 module.exports = Event;

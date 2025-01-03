@@ -4,7 +4,7 @@ import QABadge from "./QABadge";
 import dynamic from "next/dynamic";
 const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
-const QAAccordion = ({ question, answer, index }) => {
+const QAAccordion = ({ question, answer }) => {
   return (
     <Accordion
       className="bg-white rounded-xl shadow-[0_2px_8px_-3px_rgba(0,0,0,0.07),0_6px_16px_-8px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_12px_-2px_rgba(0,0,0,0.08),0_8px_24px_-4px_rgba(0,0,0,0.06)] transition-all duration-300 !border-none before:!hidden overflow-hidden"
@@ -39,7 +39,7 @@ const QAAccordion = ({ question, answer, index }) => {
         }}
       >
         <div className="flex items-center space-x-4">
-          <QABadge type="Q" number={index + 1} />
+          <QABadge />
           <h3 className="text-lg font-medium text-gray-900 group-open:text-main">
             <SafeHtml as="span" content={question} />
           </h3>
@@ -47,7 +47,6 @@ const QAAccordion = ({ question, answer, index }) => {
       </AccordionSummary>
       <AccordionDetails className="px-8 pb-8 pt-2">
         <div className="flex gap-4">
-          <QABadge type="A" />
           <div className="flex-1">
             <SafeHtml
               as="p"

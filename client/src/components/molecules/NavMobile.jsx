@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Drawer, List, ListItemButton, ListItemText, Box } from "@mui/material";
+import { Drawer, List, ListItemButton, ListItemText } from "@mui/material";
 import { useRecoilState } from "recoil";
 import NavOpenAtom from "@/store/atoms/navOpenAtom";
-import HeaderButtons from "@molecules/HeaderButtons";
+// import HeaderButtons from "@molecules/HeaderButtons";
 import HeaderMobiDropMenu from "@atoms/HeaderMobiDropMenu";
 
 export const NavMobile = ({ routes = [] }) => {
@@ -64,9 +64,9 @@ export const NavMobile = ({ routes = [] }) => {
       }}
     >
       <List className="flex-1">{routesElement}</List>
-      <Box className="p-4 border-t border-white/20">
+      {/* <div className="p-4 border-t border-white/20">
         <HeaderButtons className="flex h-full items-center gap-2 mb-16" />
-      </Box>
+      </div> */}
     </Drawer>
   );
 };

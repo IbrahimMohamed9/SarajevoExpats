@@ -11,6 +11,7 @@ const Page = async () => {
     url: "",
     phone: "",
     email: "",
+    pinned: false,
   };
 
   return (

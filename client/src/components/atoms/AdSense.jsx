@@ -1,21 +1,16 @@
 "use client";
 
-import Script from "next/script";
+import Head from "next/head";
 
 const AdSense = () => {
   return (
-    <Script
-      async
-      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
-      strategy="lazyOnload"
-      crossOrigin="anonymous"
-      onError={(e) => {
-        console.error("AdSense script failed to load:", e);
-      }}
-      onLoad={() => {
-        console.debug("AdSense script loaded successfully");
-      }}
-    />
+    <Head>
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4465300068442635"
+        crossOrigin="anonymous"
+      />
+    </Head>
   );
 };
 

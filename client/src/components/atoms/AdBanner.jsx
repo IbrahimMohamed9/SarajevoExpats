@@ -1,59 +1,56 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const AdBanner = ({ slot, format = "auto", responsive = true }) => {
   const adRef = useRef(null);
-  const [isClient, setIsClient] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    if (initialized.current) return;
 
-  useEffect(() => {
-    if (!isClient) return;
-
-    const loadAd = async () => {
+    const pushAd = () => {
       try {
-        if (typeof window.adsbygoogle === "undefined") {
-          console.warn("AdSense not loaded yet");
-          return;
-        }
-
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-
-        if (adRef.current) {
-          adRef.current.addEventListener("load", () => {
-            console.debug("Ad loaded successfully");
-          });
+        if (window.adsbygoogle && adRef.current && !adRef.current.hasAttribute('data-ad-status')) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          initialized.current = true;
         }
       } catch (error) {
-        console.error("Error loading AdSense ad:", error.message);
+        console.error('Error pushing ad:', error);
       }
     };
 
-    const timer = setTimeout(loadAd, 100);
+    // Try to initialize immediately if script is loaded
+    if (window.adsbygoogle) {
+      pushAd();
+    }
+
+    // Also listen for script load event
+    const handleScriptLoad = () => {
+      if (!initialized.current) {
+        pushAd();
+      }
+    };
+
+    window.addEventListener('load', handleScriptLoad);
 
     return () => {
-      clearTimeout(timer);
-      if (adRef.current) {
-        adRef.current.removeEventListener("load", () => {});
-      }
+      window.removeEventListener('load', handleScriptLoad);
     };
-  }, [slot, isClient]);
-
-  if (!isClient) return null;
+  }, []);
 
   return (
-    <ins
-      ref={adRef}
-      className="adsbygoogle"
-      style={{ display: "block" }}
-      data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
-      data-ad-slot={slot}
-      data-ad-format={format}
-      data-full-width-responsive={responsive}
-    />
+    <div className="w-full overflow-hidden">
+      <ins
+        ref={adRef}
+        className="adsbygoogle"
+        style={{ display: "block", textAlign: "center" }}
+        data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
+        data-ad-slot={slot}
+        data-ad-format={format}
+        data-full-width-responsive={responsive}
+      />
+    </div>
   );
 };
 

@@ -30,6 +30,28 @@ const ValueTableRow = ({
   };
 
   const cells = Object.entries(values).map(([key, val]) => {
+    const isCheckbox = ["pinned"].includes(key);
+
+    if (isCheckbox) {
+      return (
+        <TableCell className={cellClass}>
+          <div
+            className={`
+              text-center
+                px-2 py-1 rounded-full text-sm font-medium
+                ${
+                  values[key]
+                    ? "bg-main/10 text-main"
+                    : "bg-gray-100 text-gray-600"
+                }
+              `}
+          >
+            {values[key] ? "Pinned" : "Not Pinned"}
+          </div>
+        </TableCell>
+      );
+    }
+
     if (ignoreKeys.includes(key) || typeof val === "object") {
       return null;
     }
