@@ -29,17 +29,40 @@ dotenv.config();
 connectDb();
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Configure CORS
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://sarajevoexpats.com"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-    credentials: true,
-    maxAge: 600,
-  })
-);
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "https://www.sarajevoexpats.com",
+      "https://sarajevoexpats.com",
+      "http://localhost:3000",
+      "http://localhost:3030",
+    ];
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log("Blocked origin:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "Accept",
+    "X-Requested-With",
+  ],
+  exposedHeaders: ["Content-Range", "X-Content-Range"],
+  maxAge: 600,
+};
+
+app.use(cors(corsOptions));
+
+// Pre-flight OPTIONS for all routes
+app.options("*", cors(corsOptions));
 
 app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/events/", require("./routes/eventRoutes"));
