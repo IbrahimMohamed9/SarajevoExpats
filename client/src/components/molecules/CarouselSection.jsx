@@ -3,7 +3,6 @@
 import { Typography } from "@mui/material";
 import Carousel from "@atoms/Carousel";
 import BaseCard from "@organisms/BaseCard";
-import { SplideSlide } from "@splidejs/react-splide";
 import SectionHeder from "@atoms/SectionHeder";
 
 const CarouselSection = ({ items = [], type, title }) => {
@@ -15,9 +14,7 @@ const CarouselSection = ({ items = [], type, title }) => {
   let carouselElements;
   if (validatedItems.length > 0) {
     carouselElements = validatedItems.map((item) => (
-      <SplideSlide key={item._id}>
-        <BaseCard type={type} item={item} />
-      </SplideSlide>
+      <BaseCard key={item._id} type={type} item={item} />
     ));
 
     carouselElements = <Carousel>{carouselElements}</Carousel>;

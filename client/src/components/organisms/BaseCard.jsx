@@ -23,27 +23,53 @@ const BaseCard = ({ item, type, className = "" }) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
-  const setLoading = useSetRecoilState(loadingAtom);
+  const [startPosition, setStartPosition] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const setLoadingState = useSetRecoilState(loadingAtom);
   const timeoutRef = useRef(null);
+  const elementRef = useRef(null);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
+  const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {
     setIsHovered(false);
     setIsPressed(false);
+    setIsDragging(false);
   };
 
   const handleMouseDown = () => {
     setIsPressed(true);
+    const rect = elementRef.current?.getBoundingClientRect();
+    setStartPosition(rect?.left || 0);
+  };
+
+  const handleMouseMove = () => {
+    if (isPressed) {
+      const rect = elementRef.current?.getBoundingClientRect();
+      const moveDistance = Math.abs(rect?.left - startPosition);
+      if (moveDistance > 5) { // Small threshold to detect intentional drag
+        setIsDragging(true);
+      }
+    }
   };
 
   const handleMouseUp = () => {
+    setIsPressed(false);
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
       setIsPressed(false);
     }, 150);
+  };
+
+  const handleClick = (e) => {
+    const rect = elementRef.current?.getBoundingClientRect();
+    const moveDistance = Math.abs(rect?.left - startPosition);
+    if (moveDistance > 50 && isDragging) {
+      e.preventDefault();
+    } else {
+      setLoadingState(true);
+    }
+    setIsDragging(false);
+    setStartPosition(0);
   };
 
   const getHref = () => {
@@ -65,12 +91,15 @@ const BaseCard = ({ item, type, className = "" }) => {
 
   return (
     <Link
+      ref={elementRef}
       href={href}
-      onClick={() => setLoading(true)}
+      onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      draggable={false}
       className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 ${
         isPressed
           ? "scale-[0.98] shadow-sm"

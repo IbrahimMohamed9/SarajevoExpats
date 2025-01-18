@@ -18,21 +18,6 @@ a:visited {
   @apply text-purple-600;
 }
 
-.splide__pagination__page {
-  @apply size-2 !important;
-}
-.splide {
-  @apply pt-2 !important;
-}
-
-.splide__pagination__page.is-active {
-  @apply bg-main !important;
-}
-
-.splide__pagination__page:hover {
-  @apply bg-secondary scale-125 !important;
-}
-
 /* Webkit scrollbar styles */
 ::-webkit-scrollbar {
   width: 6px;
