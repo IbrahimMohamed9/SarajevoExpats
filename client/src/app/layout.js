@@ -74,13 +74,12 @@ export const metadata = {
 };
 
 const RootLayout = ({ children }) => {
-  // TODO: delete suppressHydrationWarning
   return (
     <html lang="en">
       <head>
         <AdSense />
       </head>
-      <body suppressHydrationWarning className={roboto.className}>
+      <body className={roboto.className}>
         <RecoilRootWrapper>
           <Header />
           {children}
