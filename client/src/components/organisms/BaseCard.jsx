@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import BaseCardImage from "@atoms/BaseCardImage";
 import BaseCardContent from "@molecules/BaseCardContent";
 import { useSetRecoilState } from "recoil";
@@ -75,13 +75,14 @@ const BaseCard = ({ item, type, className = "" }) => {
     }
   };
 
+  const href = getHref();
+  route.prefetch(href);
+
   if (!item) return null;
 
   return (
     <div
-      onClick={() => {
-        route.push(getHref());
-      }}
+      onClick={() => route.push(href)}
       className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 ${
         isPressed
           ? "scale-[0.98] shadow-sm"
