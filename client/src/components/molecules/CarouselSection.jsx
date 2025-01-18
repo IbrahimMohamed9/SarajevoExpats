@@ -1,7 +1,7 @@
 "use client";
 
 import { Typography } from "@mui/material";
-import Carousel from "@atoms/Carousel";
+import CustomCarousel from "@atoms/CustomCarousel";
 import BaseCard from "@organisms/BaseCard";
 import SectionHeder from "@atoms/SectionHeder";
 
@@ -17,7 +17,7 @@ const CarouselSection = ({ items = [], type, title }) => {
       <BaseCard key={item._id} type={type} item={item} />
     ));
 
-    carouselElements = <Carousel>{carouselElements}</Carousel>;
+    carouselElements = <CustomCarousel>{carouselElements}</CustomCarousel>;
   } else
     carouselElements = (
       <div className="py-4 m-4 bg-gray-300 rounded-lg">

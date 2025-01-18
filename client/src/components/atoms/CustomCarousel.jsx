@@ -3,7 +3,7 @@ import "react-multi-carousel/lib/styles.css";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Button } from "@mui/material";
 
-const Carousel = ({ children }) => {
+const CustomCarousel = ({ children }) => {
   const responsive = {
     first: {
       breakpoint: { max: 30000, min: 1270 },
@@ -106,11 +106,8 @@ const Carousel = ({ children }) => {
         arrows
         autoPlaySpeed={3000}
         centerMode={true}
-        className=""
         containerClass="container"
         draggable
-        itemClass=""
-        pauseOnHover
         renderButtonGroupOutside={false}
         renderDotsOutside={false}
         responsive={responsive}
@@ -149,4 +146,4 @@ const Carousel = ({ children }) => {
   );
 };
 
-export default Carousel;
+export default CustomCarousel;
