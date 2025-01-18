@@ -1,15 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import BaseCardImage from "@atoms/BaseCardImage";
 import BaseCardContent from "@molecules/BaseCardContent";
-import { useSetRecoilState } from "recoil";
-import { loadingAtom } from "@/store/atoms/loadingAtom";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const BaseCard = ({ item, type, className = "" }) => {
   const route = useRouter();
-  const setLoading = useSetRecoilState(loadingAtom);
 
   const title = item?.title || item?.name;
   const image = item?.picture;
@@ -81,7 +79,8 @@ const BaseCard = ({ item, type, className = "" }) => {
   if (!item) return null;
 
   return (
-    <div
+    <Link
+      href={href}
       onClick={() => route.push(href)}
       className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 ${
         isPressed
@@ -118,7 +117,7 @@ const BaseCard = ({ item, type, className = "" }) => {
         className={`absolute inset-0 bg-main/5 transition-opacity duration-150
             ${isPressed ? "opacity-100" : "opacity-0"}`}
       />
-    </div>
+    </Link>
   );
 };
 
