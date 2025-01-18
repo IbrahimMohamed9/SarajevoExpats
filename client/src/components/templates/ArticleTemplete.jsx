@@ -1,10 +1,30 @@
+"use client"
+
 import ArticleHeader from "@atoms/ArticleHeader";
 import ArticleImage from "@atoms/ArticleImage";
 import ArticleContent from "@atoms/ArticleContent";
 import ContactInfo from "@atoms/ContactInfo";
 import ErrorDisplay from "@molecules/ErrorDisplay";
+import { useSetRecoilState } from "recoil";
+import { loadingAtom } from "@/store/atoms/loadingAtom";
+import { useEffect } from "react";
 
-const ArticleTemplete = ({ article, contentType }) => {
+const ArticleTemplete = ({ article, contentType, isLoading }) => {
+  const setLoading = useSetRecoilState(loadingAtom);
+
+  useEffect(() => {
+    setLoading((prev) => ({ ...prev, article: false }));
+  }, [article]);
+
+  if (isLoading) {
+    return (
+      <ErrorDisplay
+        title="Loading..."
+        message="Please wait while we load the content."
+      />
+    );
+  }
+
   if (!article) {
     return (
       <ErrorDisplay

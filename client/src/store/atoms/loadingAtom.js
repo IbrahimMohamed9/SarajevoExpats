@@ -3,7 +3,7 @@ import { atom } from "recoil";
 export const loadingAtom = atom({
   key: "loadingState",
   default: {
-    card: false,
+    cards: false,
     article: false,
   },
 });

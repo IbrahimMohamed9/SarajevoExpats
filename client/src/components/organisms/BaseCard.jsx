@@ -3,9 +3,14 @@
 import { useState, useRef } from "react";
 import BaseCardImage from "@atoms/BaseCardImage";
 import BaseCardContent from "@molecules/BaseCardContent";
-import Link from "next/link";
+import { useSetRecoilState } from "recoil";
+import { loadingAtom } from "@/store/atoms/loadingAtom";
+import { useRouter } from "next/navigation";
 
 const BaseCard = ({ item, type, className = "" }) => {
+  const route = useRouter();
+  const setLoading = useSetRecoilState(loadingAtom);
+
   const title = item?.title || item?.name;
   const image = item?.picture;
   const content = item?.content;
@@ -73,8 +78,12 @@ const BaseCard = ({ item, type, className = "" }) => {
   if (!item) return null;
 
   return (
-    <Link
-      href={getHref()}
+    <div
+      onClick={() => {
+        const href = getHref();
+        setLoading((prev) => ({ ...prev, article: true }));
+        route.push(href);
+      }}
       className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 ${
         isPressed
           ? "scale-[0.98] shadow-sm"
@@ -110,7 +119,7 @@ const BaseCard = ({ item, type, className = "" }) => {
         className={`absolute inset-0 bg-main/5 transition-opacity duration-150
             ${isPressed ? "opacity-100" : "opacity-0"}`}
       />
-    </Link>
+    </div>
   );
 };
 
