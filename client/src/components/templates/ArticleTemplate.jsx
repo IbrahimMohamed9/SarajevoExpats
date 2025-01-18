@@ -8,9 +8,11 @@ import ErrorDisplay from "@molecules/ErrorDisplay";
 import { useEffect, useState } from "react";
 import LoadingArticle from "@templates/LoadingArticle";
 import getArticle from "@/utils/getArticle";
+import { useRecoilState } from "recoil";
+import { loadingAtom } from "@/store/atoms/loadingAtom";
 
 const ArticleTemplate = ({ contentType, url }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useRecoilState(loadingAtom);
   const [article, setArticle] = useState();
 
   useEffect(() => {
