@@ -9,6 +9,8 @@ import Link from "next/link";
 const BaseCard = ({ item, type, className = "" }) => {
   const route = useRouter();
 
+  console.log(item);
+
   const title = item?.title || item?.name;
   const image = item?.picture;
   const content = item?.content;
@@ -78,14 +80,15 @@ const BaseCard = ({ item, type, className = "" }) => {
         isPressed
           ? "scale-[0.98] shadow-sm"
           : isHovered
-          ? "scale-[1.02] shadow-xl -translate-y-1"
+          ? "scale-[1.02] shadow-xl -translate-y-1 bg-gray-50"
           : "shadow-md hover:shadow-xl"
-      } ${className}`}
+      } rounded-lg overflow-hidden cursor-pointer select-none ${className}`}
     >
       <BaseCardImage
-        src={image}
-        alt={title}
-        className="h-40 min-[425px]:h-52"
+        image={image}
+        title={title}
+        isHovered={isHovered}
+        isPressed={isPressed}
       />
       <BaseCardContent
         title={title}
@@ -93,6 +96,7 @@ const BaseCard = ({ item, type, className = "" }) => {
         date={date}
         type={type}
         values={values}
+        isHovered={isHovered}
       />
       <div
         className={`absolute inset-0 bg-main/5 transition-opacity duration-150
