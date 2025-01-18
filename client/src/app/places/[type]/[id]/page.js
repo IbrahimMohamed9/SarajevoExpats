@@ -1,5 +1,4 @@
 import ArticleTemplete from "@templates/ArticleTemplete";
-import getArticle from "@/utils/getArticle";
 
 export async function generateMetadata({ params }) {
   const type = params.type;
@@ -32,9 +31,7 @@ export async function generateMetadata({ params }) {
 }
 
 const Page = async ({ params }) => {
-  const article = await getArticle(`/places/${params.id}`);
-
-  return <ArticleTemplete article={article} contentType="Place" />;
+  return <ArticleTemplete url={`/places/${params.id}`} contentType="Place" />;
 };
 
 export default Page;

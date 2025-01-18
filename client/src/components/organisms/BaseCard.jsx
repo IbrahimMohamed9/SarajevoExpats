@@ -80,9 +80,7 @@ const BaseCard = ({ item, type, className = "" }) => {
   return (
     <div
       onClick={() => {
-        const href = getHref();
-        setLoading((prev) => ({ ...prev, article: true }));
-        route.push(href);
+        route.push(getHref());
       }}
       className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 ${
         isPressed

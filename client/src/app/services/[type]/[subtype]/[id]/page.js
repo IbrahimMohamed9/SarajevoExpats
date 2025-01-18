@@ -52,9 +52,9 @@ export async function generateMetadata({ params }) {
 }
 
 const Page = async ({ params }) => {
-  const article = await getArticle(`/services/${params.id}`);
-
-  return <ArticleTemplete article={article} contentType="Service" />;
+  return (
+    <ArticleTemplete url={`/services/${params.id}`} contentType="Service"  />
+  );
 };
 
 export default Page;

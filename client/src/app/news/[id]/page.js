@@ -16,21 +16,16 @@ export async function generateMetadata({ params }) {
 
   const keywords = [
     article.title,
-    "Sarajevo news",
-    "expat news",
-    "Sarajevo updates",
+    "Sarajevo",
+    "news",
+    "expats",
   ]
     .filter(Boolean)
     .join(", ");
 
-  const publishDate = new Date(article.createdAt).toISOString();
-  const modifyDate = article.updatedAt
-    ? new Date(article.updatedAt).toISOString()
-    : publishDate;
-
   return {
     metadataBase: new URL("https://sarajevoexpats.com"),
-    title: `${article.title} | Sarajevo Expats News`,
+    title: `${article.title} | News | Sarajevo Expats`,
     description: metaDescription,
     keywords: keywords,
     openGraph: {
@@ -47,37 +42,15 @@ export async function generateMetadata({ params }) {
       type: "article",
       locale: "en_US",
       siteName: "Sarajevo Expats",
-      publishedTime: publishDate,
-      modifiedTime: modifyDate,
+      publishedTime: article.createdAt,
+      modifiedTime: article.updatedAt,
       section: "News",
-      authors: ["Sarajevo Expats"],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: article.title,
-      description: metaDescription,
-      images: [article.picture],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    alternates: {
-      canonical: `https://sarajevoexpats.com/news/${params.id}`,
     },
   };
 }
 
 const Page = async ({ params }) => {
-  const article = await getArticle(`/news/${params.id}`);
-
-  return <ArticleTemplete article={article} contentType="News" />;
+  return <ArticleTemplete url={`/news/${params.id}`} contentType="News" />;
 };
 
 export default Page;

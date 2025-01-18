@@ -14,39 +14,23 @@ export async function generateMetadata({ params }) {
       .substring(0, 155)
       .trim() + "...";
 
-  const eventDate = new Date(article.eventDate).toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
   const keywords = [
     article.title,
-    "Sarajevo events",
-    "events in Sarajevo",
-    article.category,
-    "expat events",
-    "community events",
-    article.location,
-    ...(article.tags || []),
+    "Sarajevo",
+    "events",
+    "expats",
   ]
     .filter(Boolean)
     .join(", ");
 
-  const publishDate = new Date(article.createdAt).toISOString();
-  const modifyDate = article.updatedAt
-    ? new Date(article.updatedAt).toISOString()
-    : publishDate;
-
   return {
     metadataBase: new URL("https://sarajevoexpats.com"),
-    title: `${article.title} | Events in Sarajevo | Sarajevo Expats`,
-    description: `Join us for ${article.title} on ${eventDate} at ${article.location}. ${metaDescription}`,
+    title: `${article.title} | Events | Sarajevo Expats`,
+    description: metaDescription,
     keywords: keywords,
     openGraph: {
       title: article.title,
-      description: `Join us for ${article.title} on ${eventDate} at ${article.location}. ${metaDescription}`,
+      description: metaDescription,
       images: [
         {
           url: article.picture,
@@ -55,40 +39,18 @@ export async function generateMetadata({ params }) {
           alt: article.title,
         },
       ],
-      type: "website",
+      type: "article",
       locale: "en_US",
       siteName: "Sarajevo Expats",
-      publishedTime: publishDate,
-      modifiedTime: modifyDate,
+      publishedTime: article.createdAt,
+      modifiedTime: article.updatedAt,
       section: "Events",
-      authors: ["Sarajevo Expats"],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${article.title} | Event in Sarajevo`,
-      description: `Join us on ${eventDate} at ${article.location}. ${metaDescription}`,
-      images: [article.picture],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    alternates: {
-      canonical: `https://sarajevoexpats.com/events/${params.id}`,
     },
   };
 }
 
 const Page = async ({ params }) => {
-  const article = await getArticle(`/events/${params.id}`);
-
-  return <ArticleTemplete article={article} contentType="Event" />;
+  return <ArticleTemplete url={`/events/${params.id}`} contentType="Event" />;
 };
 
 export default Page;
