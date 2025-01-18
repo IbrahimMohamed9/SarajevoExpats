@@ -7,7 +7,7 @@ import AdBanner from "@atoms/AdBanner";
 import WhatsappLink from "@atoms/WhatsappLink";
 import { useRecoilValue } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
-import LoadingCards from "./LoadingCards";
+import LoadingArticle from "./LoadingArticle";
 
 const HomeTemplate = ({
   news,
@@ -18,7 +18,7 @@ const HomeTemplate = ({
 }) => {
   const loading = useRecoilValue(loadingAtom);
 
-  if (loading) return <LoadingCards />;
+  if (loading) return <LoadingArticle />;
 
   return (
     <div className="grid md:grid-cols-[1fr,340px] gap-4  max-w-7xl mx-auto -mt-11">
