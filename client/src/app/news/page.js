@@ -1,4 +1,4 @@
-import CardsTemplete from "@templates/CardsTemplete";
+import CardsTemplate from "@templates/CardsTemplate";
 import axiosInstance from "@/config/axios";
 import LatestNewsLayout from "@molecules/LatestNewsLayout";
 
@@ -39,7 +39,7 @@ const News = async () => {
     <div className="-mt-7">
       {latestNews && <LatestNewsLayout latestNews={latestNews} />}
       <div className="max-w-7xl mx-auto px-4">
-        <CardsTemplete data={news} type="news" />
+        <CardsTemplate data={news} type="news" />
       </div>
     </div>
   );

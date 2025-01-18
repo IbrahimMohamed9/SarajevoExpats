@@ -1,4 +1,4 @@
-import CardsTemplete from "@templates/CardsTemplete";
+import CardsTemplate from "@templates/CardsTemplate";
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
@@ -30,7 +30,7 @@ export const metadata = {
 };
 
 const Events = () => {
-  return <CardsTemplete url="/events" type="events" />;
+  return <CardsTemplate url="/events" type="events" />;
 };
 
 export default Events;

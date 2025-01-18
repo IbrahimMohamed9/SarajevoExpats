@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import LoadingArticle from "@templates/LoadingArticle";
 import getArticle from "@/utils/getArticle";
 
-const ArticleTemplete = ({ contentType, url }) => {
+const ArticleTemplate = ({ contentType, url }) => {
   const [loading, setLoading] = useState(true);
   const [article, setArticle] = useState();
 
@@ -61,4 +61,4 @@ const ArticleTemplete = ({ contentType, url }) => {
   );
 };
 
-export default ArticleTemplete;
+export default ArticleTemplate;

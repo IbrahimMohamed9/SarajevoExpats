@@ -1,4 +1,4 @@
-import CardsTemplete from "@templates/CardsTemplete";
+import CardsTemplate from "@templates/CardsTemplate";
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
@@ -20,7 +20,7 @@ export const metadata = {
 
 const Page = async ({ params }) => {
   return (
-    <CardsTemplete url={`/places/by-place-type/${params.type}`} type="places" />
+    <CardsTemplate url={`/places/by-place-type/${params.type}`} type="places" />
   );
 };
 

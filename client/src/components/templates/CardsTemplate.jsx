@@ -4,16 +4,18 @@ import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
 import ErrorDisplay from "@molecules/ErrorDisplay";
 import { useEffect, useState } from "react";
-import LoadingCards from './LoadingCards';
+import LoadingCards from "./LoadingCards";
+import { useRecoilState } from "recoil";
+import { loadingAtom } from "@/store/atoms/loadingAtom";
 
 const getSingularForm = (string) => {
   if (string === "news") return string;
   return string.slice(0, string.length - 1);
 };
 
-const CardsTemplete = ({ url, type, data }) => {
+const CardsTemplate = ({ url, type, data }) => {
   const [items, setItems] = useState(data);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useRecoilState(loadingAtom);
 
   useEffect(() => {
     const init = async () => {
@@ -21,13 +23,13 @@ const CardsTemplete = ({ url, type, data }) => {
         const response = await axiosInstance.get(url);
         setItems(response.data);
       }
-      setLoading(false)
+      setLoading(false);
     };
 
     init();
   }, []);
 
-  if (loading) return <LoadingCards />
+  if (loading) return <LoadingCards />;
 
   if (!items || items.length === 0) {
     return (
@@ -53,4 +55,4 @@ const CardsTemplete = ({ url, type, data }) => {
   );
 };
 
-export default CardsTemplete;
+export default CardsTemplate;

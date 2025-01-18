@@ -1,4 +1,4 @@
-import ArticleTemplete from "@templates/ArticleTemplete";
+import ArticleTemplate from "@templates/ArticleTemplate";
 import getArticle from "@/utils/getArticle";
 
 export async function generateMetadata({ params }) {
@@ -14,12 +14,7 @@ export async function generateMetadata({ params }) {
       .substring(0, 155)
       .trim() + "...";
 
-  const keywords = [
-    article.title,
-    "Sarajevo",
-    "events",
-    "expats",
-  ]
+  const keywords = [article.title, "Sarajevo", "events", "expats"]
     .filter(Boolean)
     .join(", ");
 
@@ -50,7 +45,7 @@ export async function generateMetadata({ params }) {
 }
 
 const Page = async ({ params }) => {
-  return <ArticleTemplete url={`/events/${params.id}`} contentType="Event" />;
+  return <ArticleTemplate url={`/events/${params.id}`} contentType="Event" />;
 };
 
 export default Page;

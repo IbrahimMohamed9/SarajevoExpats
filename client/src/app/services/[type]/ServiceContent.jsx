@@ -1,5 +1,5 @@
 import FilterSection from "@molecules/FilterSection";
-import CardsTemplete from "@templates/CardsTemplete";
+import CardsTemplate from "@templates/CardsTemplate";
 import axiosInstance from "@/config/axios";
 import ErrorDisplay from "@molecules/ErrorDisplay";
 
@@ -40,7 +40,7 @@ const ServiceContent = async ({ type, subtype }) => {
           selectedType={subtype || null}
         />
 
-        <CardsTemplete data={filteredServices} type="services" />
+        <CardsTemplate data={filteredServices} type="services" />
       </>
     );
   } catch (err) {

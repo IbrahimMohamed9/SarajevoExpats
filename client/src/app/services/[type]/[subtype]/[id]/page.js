@@ -1,4 +1,4 @@
-import ArticleTemplete from "@templates/ArticleTemplete";
+import ArticleTemplate from "@templates/ArticleTemplate";
 import getArticle from "@/utils/getArticle";
 
 export async function generateMetadata({ params }) {
@@ -53,7 +53,7 @@ export async function generateMetadata({ params }) {
 
 const Page = async ({ params }) => {
   return (
-    <ArticleTemplete url={`/services/${params.id}`} contentType="Service"  />
+    <ArticleTemplate url={`/services/${params.id}`} contentType="Service" />
   );
 };
 

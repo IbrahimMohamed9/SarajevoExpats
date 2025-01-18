@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import BaseCardImage from "@atoms/BaseCardImage";
 import BaseCardContent from "@molecules/BaseCardContent";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSetRecoilState } from "recoil";
+import { loadingAtom } from "@/store/atoms/loadingAtom";
 
 const BaseCard = ({ item, type, className = "" }) => {
-  const route = useRouter();
-
-  console.log(item);
+  if (!item) return null;
 
   const title = item?.title || item?.name;
   const image = item?.picture;
@@ -24,6 +23,7 @@ const BaseCard = ({ item, type, className = "" }) => {
 
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
+  const setLoading = useSetRecoilState(loadingAtom);
   const timeoutRef = useRef(null);
 
   const handleMouseEnter = () => {
@@ -63,15 +63,10 @@ const BaseCard = ({ item, type, className = "" }) => {
 
   const href = getHref();
 
-  useEffect(() => {
-    route.prefetch(href);
-  }, [href, route]);
-
-  if (!item) return null;
-
   return (
     <Link
       href={href}
+      onClick={() => setLoading(true)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
