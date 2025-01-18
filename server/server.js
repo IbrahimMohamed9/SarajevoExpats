@@ -12,16 +12,35 @@ const options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Sarajevo Expats",
+      title: "Sarajevo Expats API",
       version: "1.0.0",
+      description: "API documentation for Sarajevo Expats platform",
+      contact: {
+        name: "Sarajevo Expats Support",
+        email: "support@sarajevoexpats.com",
+      },
     },
     servers: [
       {
-        url: "https://sarajevoexpats.com/",
+        url: "http://localhost:3030",
+        description: "Development server",
+      },
+      {
+        url: "https://sarajevoexpats.com",
+        description: "Production server",
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
-  apis: ["./routes/*.js"],
+  apis: [path.join(__dirname, "./routes/*.js")],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
@@ -32,37 +51,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Configure CORS
-const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = [
-      "https://www.sarajevoexpats.com",
-      "https://sarajevoexpats.com",
-      "http://localhost:3000",
-      "http://localhost:3030",
-    ];
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log("Blocked origin:", origin);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "Accept",
-    "X-Requested-With",
-  ],
-  exposedHeaders: ["Content-Range", "X-Content-Range"],
-  maxAge: 600,
-};
-
-app.use(cors(corsOptions));
-
-// Pre-flight OPTIONS for all routes
-app.options("*", cors(corsOptions));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://sarajevoexpats.com"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+    credentials: true,
+    maxAge: 600,
+  })
+);
 
 app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/events/", require("./routes/eventRoutes"));
@@ -75,17 +72,24 @@ app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
+app.use("/api/insta", require("./routes/insta.js"));
 
 const photosDir = path.join(__dirname, "photos");
 console.log("Serving photos from:", photosDir);
 app.use(
   "/api/photos",
+  (req, res, next) => {
+    res.set({
+      "Access-Control-Allow-Origin": ["http://localhost:3000", "https://sarajevoexpats.com"].includes(req.headers.origin) ? req.headers.origin : null,
+      "Cross-Origin-Resource-Policy": "cross-origin",
+      "Access-Control-Allow-Methods": "GET, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+      "Access-Control-Allow-Credentials": "true",
+    });
+    next();
+  },
   express.static(photosDir, {
     dotfiles: "deny",
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Cross-Origin-Resource-Policy": "cross-origin",
-    },
   })
 );
 

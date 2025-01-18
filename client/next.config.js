@@ -16,7 +16,6 @@ const nextConfig = {
     return config;
   },
   images: {
-    unoptimized: true,
     domains: ["sarajevoexpats.com", "images.pexels.com"],
     remotePatterns: [
       {
@@ -27,11 +26,13 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "sarajevoexpats.com",
-        pathname: "/**",
+        pathname: "/api/photos/**",
       },
     ],
     minimumCacheTTL: 60,
     formats: ["image/webp"],
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 };
 
