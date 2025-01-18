@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import BaseCardImage from "@atoms/BaseCardImage";
 import BaseCardContent from "@molecules/BaseCardContent";
 import { useRouter } from "next/navigation";
@@ -26,46 +26,32 @@ const BaseCard = ({ item, type, className = "" }) => {
 
   const handleMouseEnter = () => {
     setIsHovered(true);
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
   };
 
   const handleMouseLeave = () => {
-    if (isPressed) {
-      timeoutRef.current = setTimeout(() => {
-        setIsHovered(false);
-        setIsPressed(false);
-      }, 150);
-    } else {
-      setIsHovered(false);
-    }
+    setIsHovered(false);
+    setIsPressed(false);
   };
 
-  const handleTouchStart = () => {
-    setIsHovered(true);
+  const handleMouseDown = () => {
     setIsPressed(true);
   };
 
-  const handleTouchEnd = () => {
+  const handleMouseUp = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     timeoutRef.current = setTimeout(() => {
-      setIsHovered(false);
       setIsPressed(false);
     }, 150);
   };
 
   const getHref = () => {
-    if (!item || !item._id) return "/";
-
     switch (type) {
+      case "services":
+        return `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`;
+      case "places":
+        return `/places/${item.type}/${item._id}`;
       case "news":
         return `/news/${item._id}`;
-      case "services":
-        return item.serviceType && item.serviceSubtype
-          ? `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`
-          : "/";
-      case "places":
-        return item.type ? `/places/${item.type}/${item._id}` : "/";
       case "events":
         return `/events/${item._id}`;
       default:
@@ -74,45 +60,40 @@ const BaseCard = ({ item, type, className = "" }) => {
   };
 
   const href = getHref();
-  route.prefetch(href);
+
+  useEffect(() => {
+    route.prefetch(href);
+  }, [href, route]);
 
   if (!item) return null;
 
   return (
     <Link
       href={href}
-      onClick={() => route.push(href)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       className={`relative m-2 h-80 w-32 min-[425px]:w-48 flex flex-col transition-all duration-300 ${
         isPressed
           ? "scale-[0.98] shadow-sm"
           : isHovered
           ? "scale-[1.02] shadow-xl -translate-y-1"
           : "shadow-md hover:shadow-xl"
-      } ${
-        isHovered ? "bg-gray-50" : "bg-white"
-      } rounded-lg overflow-hidden cursor-pointer select-none ${className}`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={() => setIsPressed(true)}
-      onMouseUp={() => setIsPressed(false)}
+      } ${className}`}
     >
       <BaseCardImage
-        image={image}
-        title={title}
-        isHovered={isHovered}
-        isPressed={isPressed}
+        src={image}
+        alt={title}
+        className="h-40 min-[425px]:h-52"
       />
-
       <BaseCardContent
+        title={title}
         content={content}
         date={date}
-        title={title}
+        type={type}
         values={values}
-        isHovered={isHovered}
       />
-
       <div
         className={`absolute inset-0 bg-main/5 transition-opacity duration-150
             ${isPressed ? "opacity-100" : "opacity-0"}`}
