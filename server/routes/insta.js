@@ -183,8 +183,12 @@ router.route("/recent").get(async (req, res) => {
 
     // First get all post links
     const postLinks = await page.evaluate(() => {
-      const anchors = Array.from(document.querySelectorAll("article a[href*='/p/']"));
-      return anchors.map(a => a.href).filter((href, index, self) => self.indexOf(href) === index);
+      const anchors = Array.from(
+        document.querySelectorAll("article a[href*='/p/']")
+      );
+      return anchors
+        .map((a) => a.href)
+        .filter((href, index, self) => self.indexOf(href) === index);
     });
 
     console.log(`Found ${postLinks.length} post links`);
@@ -194,7 +198,7 @@ router.route("/recent").get(async (req, res) => {
     for (const postUrl of postLinks) {
       try {
         console.log(`Processing post: ${postUrl}`);
-        
+
         // Navigate to post page
         await page.goto(postUrl, {
           waitUntil: "networkidle0",
@@ -202,61 +206,92 @@ router.route("/recent").get(async (req, res) => {
         });
 
         // Get post details
-        const postDetails = await page.evaluate(() => {
-          // Get all media elements (images and videos)
-          const mediaElements = Array.from(document.querySelectorAll('img[src*="/p/"], video[src*="/p/"], source[src*="/p/"]'));
-          const mediaUrls = new Set(); // Use Set to avoid duplicates
-          
-          mediaElements.forEach(element => {
-            if (element.tagName.toLowerCase() === 'source' && element.src) {
-              mediaUrls.add({ type: 'video', url: element.src });
-            } else if (element.tagName.toLowerCase() === 'video' && element.src) {
-              mediaUrls.add({ type: 'video', url: element.src });
-            } else if (element.tagName.toLowerCase() === 'img' && element.src && !element.src.includes('profile')) {
-              mediaUrls.add({ type: 'image', url: element.src });
+        const postDetails = await page.evaluate(async () => {
+          // Function to get all visible images
+          const getAllImages = () => {
+            const images = Array.from(
+              document.querySelectorAll(
+                "article div._aagv > img[class*='x5yr21d xu96u03 x10l6tqk']"
+              )
+            );
+            return images.map((img) => ({ type: "image", url: img.src }));
+          };
+
+          // Function to click next button and wait for new images
+          const clickNext = async () => {
+            const nextButton = document.querySelector(
+              "button[aria-label='Next']"
+            );
+            if (nextButton) {
+              nextButton.click();
+              // Wait a bit for the new image to load
+              await new Promise((resolve) => setTimeout(resolve, 500));
+              return true;
             }
-          });
+            return false;
+          };
+
+          // Get all images including those in carousel
+          const mediaUrls = new Set();
+
+          // Get initial images
+          getAllImages().forEach((img) => mediaUrls.add(img));
+
+          // Keep clicking next while possible
+          let hasMore = true;
+          while (hasMore) {
+            hasMore = await clickNext();
+            if (hasMore) {
+              getAllImages().forEach((img) => mediaUrls.add(img));
+            }
+          }
 
           // Get time
-          const timeElement = document.querySelector('time');
-          const timeText = timeElement?.textContent || '';
+          const timeElement = document.querySelector("time");
+          const timeText = timeElement?.textContent || "";
 
           // Get caption
-          const captionElement = document.querySelector('h1') || document.querySelector('div._a9zs');
-          const caption = captionElement ? captionElement.textContent : '';
+          const captionElement =
+            document.querySelector("h1") || document.querySelector("div._a9zs");
+          const caption = captionElement ? captionElement.textContent : "";
 
           return {
             timeText,
             caption,
-            media: Array.from(mediaUrls)
+            media: Array.from(mediaUrls),
           };
         });
 
+        console.log(`Post time: ${postDetails.timeText}`);
+
         // Check if post is recent (less than 9 weeks)
         const timeText = postDetails.timeText.toLowerCase();
-        const weekMatch = timeText.match(/(\d+)\s*w/);
-        
+        const weekMatch = timeText.match(/(\d+)w/);
+
         let isRecent = false;
         if (weekMatch) {
           const weeks = parseInt(weekMatch[1]);
           isRecent = weeks < 9;
         } else {
-          isRecent = timeText.includes('d') || 
-                    timeText.includes('h') || 
-                    timeText.includes('m') ||
-                    timeText.includes('just now');
+          isRecent =
+            timeText.includes("d") ||
+            timeText.includes("h") ||
+            timeText.includes("m") ||
+            timeText.includes("just now");
         }
+        console.log(`Post media count: ${postDetails.media.length}`);
 
         if (isRecent && postDetails.media.length > 0) {
           processedPosts.push({
             postUrl,
             caption: postDetails.caption,
             timeAgo: postDetails.timeText,
-            media: postDetails.media
+            media: postDetails.media,
           });
-          console.log(`Added post from ${postDetails.timeText} ago with ${postDetails.media.length} media items`);
+          console.log(
+            `Added post from ${postDetails.timeText} ago with ${postDetails.media.length} media items`
+          );
         }
-
       } catch (error) {
         console.error(`Error processing post ${postUrl}:`, error);
         continue;
