@@ -2,7 +2,7 @@ import axios from "axios";
 import https from "https";
 
 const axiosInstance = axios.create({
-  baseURL: "https://sarajevoexpats.com/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     Accept: "application/json",

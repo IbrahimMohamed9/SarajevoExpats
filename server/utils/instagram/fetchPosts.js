@@ -16,6 +16,7 @@ async function fetchPosts(page) {
   }
 
   const processedPosts = [];
+  let counter = 0;
 
   // Process each post link
   for (const postUrl of postLinks) {
@@ -30,6 +31,8 @@ async function fetchPosts(page) {
       console.log(
         `Added post from (${fetchedDetails.timestamp}) with ${fetchedDetails.images.length} image(s) and ${fetchedDetails.videos.length} video(s)`
       );
+      counter++;
+      if (counter === 2) break;
     } catch (error) {
       console.error(`Error processing post ${postUrl}:`, error);
       continue;
