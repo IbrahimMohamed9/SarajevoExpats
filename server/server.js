@@ -30,15 +30,6 @@ const options = {
         description: "Production server",
       },
     ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-    },
   },
   apis: [path.join(__dirname, "./routes/*.js")],
 };
@@ -80,7 +71,12 @@ app.use(
   "/api/photos",
   (req, res, next) => {
     res.set({
-      "Access-Control-Allow-Origin": ["http://localhost:3000", "https://sarajevoexpats.com"].includes(req.headers.origin) ? req.headers.origin : null,
+      "Access-Control-Allow-Origin": [
+        "http://localhost:3000",
+        "https://sarajevoexpats.com",
+      ].includes(req.headers.origin)
+        ? req.headers.origin
+        : null,
       "Cross-Origin-Resource-Policy": "cross-origin",
       "Access-Control-Allow-Methods": "GET, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
