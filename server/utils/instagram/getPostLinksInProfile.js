@@ -21,6 +21,7 @@ async function getPostLinksInProfile(page, profileUrl) {
     for (let i = 0; i < 10; i++) {
       footer.scrollIntoView();
       await delay(2000);
+      console.log("Scrolling to footer");
     }
 
     const postsContainers = document.querySelectorAll(
