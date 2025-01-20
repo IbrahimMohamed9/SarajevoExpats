@@ -20,12 +20,6 @@ async function login(page) {
     await page.click('button[type="submit"]');
     console.log("Login successful");
     await page.waitForNavigation({ waitUntil: "networkidle0" });
-
-    await page
-      .waitForSelector('svg[aria-label="Instagram"]', { timeout: 10000 })
-      .catch(() => {
-        throw new Error("Login failed - could not verify successful login");
-      });
   } catch (error) {
     console.error("Instagram login failed:", error);
     throw error;
