@@ -11,7 +11,7 @@ const router = express.Router();
  * @swagger
  * components:
  *   securitySchemes:
- *     bearerAuth:
+ *     BearerAuth:
  *       type: http
  *       scheme: bearer
  *       bearerFormat: JWT
@@ -31,7 +31,7 @@ const router = express.Router();
  *     summary: Upload an image file
  *     tags: [Upload]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:

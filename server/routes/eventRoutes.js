@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {
   getEvents,
-  createEvent,
+  getEventsFromInstagram,
   getPinnedEvents,
   deleteEventById,
   updateEventById,
@@ -18,35 +18,36 @@ const validateAdminToken = require("../middleware/validateAdminToken");
  *     Event:
  *       type: object
  *       required:
- *         - title
  *         - content
- *         - picture
+ *         - images
+ *         - videos
  *         - url
+ *         - timestamp
  *       properties:
- *         title:
- *           type: string
- *           description: The title of the event
  *         content:
  *           type: string
- *           description: Description of the event
- *         picture:
- *           type: string
- *           description: URL of the event picture
- *         pictureDescription:
- *           type: string
- *           description: Description of the event picture
+ *           description: The content/caption of the Instagram post
+ *         images:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of image URLs from the Instagram post
+ *         videos:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of video URLs from the Instagram post
  *         url:
  *           type: string
- *           description: URL for more information about the event
- *         phone:
+ *           description: URL of the Instagram post
+ *         timestamp:
  *           type: string
- *           description: Contact phone number (either phone or email must be provided)
- *         email:
- *           type: string
- *           description: Contact email address (either phone or email must be provided)
+ *           format: date-time
+ *           description: Timestamp of when the post was created
  *         pinned:
  *           type: boolean
- *           description: Indicates if the event is pinned
+ *           description: Whether the event is pinned to the top
+ *           default: false
  *   securitySchemes:
  *     BearerAuth:
  *       type: http
@@ -70,19 +71,14 @@ const validateAdminToken = require("../middleware/validateAdminToken");
  *               items:
  *                 $ref: '#/components/schemas/Event'
  *   post:
- *     summary: Create a new event
+ *     summary: Fetch and create new events from Instagram
  *     tags: [Events]
  *     security:
  *       - BearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Event'
+ *     description: Fetches recent posts from Instagram and creates them as events. Only the first 2 posts will be returned in the response.
  *     responses:
  *       201:
- *         description: Event created successfully
+ *         description: Events successfully created from Instagram posts
  *         content:
  *           application/json:
  *             schema:
@@ -91,8 +87,10 @@ const validateAdminToken = require("../middleware/validateAdminToken");
  *                 message:
  *                   type: string
  *                   example: The event added successfully
- *                 event:
- *                   $ref: '#/components/schemas/Event'
+ *                 subEvents:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Event'
  *       400:
  *         description: Invalid input data or missing required fields
  *         content:
@@ -132,7 +130,10 @@ const validateAdminToken = require("../middleware/validateAdminToken");
  *                   example: Internal server error
  */
 
-router.route("/").get(getEvents).post(validateAdminToken, createEvent);
+router
+  .route("/")
+  .get(getEvents)
+  .post(validateAdminToken, getEventsFromInstagram);
 
 router.route("/pinned").get(getPinnedEvents);
 

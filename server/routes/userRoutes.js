@@ -140,6 +140,8 @@ const ValidateAdminOrMeToken = require("../middleware/ValidateAdminOrMeToken");
  *     description: Retrieve a user from the system by their unique ID.
  *     tags:
  *       - Users
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -156,11 +158,15 @@ const ValidateAdminOrMeToken = require("../middleware/ValidateAdminOrMeToken");
  *               $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
+ *       401:
+ *         description: Unauthorized - Admin token required
  *   put:
  *     summary: Update a user by their ID
  *     description: Update user details based on the provided user ID.
  *     tags:
  *       - Users
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -183,11 +189,15 @@ const ValidateAdminOrMeToken = require("../middleware/ValidateAdminOrMeToken");
  *               $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
+ *       401:
+ *         description: Unauthorized - Admin token required
  *   delete:
  *     summary: Delete a user by their ID
  *     description: Delete the user with the given ID.
  *     tags:
  *       - Users
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -208,6 +218,8 @@ const ValidateAdminOrMeToken = require("../middleware/ValidateAdminOrMeToken");
  *                   example: User deleted successfully
  *       404:
  *         description: User not found
+ *       401:
+ *         description: Unauthorized - Admin token required
  */
 
 router.route("/").get(validateAdminToken, getAllUsers).post(registerUser);
@@ -223,84 +235,6 @@ router.route("/me").get(ValidateAdminOrMeToken, getMe);
  * @returns {Object} Authenticated user object
  */
 router.route("/login").post(loggedInUser);
-
-/**
- * @swagger
- * /api/users/{id}:
- *   get:
- *     summary: Get a user by their ID
- *     description: Retrieve a user from the system by their unique ID.
- *     tags:
- *       - Users
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: The ID of the user
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: The user object
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: User not found
- *   put:
- *     summary: Update a user by their ID
- *     description: Update user details based on the provided user ID.
- *     tags:
- *       - Users
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: The ID of the user to update
- *         schema:
- *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       200:
- *         description: User updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: User not found
- *   delete:
- *     summary: Delete a user by their ID
- *     description: Delete the user with the given ID.
- *     tags:
- *       - Users
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: The ID of the user to delete
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: User deleted successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: User deleted successfully
- *       404:
- *         description: User not found
- */
 
 router
   .route("/:id")
