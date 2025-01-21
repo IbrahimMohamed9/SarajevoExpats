@@ -10,6 +10,7 @@ async function getPostLinksInProfile(page, profileUrl) {
 
   return await page.evaluate(async () => {
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    console.log("evaluate");
 
     const getUniqueHrefs = (elements) => {
       const hrefs = new Set();

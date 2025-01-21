@@ -1,10 +1,7 @@
 const getPostLinksInProfile = require("./getPostLinksInProfile");
-const login = require("./login");
 const postDetails = require("./postDetails");
 
 async function fetchPosts(page) {
-  await login(page);
-
   const profileUrl = "https://www.instagram.com/maptobe.app/";
   const postLinks = await getPostLinksInProfile(page, profileUrl);
 

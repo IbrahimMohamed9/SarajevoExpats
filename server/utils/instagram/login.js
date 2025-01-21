@@ -1,3 +1,5 @@
+const delay = require("../delay");
+
 async function login(page) {
   try {
     console.log("Logging into Instagram...");
@@ -20,6 +22,8 @@ async function login(page) {
     await page.click('button[type="submit"]');
     console.log("Login successful");
     await page.waitForNavigation({ waitUntil: "networkidle0" });
+
+    // await delay(50000);
   } catch (error) {
     console.error("Instagram login failed:", error);
     throw error;
