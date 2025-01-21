@@ -18,8 +18,11 @@ async function login(page) {
       'input[aria-label="Phone number, username, or email"]',
       process.env.INSTAGRAM_USERNAME
     );
+    console.log("Username entered");
+
     await page.type('input[name="password"]', process.env.INSTAGRAM_PASSWORD);
     await page.click('button[type="submit"]');
+    await delay(8000);
     console.log("Login successful");
 
     console.log("Current URL:", page.url());
