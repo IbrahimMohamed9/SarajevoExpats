@@ -24,7 +24,7 @@ const Home = async () => {
     axiosInstance.get("/news"),
     axiosInstance.get("/places"),
     axiosInstance.get("/services"),
-    axiosInstance.get("/events/pinned"),
+    axiosInstance.get("/events"),
   ]);
 
   const [news, places, services, events] = [

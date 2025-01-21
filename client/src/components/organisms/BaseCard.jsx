@@ -11,7 +11,7 @@ const BaseCard = ({ item, type, className = "" }) => {
   if (!item) return null;
 
   const title = item?.title || item?.name;
-  const image = item?.picture;
+  const image = item?.picture || item?.images[0];
   const content = item?.content;
   const date = item?.createdAt || item?.date;
   const values = {
@@ -46,7 +46,8 @@ const BaseCard = ({ item, type, className = "" }) => {
     if (isPressed) {
       const rect = elementRef.current?.getBoundingClientRect();
       const moveDistance = Math.abs(rect?.left - startPosition);
-      if (moveDistance > 5) { // Small threshold to detect intentional drag
+      if (moveDistance > 5) {
+        // Small threshold to detect intentional drag
         setIsDragging(true);
       }
     }
@@ -113,6 +114,7 @@ const BaseCard = ({ item, type, className = "" }) => {
         title={title}
         isHovered={isHovered}
         isPressed={isPressed}
+        type={type}
       />
       <BaseCardContent
         title={title}

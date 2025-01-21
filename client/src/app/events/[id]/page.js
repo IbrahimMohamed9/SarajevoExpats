@@ -14,32 +14,34 @@ export async function generateMetadata({ params }) {
       .substring(0, 155)
       .trim() + "...";
 
-  const keywords = [article.title, "Sarajevo", "events", "expats"]
-    .filter(Boolean)
-    .join(", ");
+  // Get first line of content as title if no title exists
+  const contentTitle = article.content
+    .replace(/<[^>]*>/g, "")
+    .split("\n")[0]
+    .substring(0, 60)
+    .trim();
+
+  const title = article.title || contentTitle || "Event";
+
+  const keywords = ["Sarajevo", "events", "expats"].filter(Boolean).join(", ");
+
+  // Handle array of images or single picture
+  const images = article.images.map((img) => ({
+    url: img,
+    width: 1200,
+    height: 630,
+    alt: title,
+  }));
 
   return {
     metadataBase: new URL("https://sarajevoexpats.com"),
-    title: `${article.title} | Events | Sarajevo Expats`,
+    title: `${title} | Events | Sarajevo Expats`,
     description: metaDescription,
     keywords: keywords,
     openGraph: {
-      title: article.title,
+      title: title,
       description: metaDescription,
-      images: [
-        {
-          url: article.picture,
-          width: 1200,
-          height: 630,
-          alt: article.title,
-        },
-      ],
-      type: "article",
-      locale: "en_US",
-      siteName: "Sarajevo Expats",
-      publishedTime: article.createdAt,
-      modifiedTime: article.updatedAt,
-      section: "Events",
+      images: images,
     },
   };
 }

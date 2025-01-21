@@ -4,18 +4,15 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
-const InstagramEmbed = dynamic(() => import("@atoms/InstagramEmbed"), {
-  ssr: false,
-});
 
-const ArticleImage = ({ src, alt, description, type = "image" }) => {
+const ArticleMedia = ({ src, alt, description, type = "image" }) => {
   const videoRef = useRef(null);
-  const isInstagramVideo = type === "video" && src?.includes("instagram.com");
+  const isBlobUrl = src?.startsWith("blob:");
+  const isVideo = type === "video" || isBlobUrl;
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
-        // Autoplay might be blocked by browser
         console.log("Autoplay blocked");
       });
     }
@@ -24,28 +21,21 @@ const ArticleImage = ({ src, alt, description, type = "image" }) => {
   return (
     <div className="space-y-4 mb-12 animate-fade-in">
       <div
-        className={`relative mx-auto overflow-hidden shadow-2xl 
-        transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20
-        ${!isInstagramVideo ? "w-fit h-auto rounded-xl" : "w-full"}`}
+        className="relative mx-auto overflow-hidden shadow-2xl w-fit h-auto rounded-xl
+        transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20"
       >
-        {type === "video" ? (
-          isInstagramVideo ? (
-            <InstagramEmbed url={src} />
-          ) : (
-            <video
-              ref={videoRef}
-              src={src}
-              controls
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="max-h-[600px] w-auto"
-              preload="metadata"
-            >
-              Your browser does not support the video tag.
-            </video>
-          )
+        {isVideo ? (
+          <video
+            ref={videoRef}
+            src={src}
+            controls
+            autoPlay
+            playsInline
+            className="max-h-[600px] w-auto mx-auto"
+            preload="metadata"
+          >
+            Your browser does not support the video tag.
+          </video>
         ) : (
           <Image
             src={src}
@@ -56,9 +46,7 @@ const ArticleImage = ({ src, alt, description, type = "image" }) => {
             priority
           />
         )}
-        {!isInstagramVideo && (
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
-        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
       </div>
       {description && (
         <div
@@ -95,4 +83,4 @@ const ArticleImage = ({ src, alt, description, type = "image" }) => {
   );
 };
 
-export default ArticleImage;
+export default ArticleMedia;

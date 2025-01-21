@@ -11,14 +11,14 @@ const generateUniqueFilename = (url, extension) => {
 };
 
 const axiosInstance = axios.create({
-  timeout: 30000, // 30 seconds
+  timeout: 30000,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false,
     keepAlive: true,
     timeout: 30000,
   }),
   maxRedirects: 5,
-  maxContentLength: 50 * 1024 * 1024, // 50MB
+  maxContentLength: 50 * 1024 * 1024,
 });
 
 const downloadWithRetry = async (url, retries = 3) => {
@@ -46,7 +46,6 @@ const downloadWithRetry = async (url, retries = 3) => {
       if (attempt === retries) {
         throw error;
       }
-      // Wait before retrying (exponential backoff)
       await new Promise((resolve) =>
         setTimeout(resolve, Math.pow(2, attempt) * 1000)
       );
@@ -62,20 +61,16 @@ const downloadImage = async (url) => {
     const extension = contentType.includes("jpeg") ? ".jpg" : ".webp";
 
     const filename = generateUniqueFilename(url, extension);
-    const uploadDir = process.env.PHOTOS_URL + "/test";
-
-    if (!uploadDir) {
-      throw new Error("PHOTOS_URL environment variable is not set");
-    }
+    const mediaDir = path.join(__dirname, "../media/photos/instagram");
 
     // Ensure the directory exists
-    await fs.mkdir(uploadDir, { recursive: true });
+    await fs.mkdir(mediaDir, { recursive: true });
 
-    const filepath = path.join(uploadDir, filename);
+    const filepath = path.join(mediaDir, filename);
     await fs.writeFile(filepath, response.data);
 
-    // Return the full path where the image was saved
-    return filepath;
+    // Return the relative path for the API
+    return `photos/${filename}`;
   } catch (error) {
     console.error("Error downloading image:", error.message);
     return null;

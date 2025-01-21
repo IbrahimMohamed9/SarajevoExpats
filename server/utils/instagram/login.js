@@ -7,6 +7,9 @@ async function login(page) {
       waitUntil: "networkidle0",
       timeout: 60000,
     });
+    await delay(2000);
+    const currentUrl = page.url();
+    console.log("Current URL:", currentUrl);
 
     await page.waitForSelector(
       'input[aria-label="Phone number, username, or email"]'
@@ -16,14 +19,10 @@ async function login(page) {
       'input[aria-label="Phone number, username, or email"]',
       process.env.INSTAGRAM_USERNAME
     );
-    console.log("Entered username");
     await page.type('input[name="password"]', process.env.INSTAGRAM_PASSWORD);
-    console.log("Entered password");
     await page.click('button[type="submit"]');
     console.log("Login successful");
     await page.waitForNavigation({ waitUntil: "networkidle0" });
-
-    // await delay(50000);
   } catch (error) {
     console.error("Instagram login failed:", error);
     throw error;

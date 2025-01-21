@@ -46,5 +46,5 @@ error.log
 *.log
 /error.log
 
-# photos
-/photos
+# media
+/media

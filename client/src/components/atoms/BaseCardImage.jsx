@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Skeleton } from "@mui/material";
 import Image from "next/image";
 
-const BaseCardImage = ({ image, title, isHovered, isPressed }) => {
+const BaseCardImage = ({ image, title, isHovered, isPressed, type }) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
@@ -13,7 +13,11 @@ const BaseCardImage = ({ image, title, isHovered, isPressed }) => {
   const imageSource = !imageError && image ? image : defaultImage;
 
   return (
-    <div className="relative w-full h-32 bg-gray-100 overflow-hidden">
+    <div
+      className={`relative w-full h-32 bg-gray-100 overflow-hidden  ${
+        type === "events" ? "h-64" : ""
+      }`}
+    >
       {imageLoading && (
         <div className="absolute inset-0 z-10">
           <Skeleton
@@ -31,10 +35,9 @@ const BaseCardImage = ({ image, title, isHovered, isPressed }) => {
         alt={title || "Image"}
         fill
         sizes="200px"
-        className={`object-cover transition-all duration-500 
-          ${imageLoading ? "opacity-0" : "opacity-100"}
-          ${isHovered ? "scale-110" : ""} 
-          ${isPressed ? "scale-105" : ""}`}
+        className={`object-cover transition-all duration-500 ${
+          imageLoading ? "opacity-0" : "opacity-100"
+        } ${isHovered ? "scale-110" : ""} ${isPressed ? "scale-105" : ""}`}
         priority
         onLoadingComplete={() => setImageLoading(false)}
         onError={() => {

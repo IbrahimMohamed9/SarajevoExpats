@@ -2,7 +2,8 @@ const asyncHandler = require("express-async-handler");
 const Event = require("../models/eventModel");
 const { checkNotFound } = require("../utils");
 const fetchPosts = require("../utils/instagram/fetchPosts");
-const puppeteer = require("puppeteer");
+const login = require("../utils/instagram/login");
+const initializeBrowser = require("../utils/initializeBrowser");
 
 //@desc Get all events
 //@route GET /api/events
@@ -34,17 +35,14 @@ const getPinnedEvents = asyncHandler(async (req, res) => {
 //@route POST /api/events
 //@access private/admin
 const getEventsFromInstagram = asyncHandler(async (req, res) => {
-  let browser;
   try {
-    browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox"],
-    });
+    const { browser, first } = await initializeBrowser();
     const page = await browser.newPage();
+    if (first) {
+      await login(page);
+    }
 
-    const events = await fetchPosts(page);
-    await browser.close();
-
+    const events = await fetchPosts(page, first);
     if (!events || events.length === 0) {
       return res
         .status(404)
@@ -55,12 +53,17 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
     const createdEvents = [];
 
     for (const event of events) {
+      const eventExists = await Event.findOne({ url: event.postUrl });
+      if (eventExists) {
+        continue;
+      }
+
       const newEvent = await Event.create({
         content: event.content,
         images: event.images,
         videos: event.videos,
         url: event.postUrl,
-        timestamp: event.timestamp,
+        date: event.date,
         pinned: false,
       });
 
@@ -75,7 +78,6 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
       events: createdEvents,
     });
   } catch (error) {
-    if (browser) await browser.close();
     throw error;
   }
 });

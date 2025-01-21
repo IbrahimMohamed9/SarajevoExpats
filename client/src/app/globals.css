@@ -21,6 +21,7 @@ a:visited {
 /* Webkit scrollbar styles */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -34,4 +35,15 @@ a:visited {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #ff6f00;
+}
+
+.instagram-embed {
+  width: 100% !important;
+  max-width: 540px !important;
+  margin: 0 auto !important;
+}
+
+.instagram-embed iframe {
+  width: 100% !important;
+  min-width: unset !important;
 }

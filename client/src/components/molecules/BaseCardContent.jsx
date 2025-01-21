@@ -10,11 +10,14 @@ const BaseCardContent = ({ title, content, date, values, isHovered }) => {
       className={`flex-1 flex flex-col p-3 relative transition-all duration-300
             ${isHovered ? "bg-gray-50" : ""}`}
     >
-      <BaseCardTitle title={title} isHovered={isHovered} />
-
+      {title && <BaseCardTitle title={title} isHovered={isHovered} />}
       <div
-        className={`line-clamp-3 max-h-fit flex-1 text-xs transition-all duration-300 ${
+        className={`max-h-fit flex-1 transition-all line-clamp-3 duration-300 ${
           isHovered ? "text-gray-800" : "text-gray-600"
+        } ${
+          title
+            ? "text-xs mt-1"
+            : "text-sm leading-relaxed tracking-wide line-clamp-5"
         }`}
       >
         <SafeHtml content={content.replace(/<[^>]*>/g, "")} />

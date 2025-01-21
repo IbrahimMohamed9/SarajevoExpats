@@ -6,6 +6,7 @@ const swaggerUi = require("swagger-ui-express");
 const errorHandler = require("./middleware/errorHandler");
 const cors = require("cors");
 const path = require("path");
+const { scheduleInstagramEventsFetch } = require("./cronJobs");
 
 const options = {
   failOnErrors: true,
@@ -68,10 +69,10 @@ app.use("/api/users/", require("./routes/userRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use("/api/insta", require("./routes/insta.js"));
 
-const photosDir = path.join(__dirname, "photos");
-console.log("Serving photos from:", photosDir);
+const mediaDir = path.join(__dirname, "media");
+console.log("Serving media from:", mediaDir);
 app.use(
-  "/api/photos",
+  "/api/media",
   (req, res, next) => {
     res.set({
       "Access-Control-Allow-Origin": [
@@ -87,7 +88,7 @@ app.use(
     });
     next();
   },
-  express.static(photosDir, {
+  express.static(mediaDir, {
     dotfiles: "deny",
   })
 );
@@ -103,4 +104,7 @@ const server = app.listen(port, host_name, () => {
       server.address().port
     }`
   );
+
+  // Initialize cron jobs
+  scheduleInstagramEventsFetch();
 });

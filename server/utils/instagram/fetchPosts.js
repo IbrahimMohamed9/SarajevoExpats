@@ -1,9 +1,9 @@
 const getPostLinksInProfile = require("./getPostLinksInProfile");
 const postDetails = require("./postDetails");
 
-async function fetchPosts(page) {
+async function fetchPosts(page, first) {
   const profileUrl = "https://www.instagram.com/maptobe.app/";
-  const postLinks = await getPostLinksInProfile(page, profileUrl);
+  const postLinks = await getPostLinksInProfile(page, profileUrl, first);
 
   console.log(`Found ${postLinks.length} unique post links`);
   if (postLinks.length === 0) {
@@ -13,7 +13,6 @@ async function fetchPosts(page) {
   }
 
   const processedPosts = [];
-  let counter = 0;
 
   // Process each post link
   for (const postUrl of postLinks) {
@@ -26,15 +25,14 @@ async function fetchPosts(page) {
         ...fetchedDetails,
       });
       console.log(
-        `Added post from (${fetchedDetails.timestamp}) with ${fetchedDetails.images.length} image(s) and ${fetchedDetails.videos.length} video(s)`
+        `Added post from (${fetchedDetails.date}) with ${fetchedDetails.images.length} image(s) and ${fetchedDetails.videos.length} video(s)`
       );
-      counter++;
-      if (counter === 2) break;
     } catch (error) {
       console.error(`Error processing post ${postUrl}:`, error);
       continue;
     }
   }
+  page.close();
 
   return processedPosts;
 }
