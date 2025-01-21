@@ -22,6 +22,9 @@ async function login(page) {
     await page.type('input[name="password"]', process.env.INSTAGRAM_PASSWORD);
     await page.click('button[type="submit"]');
     console.log("Login successful");
+
+    const currentUrl = page.url();
+    console.log("Current URL:", currentUrl);
     await page.waitForNavigation({ waitUntil: "networkidle0" });
   } catch (error) {
     console.error("Instagram login failed:", error);
