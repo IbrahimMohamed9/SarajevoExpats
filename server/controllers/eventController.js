@@ -37,6 +37,10 @@ const getPinnedEvents = asyncHandler(async (req, res) => {
 const getEventsFromInstagram = asyncHandler(async (req, res) => {
   try {
     const { browser, first } = await initializeBrowser();
+    if (!browser) {
+      throw new Error("Browser initialization failed");
+    }
+
     const page = await browser.newPage();
     if (first) {
       await login(page);
