@@ -105,7 +105,8 @@ const ArticleTemplate = ({ contentType, url }) => {
           <ContactInfo
             phone={article.phone}
             email={article.email}
-            location={article.link}
+            location={!isEvent ? article.link : null}
+            instagramLink={isEvent ? article.url : null}
           />
         </article>
       </div>
