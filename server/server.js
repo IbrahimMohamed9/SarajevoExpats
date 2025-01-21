@@ -71,22 +71,25 @@ app.use("/api/insta", require("./routes/insta.js"));
 
 const mediaDir = path.join(__dirname, "media");
 console.log("Serving media from:", mediaDir);
+const getMedia = (req, res, next) => {
+  res.set({
+    "Access-Control-Allow-Origin": [
+      "http://localhost:3000",
+      "https://sarajevoexpats.com",
+    ].includes(req.headers.origin)
+      ? req.headers.origin
+      : null,
+    "Cross-Origin-Resource-Policy": "cross-origin",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
+    "Access-Control-Allow-Credentials": "true",
+  });
+  next();
+};
 app.use(
-  "/api/media",
+  "/api/media/",
   (req, res, next) => {
-    res.set({
-      "Access-Control-Allow-Origin": [
-        "http://localhost:3000",
-        "https://sarajevoexpats.com",
-      ].includes(req.headers.origin)
-        ? req.headers.origin
-        : null,
-      "Cross-Origin-Resource-Policy": "cross-origin",
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization, Accept",
-      "Access-Control-Allow-Credentials": "true",
-    });
-    next();
+    getMedia(req, res, next);
   },
   express.static(mediaDir, {
     dotfiles: "deny",

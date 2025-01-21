@@ -28,12 +28,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "sarajevoexpats.com",
-        pathname: "/api/photos/**",
+        pathname: "/api/media/**",
       },
       {
         protocol: "https",
         hostname: "localhost:3030",
-        pathname: "/api/photos/**",
+        pathname: "/api/media/**",
       },
     ],
     minimumCacheTTL: 60,
