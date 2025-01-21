@@ -8,8 +8,7 @@ async function login(page) {
       timeout: 60000,
     });
     await delay(2000);
-    const currentUrl = page.url();
-    console.log("Current URL:", currentUrl);
+    console.log("Current URL:", page.url());
 
     await page.waitForSelector(
       'input[aria-label="Phone number, username, or email"]'
@@ -23,8 +22,7 @@ async function login(page) {
     await page.click('button[type="submit"]');
     console.log("Login successful");
 
-    const currentUrl = page.url();
-    console.log("Current URL:", currentUrl);
+    console.log("Current URL:", page.url());
     await page.waitForNavigation({ waitUntil: "networkidle0" });
   } catch (error) {
     console.error("Instagram login failed:", error);
