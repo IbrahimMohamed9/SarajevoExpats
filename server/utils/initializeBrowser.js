@@ -4,17 +4,17 @@ let browser;
 const initializeBrowser = async () => {
   try {
     if (!browser) {
-      browser = await puppeteer.launch({
-        headless: true,
-        args: ["--no-sandbox"],
-      });
-
       // browser = await puppeteer.launch({
-      //   headless: false,
+      //   headless: true,
       //   args: ["--no-sandbox"],
-      //   product: "chrome",
-      //   channel: "chrome",
       // });
+
+      browser = await puppeteer.launch({
+        headless: false,
+        args: ["--no-sandbox"],
+        product: "chrome",
+        channel: "chrome",
+      });
       return { browser, first: true };
     }
     return { browser, first: false };

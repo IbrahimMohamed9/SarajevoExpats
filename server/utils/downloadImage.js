@@ -70,7 +70,7 @@ const downloadImage = async (url) => {
     await fs.writeFile(filepath, response.data);
 
     // Return the relative path for the API
-    return `photos/${filename}`;
+    return `${process.env.PHOTOS_URL}/instagram/${filename}`;
   } catch (error) {
     console.error("Error downloading image:", error.message);
     return null;

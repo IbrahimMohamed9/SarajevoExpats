@@ -53,9 +53,7 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
         .json({ message: "No events found from Instagram" });
     }
 
-    let counter = 0;
     const createdEvents = [];
-
     for (const event of events) {
       const eventExists = await Event.findOne({ url: event.postUrl });
       if (eventExists) {
@@ -72,9 +70,6 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
       });
 
       createdEvents.push(newEvent);
-      counter++;
-
-      if (counter === 2) break;
     }
 
     res.status(201).json({
