@@ -29,6 +29,7 @@ async function login(page) {
       throw new Error("Failed to reach Instagram feed after login");
     }
 
+    console.log(currentUrl);
     console.log("Login successful");
   } catch (error) {
     console.error("Instagram login failed:", error);
