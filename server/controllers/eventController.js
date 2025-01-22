@@ -2,8 +2,6 @@ const asyncHandler = require("express-async-handler");
 const Event = require("../models/eventModel");
 const { checkNotFound } = require("../utils");
 const fetchPosts = require("../utils/instagram/fetchPosts");
-const login = require("../utils/instagram/login");
-const initializeBrowser = require("../utils/initializeBrowser");
 
 //@desc Get all events
 //@route GET /api/events
@@ -36,16 +34,6 @@ const getPinnedEvents = asyncHandler(async (req, res) => {
 //@access private/admin
 const getEventsFromInstagram = asyncHandler(async (req, res) => {
   try {
-    const { browser, first } = await initializeBrowser();
-    if (!browser) {
-      throw new Error("Browser initialization failed");
-    }
-
-    const page = await browser.newPage();
-    if (first) {
-      await login(page);
-    }
-
     const events = await fetchPosts(page, first);
     if (!events || events.length === 0) {
       return res
