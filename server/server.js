@@ -67,7 +67,6 @@ app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/serviceSubtypes/", require("./routes/serviceSubtypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
-app.use("/api/insta", require("./routes/insta.js"));
 
 const mediaDir = path.join(__dirname, "media");
 console.log("Serving media from:", mediaDir);

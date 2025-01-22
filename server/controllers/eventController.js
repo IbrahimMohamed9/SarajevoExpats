@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Event = require("../models/eventModel");
 const { checkNotFound } = require("../utils");
-const fetchPosts = require("../utils/instagram/fetchPosts");
+const { ApifyClient } = require("apify-client");
 
 //@desc Get all events
 //@route GET /api/events
@@ -34,35 +34,49 @@ const getPinnedEvents = asyncHandler(async (req, res) => {
 //@access private/admin
 const getEventsFromInstagram = asyncHandler(async (req, res) => {
   try {
-    const events = await fetchPosts(page, first);
-    if (!events || events.length === 0) {
+    async function fetchPosts() {
+      const client = new ApifyClient({
+        token: process.env.APIFY_TOKEN,
+      });
+
+      return await (async () => {
+        const run = await client.task("de5yFFccfMMA4R7bW").call();
+
+        const { items } = await client
+          .dataset(run.defaultDatasetId)
+          .listItems();
+        return items;
+      })();
+    }
+
+    const events = await fetchPosts();
+    if (!events || events.length === 0)
       return res
         .status(404)
         .json({ message: "No events found from Instagram" });
-    }
 
     const createdEvents = [];
-    for (const event of events) {
-      const eventExists = await Event.findOne({ url: event.postUrl });
-      if (eventExists) {
-        continue;
-      }
+    // for (const event of events) {
+    // const eventExists = await Event.findOne({ url: event.postUrl });
+    // if (eventExists) {
+    //   continue;
+    // }
 
-      const newEvent = await Event.create({
-        content: event.content,
-        images: event.images,
-        videos: event.videos,
-        url: event.postUrl,
-        date: event.date,
-        pinned: false,
-      });
+    // const newEvent = await Event.create({
+    //   content: event.content,
+    //   images: event.images,
+    //   videos: event.videos,
+    //   url: event.postUrl,
+    //   date: event.date,
+    //   pinned: false,
+    // });
 
-      createdEvents.push(newEvent);
-    }
+    // createdEvents.push(newEvent);
+    // }
 
     res.status(201).json({
       message: "Events added successfully",
-      events: createdEvents,
+      events: events,
     });
   } catch (error) {
     throw error;
