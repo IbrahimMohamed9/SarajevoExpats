@@ -19,6 +19,7 @@ const BaseCard = ({ item, type, className = "" }) => {
     email: item?.email,
     source: item?.source,
     location: item?.location,
+    service: item?.serviceType,
   };
 
   const [isHovered, setIsHovered] = useState(false);

@@ -3,6 +3,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import LinkIcon from "@mui/icons-material/Link";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import BuildCircleIcon from "@mui/icons-material/BuildCircle";
 
 const BaseCardExtraContent = ({ data }) => {
   const getIcon = (type) => {
@@ -15,7 +16,8 @@ const BaseCardExtraContent = ({ data }) => {
         return EmailIcon;
       case "source":
         return LinkIcon;
-
+      case "service":
+        return BuildCircleIcon;
       default:
         return <></>;
     }
