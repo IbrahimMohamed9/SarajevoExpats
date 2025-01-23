@@ -21,17 +21,16 @@ export async function generateMetadata({ params }) {
     .substring(0, 60)
     .trim();
 
-  const title = article.title || contentTitle || "Event";
-
+  const title = contentTitle || "Event";
   const keywords = ["Sarajevo", "events", "expats"].filter(Boolean).join(", ");
 
-  // Handle array of images or single picture
-  const images = article.images.map((img) => ({
-    url: img,
+  // Handle images from childPosts
+  const images = article.childPosts?.map((post) => ({
+    url: post.displayUrl,
     width: 1200,
     height: 630,
-    alt: title,
-  }));
+    alt: post.alt || title,
+  })) || [];
 
   return {
     metadataBase: new URL("https://sarajevoexpats.com"),
@@ -41,7 +40,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: title,
       description: metaDescription,
-      images: images,
+      images: images.length > 0 ? images : undefined,
     },
   };
 }

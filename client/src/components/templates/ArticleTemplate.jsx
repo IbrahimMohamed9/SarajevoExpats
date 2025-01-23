@@ -19,39 +19,35 @@ const ImageGallery = dynamic(() => import("@molecules/ImageGallery"), {
 const ArticleTemplate = ({ contentType, url }) => {
   const [loading, setLoading] = useRecoilState(loadingAtom);
   const [article, setArticle] = useState();
-  const [firstLoading, setFirstLoading] = useState(true);
   const [selectedMedia, setSelectedMedia] = useState(null);
-  const [mediaType, setMediaType] = useState("image");
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
     const init = async () => {
+      setLoading(true);
       const currentArticle = await getArticle(url);
 
       setLoading(false);
+      setFirstLoad(false);
       setArticle(currentArticle);
-      setFirstLoading(false);
 
       // Set initial selected media
-      const initialMedia =
-        currentArticle.picture ||
-        currentArticle.images?.[0] ||
-        currentArticle.videos?.[0];
-      setSelectedMedia(initialMedia);
-      if (
-        currentArticle?.images?.length > 0 ||
-        currentArticle?.videos?.length > 0
-      ) {
-        setMediaType(initialMedia?.includes(".mp4") ? "video" : "image");
+      const containsChildPosts = currentArticle?.childPosts?.length > 0;
+      const containsPicture =
+        currentArticle?.picture || currentArticle?.displayUrl;
+      if (containsChildPosts) {
+        setSelectedMedia(currentArticle.childPosts[0]);
+      } else if (containsPicture) {
+        setSelectedMedia(currentArticle?.picture || currentArticle?.displayUrl);
       }
     };
 
     init();
   }, [url]);
 
-  const isLoading = loading || firstLoading;
-  if (isLoading) return <LoadingArticle />;
+  if (loading || firstLoad) return <LoadingArticle />;
 
-  const displayError = !article && !loading && !firstLoading;
+  const displayError = !article && !loading;
   if (displayError)
     return (
       <ErrorDisplay
@@ -79,24 +75,22 @@ const ArticleTemplate = ({ contentType, url }) => {
       <div className="container mx-auto px-4 py-12">
         <article className="max-w-4xl mx-auto">
           <ArticleHeader title={title} date={date} type={type} />
-          <ArticleMedia
-            src={selectedMedia || article.picture}
-            alt={imageAlt}
-            description={article.pictureDescription}
-            type={mediaType}
-          />
-          {/* {(article?.images?.length > 1 || article?.videos?.length > 0) && (
+          {selectedMedia && (
+            <ArticleMedia
+              src={selectedMedia}
+              alt={imageAlt}
+              description={article.pictureDescription}
+            />
+          )}
+          {article?.childPosts?.length > 1 && (
             <ImageGallery
-              images={article.images || []}
-              videos={article.videos || []}
-              imageAlt={imageAlt}
+              childPosts={article.childPosts}
               selectedMedia={selectedMedia}
               onMediaSelect={(media) => {
                 setSelectedMedia(media);
-                setMediaType(media.includes("blob") ? "video" : "image");
               }}
             />
-          )} */}
+          )}
           <ArticleContent content={article.content} />
           <ContactInfo
             phone={article.phone}

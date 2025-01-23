@@ -11,7 +11,7 @@ const BaseCard = ({ item, type, className = "" }) => {
   if (!item) return null;
 
   const title = item?.title || item?.name;
-  const image = item?.picture || item?.images[0];
+  const image = item?.picture || item?.displayUrl;
   const content = item?.content;
   const date = item?.createdAt || item?.date;
   const values = {
