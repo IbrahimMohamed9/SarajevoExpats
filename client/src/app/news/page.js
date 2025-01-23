@@ -33,11 +33,10 @@ export const metadata = {
 const News = async () => {
   const response = await axiosInstance.get("/news");
   const news = response.data;
-  const latestNews = news[0];
 
   return (
     <div className="-mt-7">
-      {latestNews && <LatestNewsLayout latestNews={latestNews} />}
+      {news[0] && <LatestNewsLayout latestNews={news[0]} />}
       <div className="max-w-7xl mx-auto px-4">
         <CardsTemplate data={news} type="news" />
       </div>

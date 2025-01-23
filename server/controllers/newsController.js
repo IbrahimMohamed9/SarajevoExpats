@@ -5,7 +5,7 @@ const News = require("../models/newsModel");
 //@route GET /api/news
 //@access Private
 const getAllNews = asyncHandler(async (req, res) => {
-  const news = await News.find().sort();
+  const news = await News.find().sort({ createdAt: -1 });
 
   res.status(200).json(news);
 });
