@@ -73,10 +73,6 @@ const ArticleTemplate = ({ contentType, url }) => {
     article.pictureDescription || article.title || contentTitle || contentType;
 
   const isEvent = contentType.toLowerCase() === "event";
-  const hasMultipleMedia =
-    isEvent &&
-    ((article.images && article.images.length > 0) ||
-      (article.videos && article.videos.length > 0));
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -89,7 +85,7 @@ const ArticleTemplate = ({ contentType, url }) => {
             description={article.pictureDescription}
             type={mediaType}
           />
-          {(article?.images?.length > 1 || article?.videos?.length > 0) && (
+          {/* {(article?.images?.length > 1 || article?.videos?.length > 0) && (
             <ImageGallery
               images={article.images || []}
               videos={article.videos || []}
@@ -100,7 +96,7 @@ const ArticleTemplate = ({ contentType, url }) => {
                 setMediaType(media.includes("blob") ? "video" : "image");
               }}
             />
-          )}
+          )} */}
           <ArticleContent content={article.content} />
           <ContactInfo
             phone={article.phone}

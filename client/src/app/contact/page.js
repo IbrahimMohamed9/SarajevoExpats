@@ -30,7 +30,7 @@ export const metadata = {
 
 const Contact = () => {
   const phone = "+387 61 011 118";
-  const email = "contact@example.com";
+  const email = "Sjjexpats@gmail.com";
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -40,7 +40,7 @@ const Contact = () => {
           Have questions or need assistance? We're here to help! Reach out to us
           through any of the following channels:
         </p>
-        <ContactInfo phone={phone} email={email} />
+        <ContactInfo phone={phone} email={email} whatsappNumber={phone} />
       </div>
     </div>
   );
