@@ -107,6 +107,5 @@ const server = app.listen(port, host_name, () => {
     }`
   );
 
-  // Initialize cron jobs
   scheduleInstagramEventsFetch();
 });
