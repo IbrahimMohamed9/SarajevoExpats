@@ -6,7 +6,7 @@ const ArticleMedia = ({ src, alt, description }) => {
   if (!src) return null;
 
   let isVideo = false;
-  if (typeof src !== "string" || src?.type === "Video") isVideo = true;
+  if (src?.type === "Video") isVideo = true;
 
   let mediaUrl;
   if (typeof src === "string") mediaUrl = src;
@@ -16,7 +16,7 @@ const ArticleMedia = ({ src, alt, description }) => {
   return (
     <div className="space-y-4 mb-12 animate-fade-in">
       <div
-        className="relative mx-auto overflow-hidden shadow-2xl w-fit h-auto rounded-xl
+        className="relative mx-auto overflow-hidden shadow-2xl w-fit min-h-[600px] h-auto rounded-xl
         transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20"
       >
         {isVideo ? (
