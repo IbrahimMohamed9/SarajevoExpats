@@ -49,9 +49,9 @@ const CustomCarousel = ({ children }) => {
       breakpoint: { max: 790, min: 767 },
       items: 1,
     },
-    twentieth: {
+    twelfth: {
       breakpoint: { max: 767, min: 730 },
-      items: 2.5,
+      items: 2,
     },
     thirteenth: {
       breakpoint: { max: 730, min: 670 },

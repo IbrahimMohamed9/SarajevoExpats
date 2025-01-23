@@ -5,7 +5,7 @@ import CustomCarousel from "@atoms/CustomCarousel";
 import BaseCard from "@organisms/BaseCard";
 import SectionHeder from "@atoms/SectionHeder";
 
-const CarouselSection = ({ items = [], type, title }) => {
+const CarouselSection = ({ items = [], type, title, titleImage }) => {
   const validatedItems = items.filter(
     (item) => item && typeof item === "object"
   );
@@ -28,7 +28,7 @@ const CarouselSection = ({ items = [], type, title }) => {
 
   return (
     <div className="w-full">
-      <SectionHeder title={title} />
+      <SectionHeder title={title} src={titleImage} />
       <div className="mt-4">{carouselElements}</div>
     </div>
   );

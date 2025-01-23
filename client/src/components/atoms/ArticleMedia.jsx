@@ -12,7 +12,10 @@ const ArticleMedia = ({ src, alt, description }) => {
   if (typeof src === "string") mediaUrl = src;
   else if (src?.type === "Video") mediaUrl = src.videoUrl;
   else mediaUrl = src.displayUrl;
-  const maxHeight = window.innerWidth > 630 ? 600 : window.innerWidth - 32;
+  let maxHeight;
+  const hasMultipleMedia = typeof src === "object";
+  if (window.innerWidth > 630 && hasMultipleMedia) maxHeight = 600;
+  else if (hasMultipleMedia) maxHeight = window.innerWidth - 32;
 
   return (
     <div className="space-y-4 mb-12 animate-fade-in">
@@ -21,7 +24,6 @@ const ArticleMedia = ({ src, alt, description }) => {
         transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20`}
         style={{ minHeight: `${maxHeight}px` }}
       >
-        {" "}
         {isVideo ? (
           <video
             src={mediaUrl}
