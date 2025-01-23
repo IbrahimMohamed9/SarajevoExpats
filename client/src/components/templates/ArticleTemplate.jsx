@@ -57,7 +57,7 @@ const ArticleTemplate = ({ contentType, url }) => {
     );
 
   const title = article.name || article.title;
-  const type = article.type || article.serviceSubtype;
+  const type = article.type || article.serviceType;
   const date = article.createdAt || article.date;
 
   const contentTitle = article.content

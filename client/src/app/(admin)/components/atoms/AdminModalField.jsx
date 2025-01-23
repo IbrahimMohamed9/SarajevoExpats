@@ -50,6 +50,7 @@ const AdminModalField = ({
   tables,
 }) => {
   const lowerKey = keyVal.toLowerCase();
+
   const isRequired =
     (title && requiredFields[title]?.includes(keyVal)) || false;
   const isTextArea = [
@@ -61,7 +62,7 @@ const AdminModalField = ({
     "answer",
   ].includes(lowerKey);
 
-  const isDropList = ["type", "serviceSubtype", "serviceType"].includes(keyVal);
+  const isDropList = ["type", "serviceType"].includes(keyVal);
   const isCheckbox = ["pinned"].includes(keyVal);
 
   const handleImageChange = async (e) => {
@@ -114,15 +115,8 @@ const AdminModalField = ({
   if (isDropList) {
     const tableKey = {
       type: "placeTypes/with-places",
-      servicesubtype: "serviceSubtypes/with-services",
-      servicetype: "serviceTypes/with-subtypes",
+      servicetype: "serviceTypes/with-services",
     };
-    if (
-      keys.includes("serviceSubtype") &&
-      keyVal === "serviceType" &&
-      keys.includes("serviceType")
-    )
-      return null;
     if (!tables[tableKey[lowerKey]]) {
       setSnackbar({
         message: `Please add ${keyVal} first`,

@@ -17,7 +17,6 @@ export async function generateMetadata({ params }) {
   const keywords = [
     article.name,
     article.serviceType,
-    article.serviceSubtype,
     "Sarajevo",
     "services",
     "expats",

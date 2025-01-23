@@ -3,11 +3,8 @@ import axiosInstance from "@/config/axios";
 
 const Page = async () => {
   const servicesResponse = await axiosInstance.get("services");
-  const serviceSubtypesResponse = await axiosInstance.get(
-    "serviceSubtypes/with-services"
-  );
   const serviceTypesResponse = await axiosInstance.get(
-    "serviceTypes/with-subtypes"
+    "serviceTypes/with-services"
   );
 
   const dataTemp1 = {
@@ -17,10 +14,6 @@ const Page = async () => {
     pictureDescription: "",
     phone: "",
     email: "",
-    serviceSubtype: "",
-  };
-  const dataTemp2 = {
-    name: "",
     serviceType: "",
   };
   const dataTemp3 = {
@@ -36,15 +29,8 @@ const Page = async () => {
       />
       <div className="h-4"></div>
       <AdminTableTemplete
-        tableKey="serviceSubtypes/with-services"
-        subDataTitle="Service"
-        data={serviceSubtypesResponse.data}
-        dataTemp={dataTemp2}
-      />
-      <div className="h-4"></div>
-      <AdminTableTemplete
-        tableKey="serviceTypes/with-subtypes"
-        subDataTitle="Service Subtype"
+        tableKey="serviceTypes/with-services"
+        subDataTitle="Services"
         data={serviceTypesResponse.data}
         dataTemp={dataTemp3}
       />

@@ -76,7 +76,7 @@ const BaseCard = ({ item, type, className = "" }) => {
   const getHref = () => {
     switch (type) {
       case "services":
-        return `/services/${item.serviceType}/${item.serviceSubtype}/${item._id}`;
+        return `/services/${item.serviceType}/${item._id}`;
       case "places":
         return `/places/${item.type}/${item._id}`;
       case "news":

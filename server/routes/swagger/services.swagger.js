@@ -8,7 +8,7 @@
  *         - name
  *         - content
  *         - picture
- *         - serviceSubtype
+ *         - serviceType
  *       properties:
  *         name:
  *           type: string
@@ -28,9 +28,9 @@
  *         email:
  *           type: string
  *           description: Contact email address for the service
- *         serviceSubtype:
+ *         serviceType:
  *           type: string
- *           description: The subtype of the service (must exist in ServiceSubtypes collection)
+ *           description: The type of the service (must exist in ServiceSubtypes collection)
  *   securitySchemes:
  *     BearerAuth:
  *       type: http
@@ -83,34 +83,6 @@
  *         description: Unauthorized
  */
 
-/**
- * @swagger
- * /api/services/by-service-subtype/{serviceSubtype}:
- *   get:
- *     summary: Get services by service subtype
- *     description: Retrieves all services that match the specified service subtype
- *     tags: [Services]
- *     parameters:
- *       - in: path
- *         name: serviceSubtype
- *         required: true
- *         schema:
- *           type: string
- *         description: Subtype of service to filter by (e.g., restaurant, cafe, park)
- *     responses:
- *       200:
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Service'
- *       404:
- *         description: No services found for the specified type
- *       500:
- *         description: Server error
- */
 /**
  * @swagger
  * /api/services/by-service-type/{serviceType}:

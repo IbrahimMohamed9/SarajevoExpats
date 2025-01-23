@@ -21,9 +21,8 @@ const requiredFields = {
   events: ["title", "content", "picture", "url"],
   places: ["title", "content", "picture", "type", "link"],
   news: ["title", "content", "picture", "sources"],
-  services: ["name", "content", "picture", "serviceSubtype"],
+  services: ["name", "content", "picture", "serviceType"],
   serviceTypes: ["name"],
-  serviceSubtypes: ["name", "serviceType"],
   placeTypes: ["name"],
 };
 

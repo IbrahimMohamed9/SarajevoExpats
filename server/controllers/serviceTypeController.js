@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const ServiceType = require("../models/serviceTypeModel");
 const { checkNotFound } = require("../utils");
-const ServiceSubtype = require("../models/serviceSubtypeModel");
 const Service = require("../models/serviceModel");
 
 //@desc Get all service types
@@ -11,17 +10,6 @@ const getAllServiceTypes = asyncHandler(async (req, res) => {
   const serviceTypes = await ServiceType.find();
 
   res.status(200).json(serviceTypes);
-});
-
-//@desc Get all service subtypes by service type
-//@route /serviceTypes/:name
-//@access public
-const getAllServiceSubtypesByServiceType = asyncHandler(async (req, res) => {
-  const serviceSubtypes = await ServiceSubtype.find({
-    serviceType: req.params.name,
-  });
-
-  res.status(200).json(serviceSubtypes);
 });
 
 //@desc Create new service type
@@ -66,11 +54,7 @@ const deleteServiceTypeById = asyncHandler(async (req, res) => {
     throw new Error("Service type not found");
   }
 
-  const serviceSubtypes = await ServiceSubtype.deleteMany({
-    serviceType: serviceType.name,
-  });
-
-  const services = await Service.deleteMany({
+  await Service.deleteMany({
     serviceType: serviceType.name,
   });
 
@@ -139,21 +123,20 @@ const getServiceTypeById = asyncHandler(async (req, res) => {
 //@desc Get all service types with services
 //@route /serviceTypes/with-services
 //@access public
-const getAllServiceTypesWithSubtypes = asyncHandler(async (req, res) => {
+const getAllServiceTypesWithServe = asyncHandler(async (req, res) => {
   const serviceTypes = await ServiceType.find();
-  const ServiceSubtype = require("../models/serviceSubtypeModel");
 
   const serviceTypesWithServices = await Promise.all(
     serviceTypes.map(async (serviceType) => {
-      const subtypes = await ServiceSubtype.find({
-        serviceType: serviceType.name,
+      const services = await Service.find({
+        serviceType: serviceType.serviceType,
       });
       return {
         _id: serviceType._id,
         name: serviceType.name,
         createdAt: serviceType.createdAt,
         updatedAt: serviceType.updatedAt,
-        subData: subtypes,
+        subData: services,
       };
     })
   );
@@ -167,6 +150,5 @@ module.exports = {
   deleteServiceTypeById,
   updateServiceTypeById,
   getServiceTypeById,
-  getAllServiceTypesWithSubtypes,
-  getAllServiceSubtypesByServiceType,
+  getAllServiceTypesWithServe,
 };

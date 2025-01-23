@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Service = require("../models/serviceModel");
 const { checkNotFound } = require("../utils");
-const ServiceSubtype = require("../models/serviceSubtypeModel");
 
 //@desc Get all services
 //@route /services
@@ -12,42 +11,18 @@ const getAllServices = asyncHandler(async (req, res) => {
   res.status(200).json(service);
 });
 
-//@desc Get all under spacific serviceSubtype
-//@route /services
-//@access public
-const getServicesByServiceSubtype = asyncHandler(async (req, res) => {
-  const service = await Service.find({
-    serviceSubtype: req.params.serviceSubtype,
-  });
-
-  res.status(200).json(service);
-});
-
 //@desc Get all under spacific serviceType
 //@route /services
 //@access public
 const getServicesByServiceType = asyncHandler(async (req, res) => {
-  const serviceSubtypes = await ServiceSubtype.find({
-    serviceType: req.params.serviceType,
-  });
-
-  if (!serviceSubtypes.length) {
-    res.status(404);
-    throw new Error(
-      `No service subtypes found for type: ${req.params.serviceType}`
-    );
-  }
-
-  const subtypeNames = serviceSubtypes.map((subtype) => subtype.name);
-
   const services = await Service.find({
-    serviceSubtype: { $in: subtypeNames },
+    serviceType: req.params.serviceType,
   });
 
   if (!services.length) {
     res.status(404);
     throw new Error(
-      `No services found for service type: ${req.params.serviceType}`
+      `No service subtypes found for type: ${req.params.serviceType}`
     );
   }
 
@@ -58,13 +33,13 @@ const getServicesByServiceType = asyncHandler(async (req, res) => {
 //@route /services
 //@access public
 const createService = asyncHandler(async (req, res) => {
-  const { name, content, picture, serviceSubtype, phone, email } = req.body;
+  const { name, content, picture, serviceType, phone, email } = req.body;
 
   const requiredFields = {
     name,
     content,
     picture,
-    serviceSubtype,
+    serviceType,
   };
 
   const missingFields = Object.entries(requiredFields)
@@ -136,6 +111,5 @@ module.exports = {
   deleteServiceById,
   updateServiceById,
   getServiceById,
-  getServicesByServiceSubtype,
   getServicesByServiceType,
 };

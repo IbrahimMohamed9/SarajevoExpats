@@ -19,13 +19,13 @@ serviceTypeSchema.pre("findOneAndUpdate", async function (next) {
   const oldData = await ServiceType.findOne(this._conditions);
 
   if (update.name) {
-    const ServiceSubtype = mongoose.model("ServiceSubtypes");
+    const Service = mongoose.model("Services");
 
-    const res = await ServiceSubtype.find({ serviceType: oldData.name });
+    const res = await Service.find({ serviceType: oldData.name });
 
-    res.forEach(async (subtype) => {
-      await ServiceSubtype.findOneAndUpdate(
-        { _id: subtype._id },
+    res.forEach(async (service) => {
+      await Service.findOneAndUpdate(
+        { _id: service._id },
         { $set: { serviceType: update.name } }
       );
     });

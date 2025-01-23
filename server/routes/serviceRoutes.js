@@ -8,13 +8,10 @@ const {
   deleteServiceById,
   updateServiceById,
   getServiceById,
-  getServicesByServiceSubtype,
   getServicesByServiceType,
 } = require("../controllers/serviceController");
 
 router.route("/").get(getAllServices).post(validateAdminToken, createService);
-
-router.get("/by-service-subtype/:serviceSubtype", getServicesByServiceSubtype);
 
 router.get("/by-service-type/:serviceType", getServicesByServiceType);
 

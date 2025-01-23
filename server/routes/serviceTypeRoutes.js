@@ -6,8 +6,7 @@ const {
   deleteServiceTypeById,
   updateServiceTypeById,
   getServiceTypeById,
-  getAllServiceTypesWithSubtypes,
-  getAllServiceSubtypesByServiceType,
+  getAllServiceTypesWithServe,
 } = require("../controllers/serviceTypeController");
 const { validateMongoId } = require("../utils");
 const validateAdminToken = require("../middleware/validateAdminToken");
@@ -17,9 +16,7 @@ router
   .get(getAllServiceTypes)
   .post(validateAdminToken, createServiceType);
 
-router.get("/with-subtypes", getAllServiceTypesWithSubtypes);
-
-router.get("/subtypes/:name", getAllServiceSubtypesByServiceType);
+router.get("/with-services", getAllServiceTypesWithServe);
 
 router
   .route("/:id")
