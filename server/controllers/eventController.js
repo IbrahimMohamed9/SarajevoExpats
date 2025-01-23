@@ -2,12 +2,16 @@ const asyncHandler = require("express-async-handler");
 const Event = require("../models/eventModel");
 const { checkNotFound } = require("../utils");
 const { ApifyClient } = require("apify-client");
+const downloadImage = require("../utils/downloadImage");
+const downloadVideo = require("../utils/downloadVideo");
+const { logError } = require("../utils/logger");
 
 //@desc Get all events
 //@route GET /api/events
 //@access public
 const getEvents = asyncHandler(async (req, res) => {
-  const events = await Event.find({}).sort({ timestamp: -1 });
+  const events = await Event.find({}).sort({ pinned: -1, timestamp: -1 });
+
   res.json(events);
 });
 
@@ -56,27 +60,74 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
         .json({ message: "No events found from Instagram" });
 
     const createdEvents = [];
-    // for (const event of events) {
-    // const eventExists = await Event.findOne({ url: event.postUrl });
-    // if (eventExists) {
-    //   continue;
-    // }
+    for (const event of events) {
+      const eventExists = await Event.findOne({ url: event.url });
+      if (eventExists) continue;
 
-    // const newEvent = await Event.create({
-    //   content: event.content,
-    //   images: event.images,
-    //   videos: event.videos,
-    //   url: event.postUrl,
-    //   date: event.date,
-    //   pinned: false,
-    // });
+      const childPosts = await Promise.all(
+        event.childPosts.map(async (post) => {
+          try {
+            if (!post.displayUrl && !post.videoUrl) {
+              logError(`Missing URLs for child post: ${post.id}`);
+              return null;
+            }
 
-    // createdEvents.push(newEvent);
-    // }
+            const [displayUrl, videoUrl] = await Promise.all([
+              post.displayUrl
+                ? downloadImage(post.displayUrl, true).catch((err) => {
+                    logError(
+                      `Error downloading image for post ${post.id}:`,
+                      err
+                    );
+                    return null;
+                  })
+                : null,
+              post.type === "Video" && post.videoUrl
+                ? downloadVideo(post.videoUrl, true).catch((err) => {
+                    logError(
+                      `Error downloading video for post ${post.id}:`,
+                      err
+                    );
+                    return null;
+                  })
+                : null,
+            ]);
+
+            return {
+              type: post.type,
+              displayUrl,
+              videoUrl,
+              alt: post.alt,
+            };
+          } catch (error) {
+            logError(`Failed to process child post ${post.id}:`, error);
+            return null;
+          }
+        })
+      );
+
+      let displayUrl = null;
+      try {
+        displayUrl = await downloadImage(event.displayUrl, true);
+      } catch (err) {
+        logError(`Error downloading main event image:`, err);
+      }
+
+      const newEvent = await Event.create({
+        content: event.caption,
+        url: event.url,
+        displayUrl: displayUrl,
+        date: event.timestamp,
+        childPosts: childPosts,
+        pinned: event.isPinned,
+      });
+
+      createdEvents.push(newEvent);
+    }
 
     res.status(201).json({
       message: "Events added successfully",
-      events: events,
+      events: createdEvents,
     });
   } catch (error) {
     throw error;
