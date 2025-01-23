@@ -7,7 +7,7 @@ const PlaceType = require("../models/placeTypeModel");
 //@route /places
 //@access public
 const getAllPlaces = asyncHandler(async (req, res) => {
-  const places = await Place.find();
+  const places = await Place.find().sort({ createdAt: -1 });
 
   res.status(200).json(places);
 });

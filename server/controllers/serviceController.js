@@ -7,7 +7,7 @@ const ServiceSubtype = require("../models/serviceSubtypeModel");
 //@route /services
 //@access public
 const getAllServices = asyncHandler(async (req, res) => {
-  const service = await Service.find();
+  const service = await Service.find().sort({ createdAt: -1 });
 
   res.status(200).json(service);
 });

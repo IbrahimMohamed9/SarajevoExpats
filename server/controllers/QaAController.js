@@ -6,7 +6,7 @@ const QaA = require("../models/QaAModel");
 //@route GET /api/QaAs
 //@access public
 const getQaAs = asyncHandler(async (req, res) => {
-  const qaas = await QaA.find();
+  const qaas = await QaA.find().sort({ createdAt: -1 });
   res.status(200).json(qaas);
 });
 
