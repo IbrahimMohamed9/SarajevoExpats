@@ -12,13 +12,16 @@ const ArticleMedia = ({ src, alt, description }) => {
   if (typeof src === "string") mediaUrl = src;
   else if (src?.type === "Video") mediaUrl = src.videoUrl;
   else mediaUrl = src.displayUrl;
+  const maxHeight = window.innerWidth > 630 ? 600 : window.innerWidth - 32;
 
   return (
     <div className="space-y-4 mb-12 animate-fade-in">
       <div
-        className="relative mx-auto overflow-hidden shadow-2xl w-fit min-h-[600px] h-auto rounded-xl
-        transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20"
+        className={`relative mx-auto overflow-hidden shadow-2xl w-fit rounded-xl
+        transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20`}
+        style={{ minHeight: `${maxHeight}px` }}
       >
+        {" "}
         {isVideo ? (
           <video
             src={mediaUrl}

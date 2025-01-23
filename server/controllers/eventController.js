@@ -53,7 +53,7 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
       })();
     }
 
-    const events = 1;
+    const events = await fetchPosts();
 
     if (!events || events.length === 0)
       return res
