@@ -20,32 +20,13 @@ const HomeTemplate = ({
 
   if (loading) return <LoadingArticle />;
 
-  const axios = require("axios");
-
-  async function downloadInstagramVideo(url) {
-    try {
-      const apiURL = `https://api.instagram.com/oembed/?url=${url}`;
-      const response = await axios.get(apiURL);
-      const videoURL = response.data.thumbnail_url;
-
-      console.log("Video URL:", videoURL);
-      // You can now use videoURL to download the video via another request or save it.
-    } catch (error) {
-      console.error("Error fetching video URL:", error.message);
-    }
-  }
-
-  // Replace with your Instagram post URL
-  const postURL = "https://www.instagram.com/maptobe.app/p/DEmnL6pNkbE/";
-  downloadInstagramVideo(postURL);
-
   return (
     <div className="grid md:grid-cols-[1fr,340px] gap-4  max-w-7xl mx-auto -mt-11">
       <div className="flex flex-col pt-4 gap-8 overflow-hidden -mt-11">
         <div className="bg-gray-50">
           <AdBanner slot="1234567890" format="auto" responsive={true} />
         </div>
-        {news[0] && <LatestNewsLayout latestNews={news[news.length - 1]} />}
+        {news[0] && <LatestNewsLayout latestNews={news[0]} />}
         <WhatsappLink className="md:hidden text-center border border-main flex justify-center max-w-80 mx-auto" />
 
         <div className="md:hidden">
