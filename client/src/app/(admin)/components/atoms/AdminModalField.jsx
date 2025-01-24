@@ -19,7 +19,11 @@ import axiosInstance from "@/config/axios";
 import { styled } from "@mui/material/styles";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import { useEffect, useState } from "react";
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ImageGallery = dynamic(() => import("@molecules/ImageGallery"), {
+  ssr: false,
+});
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -35,7 +39,6 @@ const VisuallyHiddenInput = styled("input")({
 
 const AdminModalField = ({
   keyVal,
-  keys,
   formData,
   handleChange,
   title,
@@ -64,6 +67,7 @@ const AdminModalField = ({
 
   const isDropList = ["type", "serviceType"].includes(keyVal);
   const isCheckbox = ["pinned"].includes(keyVal);
+  const isImages = ["childPosts"].includes(keyVal);
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -291,6 +295,40 @@ const AdminModalField = ({
           </Typography>
         )}
       </Box>
+    );
+  }
+
+  if (isImages) {
+    const [childPosts, setChildPosts] = useState([]);
+    useEffect(() => {
+      setChildPosts(formData?.childPosts);
+    }, []);
+    const deleteImage = (media) => {
+      const isConfirmed = confirm(`Are you sure you want to delete this image?
+              image url: ${media.displayUrl}`);
+
+      if (isConfirmed)
+        axiosInstance
+          .delete(`events/delete-image/${formData._id}`, {
+            data: { displayUrl: media.displayUrl },
+          })
+          .then(() => {
+            setChildPosts(
+              childPosts.filter((post) => post.displayUrl !== media.displayUrl)
+            );
+            setSnackbar({
+              open: true,
+              message: `Image deleted successfully`,
+              severity: "success",
+            });
+          });
+    };
+    return (
+      <ImageGallery
+        childPosts={childPosts}
+        adminModal={false}
+        onClick={deleteImage}
+      />
     );
   }
 

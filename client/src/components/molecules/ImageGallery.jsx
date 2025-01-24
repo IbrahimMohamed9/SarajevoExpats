@@ -2,7 +2,12 @@
 
 import Image from "next/image";
 
-const ImageGallery = ({ childPosts, selectedMedia, onMediaSelect }) => {
+const ImageGallery = ({
+  childPosts,
+  selectedMedia,
+  onClick,
+  adminModal = true,
+}) => {
   if (!childPosts || childPosts.length === 0) return null;
 
   const getContainerWidth = () => {
@@ -29,7 +34,9 @@ const ImageGallery = ({ childPosts, selectedMedia, onMediaSelect }) => {
 
   return (
     <div
-      className={`-mt-6 mb-8 flex gap-2 overflow-x-auto py-2 px-4 md:px-0 snap-x snap-mandatory scroll-pl-4 ${
+      className={`-mt-6 mb-8 flex gap-2 ${
+        adminModal ? "overflow-x-auto" : "flex-wrap"
+      } py-2 px-4 md:px-0 snap-x snap-mandatory scroll-pl-4 ${
         !overflow ? "justify-center" : ""
       }`}
     >
@@ -38,7 +45,7 @@ const ImageGallery = ({ childPosts, selectedMedia, onMediaSelect }) => {
           key={media.displayUrl || index}
           onClick={(e) => {
             e.preventDefault();
-            onMediaSelect(media);
+            if (onClick) onClick(media);
           }}
           className={`relative flex-shrink-0 p-4 size-20 rounded-lg overflow-hidden transition-all duration-200 snap-start ${
             selectedMedia?.displayUrl === media.displayUrl

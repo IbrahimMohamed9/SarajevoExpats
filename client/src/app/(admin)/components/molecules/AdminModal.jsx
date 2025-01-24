@@ -18,7 +18,7 @@ import AdminModalField from "@adminAto/AdminModalField";
 
 // Define required fields for each table type
 const requiredFields = {
-  events: ["title", "content", "picture", "url"],
+  events: ["content", "displayUrl", "url", "date"],
   places: ["title", "content", "picture", "type", "link"],
   news: ["title", "content", "picture", "sources"],
   services: ["name", "content", "picture", "serviceType"],
@@ -99,8 +99,6 @@ export default function AdminModal() {
       const data = await onSubmit(formData);
       handleClose();
 
-      console.log(data);
-
       setSnackbar({
         message: data.message,
         open: true,
@@ -125,8 +123,8 @@ export default function AdminModal() {
 
   const formElements = keys.map((key) => (
     <AdminModalField
+      key={key}
       keyVal={key}
-      keys={keys}
       formData={formData}
       handleChange={handleChange}
       title={title}

@@ -191,3 +191,48 @@
  *       404:
  *         description: Event not found
  */
+/**
+ * @swagger
+ * /api/events/delete-image/{id}:
+ *   delete:
+ *     summary: Delete an image from an event
+ *     tags: [Events]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Event ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - displayUrl
+ *             properties:
+ *               displayUrl:
+ *                 type: string
+ *                 description: URL of the image to delete
+ *     responses:
+ *       200:
+ *         description: Image successfully deleted
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Image deleted successfully
+ *       400:
+ *         description: Invalid input or image URL not found
+ *       401:
+ *         description: Unauthorized - Invalid or missing admin token
+ *       404:
+ *         description: Event not found
+ */

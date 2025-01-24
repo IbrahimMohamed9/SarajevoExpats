@@ -7,6 +7,7 @@ const {
   deleteEventById,
   updateEventById,
   getEventById,
+  deleteEventImage,
 } = require("../controllers/eventController");
 const { validateMongoId } = require("../utils");
 const validateAdminToken = require("../middleware/validateAdminToken");
@@ -17,6 +18,11 @@ router
   .post(validateAdminToken, getEventsFromInstagram);
 
 router.route("/pinned").get(getPinnedEvents);
+
+router
+  .route("/delete-image/:id")
+  .all(validateAdminToken)
+  .delete(deleteEventImage);
 
 router.get("/:id", getEventById);
 router

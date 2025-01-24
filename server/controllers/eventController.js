@@ -157,7 +157,23 @@ const updateEventById = asyncHandler(async (req, res) => {
     new: true,
   });
 
-  res.json(updatedEvent);
+  res.json({ message: "Event updated successfully", event: updatedEvent });
+});
+
+const deleteEventImage = asyncHandler(async (req, res) => {
+  const event = await Event.findById(req.params.id);
+  checkNotFound(event, "Event");
+  console.log(event.childPosts.length);
+  console.log(req.body.displayUrl);
+  event.childPosts = event.childPosts.filter(
+    (post) => post.displayUrl !== req.body.displayUrl
+  );
+
+  await event.save();
+
+  res.json({
+    message: "Image deleted successfully",
+  });
 });
 
 module.exports = {
@@ -167,4 +183,5 @@ module.exports = {
   deleteEventById,
   getPinnedEvents,
   updateEventById,
+  deleteEventImage,
 };

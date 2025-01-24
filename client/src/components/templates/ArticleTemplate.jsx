@@ -86,9 +86,7 @@ const ArticleTemplate = ({ contentType, url }) => {
             <ImageGallery
               childPosts={article.childPosts}
               selectedMedia={selectedMedia}
-              onMediaSelect={(media) => {
-                setSelectedMedia(media);
-              }}
+              onClick={setSelectedMedia}
             />
           )}
           <ArticleContent content={article.content} />

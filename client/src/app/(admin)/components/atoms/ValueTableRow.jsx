@@ -34,7 +34,7 @@ const ValueTableRow = ({
 
     if (isCheckbox) {
       return (
-        <TableCell className={cellClass}>
+        <TableCell key={key} className={cellClass}>
           <div
             className={`
               text-center
