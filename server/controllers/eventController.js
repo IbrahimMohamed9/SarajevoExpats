@@ -120,7 +120,6 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
         displayUrl: displayUrl,
         date: event.timestamp,
         childPosts: childPosts,
-        pinned: event.isPinned,
       });
 
       createdEvents.push(newEvent);
