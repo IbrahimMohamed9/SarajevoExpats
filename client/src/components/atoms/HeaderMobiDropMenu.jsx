@@ -26,7 +26,7 @@ const HeaderMobiDropMenu = ({
               component={Link}
               href={item.href}
               onClick={onClose}
-              className="pl-8 text-white hover:bg-white/10"
+              className="pl-8 !text-white hover:bg-white/10 "
             >
               <ListItemText primary={item.title} />
             </ListItemButton>

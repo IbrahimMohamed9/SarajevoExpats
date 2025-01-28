@@ -1,6 +1,6 @@
 import Logo from "@atoms/Logo";
 import NavDesktop from "@molecules/NavDesktop";
-import HeaderButtons from "@molecules/HeaderButtons";
+// import HeaderButtons from "@molecules/HeaderButtons";
 import HeaderMenuIcon from "@molecules/HeaderMenuIcon";
 import { NavMobile } from "@molecules/NavMobile";
 import routess from "@/app/routes";
