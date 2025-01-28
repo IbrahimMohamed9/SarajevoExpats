@@ -67,7 +67,7 @@ const ContactInfo = ({
 
         {location && (
           <a
-            href={`https://maps.google.com/?q=${encodeURIComponent(location)}`}
+            href={location}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center gap-4 p-4 rounded-lg bg-white hover:bg-main/5 transition-colors duration-300"
