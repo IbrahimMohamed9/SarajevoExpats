@@ -1,39 +1,50 @@
-import axiosInstance from "@/config/axios";
+import { serverAxiosInstance } from "@/config/axios";
 import { verifyAdmin } from "@/utils";
 
+const getStaticRoutes = () => [
+  {
+    title: "News",
+    href: "/news",
+  },
+  {
+    title: "Events",
+    href: "/events",
+  },
+  {
+    title: "Q&A",
+    href: "/qaas",
+  },
+];
+
+const getDynamicRoutes = async () => {
+  try {
+    const [serviceType, placeType] = await Promise.all([
+      serverAxiosInstance.get("/serviceTypes"),
+      serverAxiosInstance.get("/placeTypes"),
+    ]);
+
+    return {
+      services: serviceType.data.map((service) => ({
+        title: service.name,
+        href: `/services/${service.name}`,
+      })),
+      places: placeType.data.map((place) => ({
+        title: place.name,
+        href: `/places/${place.name}`,
+      })),
+    };
+  } catch (error) {
+    console.error("Error fetching navigation data:", error);
+    return { services: false, places: false };
+  }
+};
+
 const routes = async () => {
-  const ro = async () => {
-    try {
-      let [serviceType, placeType] = await Promise.all([
-        axiosInstance.get("/serviceTypes"),
-        axiosInstance.get("/placeTypes"),
-      ]);
-      serviceType = serviceType.data;
-      placeType = placeType.data;
+  const staticRoutes = getStaticRoutes();
+  const { services, places } = await getDynamicRoutes();
 
-      return {
-        services: serviceType.map((service) => ({
-          title: service.name,
-          href: `/services/${service.name}`,
-        })),
-        places: placeType.map((place) => ({
-          title: place.name,
-          href: `/places/${place.name}`,
-        })),
-      };
-    } catch (error) {
-      console.error("Error fetching navigation data:", error);
-      return { services: false, places: false };
-    }
-  };
-
-  const { services, places } = await ro();
-
-  const routes = [
-    {
-      title: "News",
-      href: "/news",
-    },
+  const allRoutes = [
+    ...staticRoutes,
     {
       title: "Places",
       dropdown: places,
@@ -42,19 +53,11 @@ const routes = async () => {
       title: "Services",
       dropdown: services,
     },
-    {
-      title: "Events",
-      href: "/events",
-    },
-    {
-      title: "Q&A",
-      href: "/qaas",
-    },
-    ,
   ];
 
-  if (verifyAdmin())
-    routes.push({
+  // This will only run on the server side due to the cookies() API
+  if (verifyAdmin()) {
+    allRoutes.push({
       title: "Admin",
       dropdown: [
         { href: "/dashboard/events", title: "Manage Events" },
@@ -65,10 +68,9 @@ const routes = async () => {
         { href: "/dashboard/users", title: "Manage Users" },
       ],
     });
+  }
 
-  return routes;
+  return allRoutes;
 };
-
-// 255, 112, 3;
 
 export default routes;
