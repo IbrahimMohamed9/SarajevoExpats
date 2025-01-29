@@ -16,6 +16,17 @@ export async function generateMetadata({ params }) {
       locale: "en_US",
       siteName: "Sarajevo Expats",
     },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
+    alternates: {
+      canonical: `https://sarajevoexpats.com/services/${type}`,
+    },
   };
 }
 

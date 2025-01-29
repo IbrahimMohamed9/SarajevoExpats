@@ -1,5 +1,5 @@
 import CardsTemplate from "@templates/CardsTemplate";
-import axiosInstance from "@/config/axios";
+import { serverAxiosInstance } from "@/config/axios";
 import LatestNewsLayout from "@molecules/LatestNewsLayout";
 
 export const metadata = {
@@ -31,7 +31,7 @@ export const metadata = {
 };
 
 const News = async () => {
-  const response = await axiosInstance.get("/news");
+  const response = await serverAxiosInstance.get("/news");
   const news = response.data;
 
   return (
