@@ -107,10 +107,10 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
       onClose: handleUpdateClose,
       onSubmit: handleUpdate,
       data: selectedItem,
-      tableKey: tableKey,
       update: true,
+      tableKey,
     });
-  }, [AdminModalOpen]);
+  }, [AdminModalOpen, selectedItem, setAdminModal, handleUpdate, tableKey]);
 
   return (
     <>

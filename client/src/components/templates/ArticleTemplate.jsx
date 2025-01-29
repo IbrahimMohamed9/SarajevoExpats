@@ -43,7 +43,7 @@ const ArticleTemplate = ({ contentType, url }) => {
     };
 
     init();
-  }, [url]);
+  }, [url, setLoading]);
 
   if (loading || firstLoad) return <LoadingArticle />;
 

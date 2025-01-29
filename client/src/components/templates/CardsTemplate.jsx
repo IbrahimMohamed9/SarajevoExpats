@@ -19,15 +19,14 @@ const CardsTemplate = ({ url, type, data }) => {
 
   useEffect(() => {
     const init = async () => {
-      if (!data) {
-        const response = await axiosInstance.get(url);
-        setItems(response.data);
-      }
+      setLoading(true);
+      const fetchedItems = data || (await axiosInstance.get(url));
+      setItems(fetchedItems.data);
       setLoading(false);
     };
 
     init();
-  }, []);
+  }, [url, data, setLoading]);
 
   if (loading) return <LoadingCards />;
 
