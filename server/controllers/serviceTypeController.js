@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const ServiceType = require("../models/serviceTypeModel");
-const { checkNotFound } = require("../utils");
 const Service = require("../models/serviceModel");
 const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
