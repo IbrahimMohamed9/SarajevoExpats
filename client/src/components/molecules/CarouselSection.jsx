@@ -6,7 +6,9 @@ import BaseCard from "@organisms/BaseCard";
 import SectionHeder from "@atoms/SectionHeder";
 
 const CarouselSection = ({ items = [], type, title, titleImage }) => {
-  const validatedItems = items.filter(
+  // Ensure items is an array before filtering
+  const itemsArray = Array.isArray(items) ? items : [];
+  const validatedItems = itemsArray.filter(
     (item) => item && typeof item === "object"
   );
 
@@ -17,7 +19,7 @@ const CarouselSection = ({ items = [], type, title, titleImage }) => {
     ));
 
     carouselElements = <CustomCarousel>{carouselElements}</CustomCarousel>;
-  } else
+  } else {
     carouselElements = (
       <div className="py-4 m-4 bg-gray-300 rounded-lg">
         <Typography variant="body2" color="text.secondary" align="center">
@@ -25,6 +27,7 @@ const CarouselSection = ({ items = [], type, title, titleImage }) => {
         </Typography>
       </div>
     );
+  }
 
   return (
     <div className="w-full">
