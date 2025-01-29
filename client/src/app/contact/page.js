@@ -37,8 +37,8 @@ const Contact = () => {
       <h1 className="text-3xl font-bold mb-8 text-center">Contact Us</h1>
       <div className="max-w-2xl mx-auto">
         <p className="text-gray-600 mb-8 text-center">
-          Have questions or need assistance? We're here to help! Reach out to us
-          through any of the following channels:
+          Have questions or need assistance? We&apos;re here to help! Reach out
+          to us through any of the following channels:
         </p>
         <ContactInfo phone={phone} email={email} whatsappNumber={phone} />
       </div>

@@ -4,7 +4,7 @@ import FilterButton from "@atoms/FilterButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const getSelectedType = () => {
+const useSelectedType = () => {
   const pathname = usePathname();
   const path = pathname.split("/");
 
@@ -13,7 +13,7 @@ const getSelectedType = () => {
 };
 
 const FilterSection = ({ types, counts, selectedType }) => {
-  const pathname = getSelectedType();
+  const pathname = useSelectedType();
 
   const filterBtnElements = types.map((type) => (
     <FilterButton

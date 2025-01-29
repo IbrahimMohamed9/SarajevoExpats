@@ -116,6 +116,11 @@ const AdminModalField = ({
     }
   };
 
+  const [childPosts, setChildPosts] = useState([]);
+  useEffect(() => {
+    setChildPosts(formData?.childPosts);
+  }, [formData?.childPosts]);
+
   if (isDropList) {
     const tableKey = {
       type: "placeTypes/with-places",
@@ -299,10 +304,6 @@ const AdminModalField = ({
   }
 
   if (isImages) {
-    const [childPosts, setChildPosts] = useState([]);
-    useEffect(() => {
-      setChildPosts(formData?.childPosts);
-    }, []);
     const deleteImage = (media) => {
       const isConfirmed = confirm(`Are you sure you want to delete this image?
               image url: ${media.displayUrl}`);

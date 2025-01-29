@@ -8,6 +8,14 @@ import { useSetRecoilState } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
 
 const BaseCard = ({ item, type, className = "" }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+  const [startPosition, setStartPosition] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const setLoadingState = useSetRecoilState(loadingAtom);
+  const timeoutRef = useRef(null);
+  const elementRef = useRef(null);
+
   if (!item) return null;
 
   const title = item?.title || item?.name;
@@ -21,14 +29,6 @@ const BaseCard = ({ item, type, className = "" }) => {
     location: item?.location,
     service: item?.serviceType,
   };
-
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
-  const [startPosition, setStartPosition] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const setLoadingState = useSetRecoilState(loadingAtom);
-  const timeoutRef = useRef(null);
-  const elementRef = useRef(null);
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {
