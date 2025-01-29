@@ -1,9 +1,8 @@
-import FilterSection from "@molecules/FilterSection";
 import CardsTemplate from "@templates/CardsTemplate";
 import axiosInstance from "@/config/axios";
 import ErrorDisplay from "@molecules/ErrorDisplay";
 
-const ServiceContent = async ({ type, subtype }) => {
+const ServiceContent = async ({ type }) => {
   try {
     const servicesRes = await axiosInstance.get(
       `/services/by-service-type/${type}`

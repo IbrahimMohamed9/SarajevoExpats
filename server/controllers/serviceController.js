@@ -27,7 +27,8 @@ const getServicesByServiceType = asyncHandler(async (req, res) => {
     );
   }
 
-  res.status(200).json(services);
+  const formattedServices = formatArrayDates(services);
+  res.status(200).json(formattedServices);
 });
 
 //@desc Create new service
@@ -66,7 +67,11 @@ const createService = asyncHandler(async (req, res) => {
   }
 
   const service = await Service.create({ ...req.body });
-  res.status(201).json({ message: "The service added successfully", service });
+  const formattedService = formatObjectDates(service);
+  res.status(201).json({
+    message: "The service added successfully",
+    service: formattedService,
+  });
 });
 
 //@desc Delete service by id

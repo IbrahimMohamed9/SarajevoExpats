@@ -20,6 +20,7 @@ export const metadata = {
 
 const Services = async () => {
   const services = await axiosInstance.get("/services");
+
   const servicesColumnElements = services.data.map((service, index) => (
     <BaseCard item={service} key={index} type="services" />
   ));
