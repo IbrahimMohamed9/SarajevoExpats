@@ -116,7 +116,7 @@ const CustomCarousel = ({ children }) => {
         rewindWithAnimation={false}
         shouldResetAutoplay
         autoPlay={false}
-        minimumTouchDrag={80}
+        minimumTouchDrag={20}
         slidesToSlide={1}
         swipeable
         customLeftArrow={
