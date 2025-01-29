@@ -1,13 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const News = require("../models/newsModel");
+const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
 //@desc Get all news
 //@route GET /api/news
 //@access Private
 const getAllNews = asyncHandler(async (req, res) => {
   const news = await News.find().sort({ createdAt: -1 });
-
-  res.status(200).json(news);
+  const formattedNews = formatArrayDates(news);
+  res.status(200).json(formattedNews);
 });
 
 //@desc Create new news
@@ -52,13 +53,11 @@ const getNewsById = asyncHandler(async (req, res) => {
   const news = await News.findById(req.params.id);
 
   if (!news) {
-    res.status(404).json({
-      message: "News not found",
-    });
+    res.status(404);
     throw new Error("News not found");
   }
-
-  res.status(200).json(news);
+  const formattedNews = formatObjectDates(news);
+  res.status(200).json(formattedNews);
 });
 
 //@desc Delete news by id

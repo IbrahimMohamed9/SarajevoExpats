@@ -1,15 +1,10 @@
 import { Typography } from "@mui/material";
 import BaseCardExtraContent from "@atoms/BaseCardExtraContent";
+import { formatDateTime } from "@/utils/formatters";
 
 const BaseCardEnd = ({ isHovered, date, values }) => {
-  const readableDate = date
-    ? new Date(date).toLocaleString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        timeZone: "Europe/Sarajevo",
-      })
-    : null;
+  const readableDate = formatDateTime(date);
+
   return (
     <div
       className={`mt-auto transition-all duration-300 transform ${

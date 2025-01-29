@@ -2,14 +2,15 @@ const asyncHandler = require("express-async-handler");
 const Place = require("../models/placeModel");
 const { checkNotFound } = require("../utils");
 const PlaceType = require("../models/placeTypeModel");
+const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
 //@desc Get all places
 //@route /places
 //@access public
 const getAllPlaces = asyncHandler(async (req, res) => {
   const places = await Place.find().sort({ createdAt: -1 });
-
-  res.status(200).json(places);
+  const formattedPlaces = formatArrayDates(places);
+  res.status(200).json(formattedPlaces);
 });
 
 //@desc Get all under spacific placeType
@@ -17,8 +18,8 @@ const getAllPlaces = asyncHandler(async (req, res) => {
 //@access public
 const getPlacesByPlaceType = asyncHandler(async (req, res) => {
   const places = await Place.find({ type: req.params.placeType });
-
-  res.status(200).json(places);
+  const formattedPlaces = formatArrayDates(places);
+  res.status(200).json(formattedPlaces);
 });
 
 //@desc Create new place
@@ -122,10 +123,12 @@ const updatePlaceById = asyncHandler(async (req, res) => {
 //@access public
 const getPlaceById = asyncHandler(async (req, res) => {
   const place = await Place.findById(req.params.id);
-
-  checkNotFound(place)(req, res, async () => {
-    res.status(200).json(place);
-  });
+  if (!place) {
+    res.status(404);
+    throw new Error("Place not found");
+  }
+  const formattedPlace = formatObjectDates(place);
+  res.status(200).json(formattedPlace);
 });
 
 module.exports = {

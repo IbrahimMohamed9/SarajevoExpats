@@ -1,13 +1,15 @@
 const asyncHandler = require("express-async-handler");
 const { checkNotFound } = require("../utils");
 const QaA = require("../models/QaAModel");
+const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
 //@desc Get all QaAs
 //@route GET /api/QaAs
 //@access public
 const getQaAs = asyncHandler(async (req, res) => {
   const qaas = await QaA.find().sort({ createdAt: -1 });
-  res.status(200).json(qaas);
+  const formattedQaas = formatArrayDates(qaas);
+  res.status(200).json(formattedQaas);
 });
 
 //@desc Get QaA by Id
@@ -15,9 +17,12 @@ const getQaAs = asyncHandler(async (req, res) => {
 //@access public
 const getQaAById = asyncHandler(async (req, res) => {
   const qaa = await QaA.findById(req.params.id);
-  checkNotFound(qaa)(req, res, () => {
-    res.status(200).json(qaa);
-  });
+  if (!qaa) {
+    res.status(404);
+    throw new Error("QaA not found");
+  }
+  const formattedQaa = formatObjectDates(qaa);
+  res.status(200).json(formattedQaa);
 });
 
 //@desc Create new QaA

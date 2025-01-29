@@ -2,20 +2,32 @@ const errorHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
 const getAllUsers = errorHandler(async (req, res) => {
   const users = await User.find().select("-password");
-  res.status(200).json(users);
+  const formattedUsers = formatArrayDates(users);
+  res.status(200).json(formattedUsers);
 });
 
 const getUserById = errorHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
-  res.status(200).json(user);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  const formattedUser = formatObjectDates(user);
+  res.status(200).json(formattedUser);
 });
 
 const getMe = errorHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  res.status(200).json(user);
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+  const formattedUser = formatObjectDates(user);
+  res.status(200).json(formattedUser);
 });
 
 const registerUser = errorHandler(async (req, res) => {

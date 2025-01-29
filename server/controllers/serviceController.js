@@ -6,9 +6,9 @@ const { checkNotFound } = require("../utils");
 //@route /services
 //@access public
 const getAllServices = asyncHandler(async (req, res) => {
-  const service = await Service.find().sort({ createdAt: -1 });
-
-  res.status(200).json(service);
+  const services = await Service.find().sort({ createdAt: -1 });
+  const formattedServices = formatArrayDates(services);
+  res.status(200).json(formattedServices);
 });
 
 //@desc Get all under spacific serviceType
@@ -99,10 +99,12 @@ const updateServiceById = asyncHandler(async (req, res) => {
 //@access public
 const getServiceById = asyncHandler(async (req, res) => {
   const service = await Service.findById(req.params.id);
-
-  checkNotFound(service)(req, res, async () => {
-    res.status(200).json(service);
-  });
+  if (!service) {
+    res.status(404);
+    throw new Error("Service not found");
+  }
+  const formattedService = formatObjectDates(service);
+  res.status(200).json(formattedService);
 });
 
 module.exports = {

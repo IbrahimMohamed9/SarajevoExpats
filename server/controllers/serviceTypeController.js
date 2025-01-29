@@ -2,14 +2,15 @@ const asyncHandler = require("express-async-handler");
 const ServiceType = require("../models/serviceTypeModel");
 const { checkNotFound } = require("../utils");
 const Service = require("../models/serviceModel");
+const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
 //@desc Get all service types
 //@route /serviceTypes
 //@access public
 const getAllServiceTypes = asyncHandler(async (req, res) => {
-  const serviceTypes = await ServiceType.find();
-
-  res.status(200).json(serviceTypes);
+  const serviceTypes = await ServiceType.find().sort({ createdAt: -1 });
+  const formattedServiceTypes = formatArrayDates(serviceTypes);
+  res.status(200).json(formattedServiceTypes);
 });
 
 //@desc Create new service type
@@ -114,10 +115,12 @@ const updateServiceTypeById = asyncHandler(async (req, res) => {
 //@access public
 const getServiceTypeById = asyncHandler(async (req, res) => {
   const serviceType = await ServiceType.findById(req.params.id);
-
-  checkNotFound(serviceType)(req, res, async () => {
-    res.status(200).json(serviceType);
-  });
+  if (!serviceType) {
+    res.status(404);
+    throw new Error("Service type not found");
+  }
+  const formattedServiceType = formatObjectDates(serviceType);
+  res.status(200).json(formattedServiceType);
 });
 
 //@desc Get all service types with services

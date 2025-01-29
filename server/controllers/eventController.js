@@ -5,14 +5,15 @@ const { ApifyClient } = require("apify-client");
 const downloadImage = require("../utils/downloadImage");
 const downloadVideo = require("../utils/downloadVideo");
 const { logError } = require("../utils/logger");
+const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
 //@desc Get all events
 //@route GET /api/events
 //@access public
 const getEvents = asyncHandler(async (req, res) => {
   const events = await Event.find({}).sort({ pinned: -1, date: -1 });
-
-  res.json(events);
+  const formattedEvents = formatArrayDates(events);
+  res.json(formattedEvents);
 });
 
 //@desc Get event by ID
@@ -21,7 +22,8 @@ const getEvents = asyncHandler(async (req, res) => {
 const getEventById = asyncHandler(async (req, res) => {
   const event = await Event.findById(req.params.id);
   checkNotFound(event)(req, res, () => {
-    res.status(200).json(event);
+    const formattedEvent = formatObjectDates(event);
+    res.status(200).json(formattedEvent);
   });
 });
 
