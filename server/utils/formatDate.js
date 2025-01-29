@@ -10,7 +10,9 @@ const formatDate = (date) => {
 };
 
 const formatObjectDates = (obj) => {
+  if (!obj) return obj;
   const formattedObj = obj.toObject ? obj.toObject() : { ...obj };
+
   if (formattedObj.date) formattedObj.date = formatDate(formattedObj.date);
 
   if (formattedObj.createdAt)
@@ -23,6 +25,7 @@ const formatObjectDates = (obj) => {
 };
 
 const formatArrayDates = (array) => {
+  if (!Array.isArray(array)) return [];
   return array.map((item) => formatObjectDates(item));
 };
 
