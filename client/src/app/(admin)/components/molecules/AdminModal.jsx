@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -45,20 +45,26 @@ export default function AdminModal() {
     setFormData(data || {});
 
     setFieldErrors({});
+
+    return () => {
+      setFormData({});
+      setFieldErrors({});
+      setError("");
+    };
   }, [data, title]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setError("");
     setFieldErrors({});
     onClose();
-  };
+  }, [onClose]);
 
-  const handleChange = (key, value) => {
+  const handleChange = useCallback((key, value) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
     setFieldErrors((prev) => ({ ...prev, [key]: "" }));
-  };
+  }, []);
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const errors = {};
     let isValid = true;
 
@@ -75,9 +81,9 @@ export default function AdminModal() {
 
     setFieldErrors(errors);
     return isValid;
-  };
+  }, [formData, title]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!validateForm()) {
       setSnackbar({
@@ -119,26 +125,28 @@ export default function AdminModal() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [formData, tableKey, onSubmit, validateForm, handleClose, setSnackbar]);
 
-  const formElements = keys.map((key) => (
-    <AdminModalField
-      key={key}
-      keyVal={key}
-      formData={formData}
-      handleChange={handleChange}
-      title={title}
-      requiredFields={requiredFields}
-      fieldErrors={fieldErrors}
-      loading={loading}
-      error={error}
-      setError={setError}
-      setLoading={setLoading}
-      setFieldErrors={setFieldErrors}
-      setSnackbar={setSnackbar}
-      tables={tables}
-    />
-  ));
+  const formElements = useMemo(() =>
+    keys.map((key) => (
+      <AdminModalField
+        key={key}
+        keyVal={key}
+        formData={formData}
+        handleChange={handleChange}
+        title={title}
+        requiredFields={requiredFields}
+        fieldErrors={fieldErrors}
+        loading={loading}
+        error={error}
+        setError={setError}
+        setLoading={setLoading}
+        setFieldErrors={setFieldErrors}
+        setSnackbar={setSnackbar}
+        tables={tables}
+      />
+    ))
+  , [keys, formData, handleChange, title, fieldErrors, loading, error, setError, setLoading, setFieldErrors, setSnackbar, tables]);
 
   return (
     <Dialog

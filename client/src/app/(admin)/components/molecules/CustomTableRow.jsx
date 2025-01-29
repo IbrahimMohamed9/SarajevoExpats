@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSetRecoilState } from "recoil";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
@@ -25,40 +25,41 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
     setAdminModalOpen(true);
   };
 
-  const handleUpdateClose = () => {
+  const handleUpdateClose = useCallback(() => {
     setAdminModalOpen(false);
     setSelectedItem(null);
-  };
+  }, [setAdminModalOpen, setSelectedItem]);
 
-  const handleUpdate = async (updatedData) => {
-    try {
-      const path = `/${tableKey.split("/")[0]}/${data._id}`;
-      const res = await axiosInstance.put(path, updatedData);
+  const handleUpdate = useCallback(
+    async (updatedData) => {
+      try {
+        const path = `/${tableKey.split("/")[0]}/${data._id}`;
+        const res = await axiosInstance.put(path, updatedData);
 
-      setTables((prev) => ({
-        ...prev,
-        [tableKey]: prev[tableKey].map((item) =>
-          item._id === data._id ? { ...item, ...updatedData } : item
-        ),
-      }));
+        setTables((prev) => ({
+          ...prev,
+          [tableKey]: prev[tableKey].map((item) =>
+            item._id === data._id ? { ...item, ...updatedData } : item
+          ),
+        }));
 
-      setSnackbar({
-        open: true,
-        message: res.data.message,
-        severity: "success",
-      });
-      handleUpdateClose();
-      return res.data;
-    } catch (error) {
-      console.error("Error updating item:", error);
-      setSnackbar({
-        message:
-          error.customMessage || "Error updating item. Please try again.",
-        severity: "error",
-      });
-      throw error;
-    }
-  };
+        handleUpdateClose();
+        setSnackbar({
+          open: true,
+          message: res.data.message,
+          severity: "success",
+        });
+        return res.data;
+      } catch (error) {
+        setSnackbar({
+          open: true,
+          message: error.response?.data?.message || "Something went wrong!",
+          severity: "error",
+        });
+      }
+    },
+    [data._id, tableKey, setTables, handleUpdateClose, setSnackbar]
+  );
 
   const handleDelete = async (_id) => {
     const key = tableKey.split("/")[0];
@@ -110,7 +111,14 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
       update: true,
       tableKey,
     });
-  }, [AdminModalOpen, selectedItem, setAdminModal, handleUpdate, tableKey]);
+  }, [
+    AdminModalOpen,
+    selectedItem,
+    setAdminModal,
+    handleUpdate,
+    tableKey,
+    handleUpdateClose,
+  ]);
 
   return (
     <>
