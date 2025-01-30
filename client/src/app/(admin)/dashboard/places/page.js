@@ -1,9 +1,11 @@
 import AdminTableTemplete from "@adminTem/AdminTableTemplete";
-import axiosInstance from "@/config/axios";
+import axiosInstance, { serverAxiosInstance } from "@/config/axios";
 
 const Page = async () => {
   const placesResponse = await axiosInstance.get("places");
-  const placeTypesResponse = await axiosInstance.get("placeTypes/with-places");
+  const placeTypesResponse = await serverAxiosInstance.get(
+    "placeTypes/with-places"
+  );
   const dataTemp1 = {
     title: "",
     content: "",

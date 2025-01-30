@@ -9,7 +9,7 @@ const createAxiosInstance = (isServer = false) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    withCredentials: !isServer,
+    withCredentials: true,
     httpsAgent: new https.Agent({
       rejectUnauthorized: false,
     }),
@@ -17,7 +17,16 @@ const createAxiosInstance = (isServer = false) => {
 
   instance.interceptors.request.use(
     (config) => {
-      if (typeof window !== "undefined" && localStorage) {
+      if (isServer) {
+        // For server-side requests, get token from cookies
+        const { cookies } = require('next/headers');
+        const cookieStore = cookies();
+        const token = cookieStore.get('access_token')?.value;
+        if (token) {
+          config.headers.authorization = `Bearer ${token}`;
+        }
+      } else if (typeof window !== "undefined" && localStorage) {
+        // For client-side requests, continue using localStorage
         if (config.data instanceof FormData) {
           delete config.headers["Content-Type"];
           config.headers["Accept"] = "multipart/form-data";

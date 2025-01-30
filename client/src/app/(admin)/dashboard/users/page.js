@@ -1,8 +1,8 @@
 import AdminTableTemplete from "@adminTem/AdminTableTemplete";
-import axiosInstance from "@/config/axios";
+import { serverAxiosInstance } from "@/config/axios";
 
 const Page = async () => {
-  const usersResponse = await axiosInstance.get("users");
+  const usersResponse = await serverAxiosInstance.get("users");
   const dataTemp = {
     username: "",
     email: "",
