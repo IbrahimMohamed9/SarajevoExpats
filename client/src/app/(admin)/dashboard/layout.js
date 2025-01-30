@@ -14,6 +14,8 @@ export const metadata = {
   description: "Admin dashboard for Sarajevo Expats.",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function DashboardLayout({ children }) {
   const isAdmin = verifyAdmin();
 

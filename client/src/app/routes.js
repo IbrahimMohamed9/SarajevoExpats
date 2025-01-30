@@ -1,6 +1,8 @@
 import { serverAxiosInstance } from "@/config/axios";
 import { verifyAdmin } from "@/utils";
 
+export const dynamic = 'force-dynamic';
+
 const getStaticRoutes = () => [
   {
     title: "News",

@@ -1,6 +1,8 @@
 import AdminTableTemplete from "@adminTem/AdminTableTemplete";
 import { serverAxiosInstance } from "@/config/axios";
 
+export const dynamic = 'force-dynamic';
+
 const Page = async () => {
   const usersResponse = await serverAxiosInstance.get("users");
   const dataTemp = {
