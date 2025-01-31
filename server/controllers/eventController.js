@@ -35,7 +35,11 @@ const getEventById = asyncHandler(async (req, res) => {
 //@route GET /api/events/pinned
 //@access public
 const getPinnedEvents = asyncHandler(async (req, res) => {
-  const events = await Event.find({ pinned: true }).sort({ timestamp: -1 });
+  const events = await Event.find({ pinned: true }).sort({
+    priority: -1,
+    pinned: -1,
+    date: -1,
+  });
   res.json(events);
 });
 

@@ -21,7 +21,11 @@ const getAllPlaces = asyncHandler(async (req, res) => {
 //@route /places
 //@access public
 const getPlacesByPlaceType = asyncHandler(async (req, res) => {
-  const places = await Place.find({ type: req.params.placeType });
+  const places = await Place.find({ type: req.params.placeType }).sort({
+    priority: -1,
+    pinned: -1,
+    createdAt: -1,
+  });
   const formattedPlaces = formatArrayDates(places);
   res.status(200).json(formattedPlaces);
 });

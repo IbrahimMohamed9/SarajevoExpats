@@ -22,6 +22,10 @@ const getAllServices = asyncHandler(async (req, res) => {
 const getServicesByServiceType = asyncHandler(async (req, res) => {
   const services = await Service.find({
     serviceType: req.params.serviceType,
+  }).sort({
+    priority: -1,
+    pinned: -1,
+    createdAt: -1,
   });
 
   if (!services.length) {
