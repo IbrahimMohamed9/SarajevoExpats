@@ -4,9 +4,10 @@ import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
 import ErrorDisplay from "@molecules/ErrorDisplay";
 import { useEffect, useState } from "react";
-import LoadingCards from "./LoadingCards";
+import LoadingCards from "@templates/LoadingCards";
 import { useRecoilState } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
+import LoadingArticle from "@templates/LoadingArticle";
 
 const getSingularForm = (string) => {
   if (string === "news") return string;
@@ -16,23 +17,26 @@ const getSingularForm = (string) => {
 const CardsTemplate = ({ url, type, data }) => {
   const [items, setItems] = useState(data);
   const [loading, setLoading] = useRecoilState(loadingAtom);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const init = async () => {
-      setLoading(true);
       if (!data) {
         const fetchedItems = await axiosInstance.get(url);
         setItems(fetchedItems.data);
       }
       setLoading(false);
+      setFirstLoad(false);
     };
 
     init();
   }, [url, data, setLoading]);
 
-  if (loading) return <LoadingCards />;
+  if ((loading && !items) || firstLoad) return <LoadingCards />;
+  if (loading) return <LoadingArticle />;
 
-  if (!items || items.length === 0) {
+  if ((!items || items.length === 0) && !firstLoad) {
     return (
       <ErrorDisplay
         message={`No ${type} found. Please check back later.`}

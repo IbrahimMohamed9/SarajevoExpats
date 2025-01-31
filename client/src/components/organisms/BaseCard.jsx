@@ -68,7 +68,7 @@ const BaseCard = ({ item, type, className = "" }) => {
     if (moveDistance > 50 && isDragging) {
       e.preventDefault();
     } else {
-      setLoadingState(true);
+      if (!e.ctrlKey) setLoadingState(true);
     }
     setIsDragging(false);
     setStartPosition(0);

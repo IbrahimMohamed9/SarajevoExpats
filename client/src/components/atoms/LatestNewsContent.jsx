@@ -1,9 +1,16 @@
+import { loadingAtom } from "@/store/atoms/loadingAtom";
 import dynamic from "next/dynamic";
+import { useSetRecoilState } from "recoil";
 const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const LatestNewsContent = ({ latestNews }) => {
+  const setLoading = useSetRecoilState(loadingAtom);
+
   return (
-    <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 max-w-5xl mx-auto">
+    <div
+      className="absolute bottom-0 left-0 right-0 p-8 md:p-12 max-w-5xl mx-auto"
+      onClick={() => setLoading(true)}
+    >
       <div className="space-y-4">
         <div className="flex items-center gap-4 text-gray-300">
           <time dateTime={latestNews.createdAt} className="text-sm">
