@@ -25,6 +25,7 @@ const serviceSchema = new mongoose.Schema(
       },
     },
     priority: { type: Number, default: 0 },
+    pinned: { type: Boolean, default: false },
   },
   {
     timestamps: true,

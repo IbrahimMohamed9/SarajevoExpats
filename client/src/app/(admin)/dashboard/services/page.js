@@ -16,6 +16,7 @@ const Page = async () => {
     email: "",
     serviceType: "",
     priority: 0,
+    pinned: false,
   };
   const dataTemp3 = {
     name: "",

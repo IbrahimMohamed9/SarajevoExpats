@@ -17,7 +17,6 @@ const ValueTableRow = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const ignoreKeys = ["_id", "subData", "__v", "password"];
-  const time = ["createdAt", "updatedAt"];
   const cellClass =
     "max-w-20 overflow-hidden text-ellipsis text-wrap line-clamp-3 min-w-48";
 
@@ -31,6 +30,7 @@ const ValueTableRow = ({
 
   const cells = Object.entries(values).map(([key, val]) => {
     const isCheckbox = ["pinned"].includes(key);
+    const isNumber = typeof val === "number";
 
     if (isCheckbox) {
       return (
@@ -52,9 +52,7 @@ const ValueTableRow = ({
       );
     }
 
-    if (ignoreKeys.includes(key) || typeof val === "object") {
-      return null;
-    }
+    if (ignoreKeys.includes(key) || typeof val === "object") return null;
 
     if (key === "picture" && val) {
       return (
@@ -75,7 +73,8 @@ const ValueTableRow = ({
       );
     }
 
-    const value = time.includes(key) ? formatDateTime(val) : val;
+    const value = isNumber ? String(val) : val;
+
     return (
       <TableCell key={key} component="th" scope="row" align="center">
         <SafeHtml className={cellClass} content={value} />
