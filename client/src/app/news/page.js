@@ -35,7 +35,7 @@ const News = async () => {
   const news = response.data;
 
   return (
-    <div className="-mt-7">
+    <div className="-mt-7 container mx-auto">
       {news[0] && <LatestNewsLayout latestNews={news[0]} />}
       <div className="max-w-7xl mx-auto px-4">
         <CardsTemplate data={news} type="news" />

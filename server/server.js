@@ -48,7 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 // Configure CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://sarajevoexpats.com"],
+    origin: ["http://localhost:3000", "https://sarajevoexpats.com", "https://www.sarajevoexpats.com"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
     credentials: true,
@@ -74,6 +74,7 @@ const getMedia = (req, res, next) => {
     "Access-Control-Allow-Origin": [
       "http://localhost:3000",
       "https://sarajevoexpats.com",
+      "https://www.sarajevoexpats.com",
     ].includes(req.headers.origin)
       ? req.headers.origin
       : null,
