@@ -1,3 +1,5 @@
+"use client";
+
 import { loadingAtom } from "@/store/atoms/loadingAtom";
 import dynamic from "next/dynamic";
 import { useSetRecoilState } from "recoil";
