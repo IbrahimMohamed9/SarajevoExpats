@@ -1,17 +1,15 @@
 import { cookies } from "next/headers";
 const jwt = require("jsonwebtoken");
 
-export const verifyAdmin = () => {
-  const cookieStore = cookies();
-  const token = cookieStore.get("access_token")?.value;
+const SECRET_KEY = process.env.JWT_SECRET;
 
+export const verifyAdmin = () => {
+  const token = cookies().get("access_token")?.value;
   if (!token) return false;
 
   try {
-    const user = jwt.decode(token).user;
-    if (user.type !== "admin") return false;
-
-    return true;
+    const decoded = jwt.verify(token, SECRET_KEY);
+    return decoded?.user?.type === "admin";
   } catch (error) {
     return false;
   }

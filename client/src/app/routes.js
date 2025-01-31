@@ -2,7 +2,6 @@ import { serverAxiosInstance } from "@/config/axios";
 import { verifyAdmin } from "@/utils";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 3600;
 
 const getStaticRoutes = () => [
   {
@@ -22,68 +21,58 @@ const getStaticRoutes = () => [
 const getDynamicRoutes = async () => {
   try {
     const [serviceType, placeType] = await Promise.all([
-      serverAxiosInstance.get("/serviceTypes").catch(() => ({ data: [] })),
-      serverAxiosInstance.get("/placeTypes").catch(() => ({ data: [] })),
+      serverAxiosInstance.get("/serviceTypes"),
+      serverAxiosInstance.get("/placeTypes"),
     ]);
 
     return {
-      services:
-        serviceType.data?.map((service) => ({
-          title: service.name,
-          href: `/services/${encodeURIComponent(service.name)}`,
-        })) || [],
-      places:
-        placeType.data?.map((place) => ({
-          title: place.name,
-          href: `/places/${encodeURIComponent(place.name)}`,
-        })) || [],
+      services: serviceType.data.map((service) => ({
+        title: service.name,
+        href: `/services/${encodeURIComponent(service.name)}`,
+      })),
+      places: placeType.data.map((place) => ({
+        title: place.name,
+        href: `/places/${encodeURIComponent(place.name)}`,
+      })),
     };
   } catch (error) {
     console.error("Error fetching navigation data:", error);
-    return { services: [], places: [] };
+    return { services: false, places: false };
   }
 };
 
 const routes = async () => {
-  try {
-    const staticRoutes = getStaticRoutes();
-    const { services, places } = await getDynamicRoutes();
+  const staticRoutes = getStaticRoutes();
+  const { services, places } = await getDynamicRoutes();
 
-    const allRoutes = [
-      ...staticRoutes,
-      {
-        title: "Places",
-        href: "/places",
-        children: places,
-      },
-      {
-        title: "Services",
-        href: "/services",
-        children: services,
-      },
-    ];
+  const allRoutes = [
+    ...staticRoutes,
+    {
+      title: "Places",
+      dropdown: places,
+    },
+    {
+      title: "Services",
+      dropdown: services,
+    },
+  ];
 
-    // This will only run on the server side due to the cookies() API
-    if (verifyAdmin()) {
-      allRoutes.push({
-        title: "Admin",
-        href: "/dashboard",
-        children: [
-          { href: "/dashboard/events", title: "Manage Events" },
-          { href: "/dashboard/qaas", title: "Manage QaAs" },
-          { href: "/dashboard/news", title: "Manage News" },
-          { href: "/dashboard/places", title: "Manage Places" },
-          { href: "/dashboard/services", title: "Manage Services" },
-          { href: "/dashboard/users", title: "Manage Users" },
-        ],
-      });
-    }
-
-    return allRoutes;
-  } catch (error) {
-    console.error("Error generating routes:", error);
-    return getStaticRoutes(); // Fallback to static routes if dynamic routes fail
+  // This will only run on the server side due to the cookies() API
+  if (verifyAdmin()) {
+    allRoutes.push({
+      title: "Admin",
+      dropdown: [
+        { href: "/dashboard/events", title: "Manage Events" },
+        { href: "/dashboard/qaas", title: "Manage QaAs" },
+        { href: "/dashboard/news", title: "Manage News" },
+        { href: "/dashboard/places", title: "Manage Places" },
+        { href: "/dashboard/services", title: "Manage Services" },
+        { href: "/dashboard/users", title: "Manage Users" },
+      ],
+    });
   }
+
+  return allRoutes;
 };
 
 export default routes;
