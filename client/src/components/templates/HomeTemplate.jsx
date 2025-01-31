@@ -40,12 +40,12 @@ const HomeTemplate = ({
           />
         </div>
         <CarouselSection items={news} type="news" title="Latest News" />
-        <CarouselSection items={places} type="places" title="Featured Places" />
         <CarouselSection
           items={services}
           type="services"
           title="Popular Services"
         />
+        <CarouselSection items={places} type="places" title="Featured Places" />
       </div>
 
       <div className="hidden md:flex flex-col items-center gap-6 border-l border-gray-200 h-[calc(100vh-2rem)] max-h-[1200px] sticky top-12">
