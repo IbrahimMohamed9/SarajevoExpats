@@ -16,7 +16,6 @@ const getAllServices = asyncHandler(async (req, res) => {
     createdAt: orderByCreatedAtForAll,
   });
   orderByCreatedAtForAll = orderByCreatedAtForAll === 1 ? -1 : 1;
-  console.log(orderByCreatedAtForAll);
 
   const formattedServices = formatArrayDates(services);
   res.status(200).json(formattedServices);

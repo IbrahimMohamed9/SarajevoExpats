@@ -7,6 +7,8 @@ const newsSchema = new mongoose.Schema(
     picture: { type: String, require: [true, "Please add a picture"] },
     pictureDescription: { type: String },
     sources: { type: String, require: [true, "Please add a sources"] },
+    showInSlider: { type: Boolean, default: false },
+    slidePriority: { type: Number, default: 0 },
   },
   {
     timestamps: true,

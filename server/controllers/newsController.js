@@ -11,6 +11,17 @@ const getAllNews = asyncHandler(async (req, res) => {
   res.status(200).json(formattedNews);
 });
 
+//@desc Get all news
+//@route GET /api/news
+//@access Private
+const getSliderNews = asyncHandler(async (req, res) => {
+  const news = await News.find({ showInSlider: true }).sort({
+    slidePriority: -1,
+  });
+  const formattedNews = formatArrayDates(news);
+  res.status(200).json(formattedNews);
+});
+
 //@desc Create new news
 //@route POST /api/news
 //@access Private
@@ -104,4 +115,5 @@ module.exports = {
   getNewsById,
   deleteNewsById,
   updateNewsById,
+  getSliderNews,
 };

@@ -28,7 +28,7 @@ const ValueTableRow = ({
   };
 
   const cells = Object.entries(values).map(([key, val]) => {
-    const isCheckbox = ["pinned"].includes(key);
+    const isCheckbox = ["pinned", "showInSlider"].includes(key);
     const isNumber = typeof val === "number";
 
     if (isCheckbox) {
@@ -37,15 +37,15 @@ const ValueTableRow = ({
           <div
             className={`
               text-center
-                px-2 py-1 rounded-full text-sm font-medium
-                ${
-                  values[key]
-                    ? "bg-main/10 text-main"
-                    : "bg-gray-100 text-gray-600"
-                }
-              `}
+              px-2 py-1 rounded-full text-sm font-medium
+              ${
+                values[key]
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }
+            `}
           >
-            {values[key] ? "Pinned" : "Not Pinned"}
+            {values[key] ? "True" : "False"}
           </div>
         </TableCell>
       );

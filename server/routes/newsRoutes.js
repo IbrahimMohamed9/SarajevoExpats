@@ -7,10 +7,12 @@ const {
   createNews,
   updateNewsById,
   deleteNewsById,
+  getSliderNews,
 } = require("../controllers/newsController");
 const { validateMongoId } = require("../utils");
 
 router.route("/").get(getAllNews).post(validateAdminToken, createNews);
+router.route("/slides").get(getSliderNews);
 router.get("/:id", getNewsById);
 router
   .route("/:id")

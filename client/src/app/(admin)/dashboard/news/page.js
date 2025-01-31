@@ -9,6 +9,8 @@ const Page = async () => {
     picture: "",
     pictureDescription: "",
     sources: "",
+    showInSlider: false,
+    slidePriority: 0,
   };
 
   return (

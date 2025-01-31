@@ -120,3 +120,29 @@
  *       404:
  *         description: News article not found
  */
+
+/**
+ * @swagger
+ * /api/news/slides:
+ *   get:
+ *     summary: Get news articles for slider
+ *     tags: [News]
+ *     description: Retrieves news articles that are marked to be shown in the slider
+ *     responses:
+ *       200:
+ *         description: List of news articles for slider
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 allOf:
+ *                   - $ref: '#/components/schemas/News'
+ *                   - type: object
+ *                     properties:
+ *                       showInSlider:
+ *                         type: boolean
+ *                         description: Indicates if the news should be shown in slider
+ *       500:
+ *         description: Server error
+ */

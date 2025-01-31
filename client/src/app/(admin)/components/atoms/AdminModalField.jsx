@@ -94,9 +94,9 @@ const AdminModalField = memo(
     ].includes(lowerKey);
 
     const isDropList = ["type", "serviceType"].includes(keyVal);
-    const isCheckbox = ["pinned"].includes(keyVal);
+    const isCheckbox = ["pinned", "showInSlider"].includes(keyVal);
     const isImages = ["childPosts"].includes(keyVal);
-    const isNumber = ["priority"].includes(keyVal);
+    const isNumber = ["priority", "slidePriority"].includes(keyVal);
 
     const handleImageChange = useCallback(
       async (e) => {
