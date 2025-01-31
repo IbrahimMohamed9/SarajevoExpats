@@ -9,7 +9,9 @@ const LatestNewsContent = ({ latestNews }) => {
   return (
     <div
       className="absolute bottom-0 left-0 right-0 p-8 md:p-12 max-w-5xl mx-auto"
-      onClick={() => setLoading(true)}
+      onClick={(e) => {
+        if (e.ctrlKey) setLoading(true);
+      }}
     >
       <div className="space-y-4">
         <div className="flex items-center gap-4 text-gray-300">
