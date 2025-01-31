@@ -5,7 +5,7 @@ import HeaderMenuIcon from "@molecules/HeaderMenuIcon";
 import { NavMobile } from "@molecules/NavMobile";
 import routess from "@/app/routes";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 const Header = async () => {
   const routes = await routess();

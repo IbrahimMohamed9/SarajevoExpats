@@ -1,7 +1,7 @@
 import { serverAxiosInstance } from "@/config/axios";
 import { verifyAdmin } from "@/utils";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 const getStaticRoutes = () => [
   {
@@ -28,11 +28,11 @@ const getDynamicRoutes = async () => {
     return {
       services: serviceType.data.map((service) => ({
         title: service.name,
-        href: `/services/${service.name}`,
+        href: `/services/${service.name.replace("/", "%2F")}`,
       })),
       places: placeType.data.map((place) => ({
         title: place.name,
-        href: `/places/${place.name}`,
+        href: `/places/${place.name.replace("/", "%2F")}`,
       })),
     };
   } catch (error) {
