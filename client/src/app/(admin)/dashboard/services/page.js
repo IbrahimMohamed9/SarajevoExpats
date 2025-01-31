@@ -15,6 +15,7 @@ const Page = async () => {
     phone: "",
     email: "",
     serviceType: "",
+    priority: 0,
   };
   const dataTemp3 = {
     name: "",

@@ -24,6 +24,7 @@ const serviceSchema = new mongoose.Schema(
           "The specified type does not exist in service types collection",
       },
     },
+    priority: { type: Number, default: 0 },
   },
   {
     timestamps: true,

@@ -7,7 +7,7 @@ const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 //@route /services
 //@access public
 const getAllServices = asyncHandler(async (req, res) => {
-  const services = await Service.find().sort({ createdAt: -1 });
+  const services = await Service.find().sort({ priority: -1, createdAt: -1 });
   const formattedServices = formatArrayDates(services);
   res.status(200).json(formattedServices);
 });
