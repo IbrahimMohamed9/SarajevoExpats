@@ -3,6 +3,9 @@ const Service = require("../models/serviceModel");
 const { checkNotFound } = require("../utils");
 const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
+let orderByCreatedAtForAll = 1;
+let orderByCreatedAtForServiceType = 1;
+
 //@desc Get all services
 //@route /services
 //@access public
@@ -10,8 +13,11 @@ const getAllServices = asyncHandler(async (req, res) => {
   const services = await Service.find().sort({
     priority: -1,
     pinned: -1,
-    createdAt: -1,
+    createdAt: orderByCreatedAtForAll,
   });
+  orderByCreatedAtForAll = orderByCreatedAtForAll === 1 ? -1 : 1;
+  console.log(orderByCreatedAtForAll);
+
   const formattedServices = formatArrayDates(services);
   res.status(200).json(formattedServices);
 });
@@ -25,8 +31,12 @@ const getServicesByServiceType = asyncHandler(async (req, res) => {
   }).sort({
     priority: -1,
     pinned: -1,
-    createdAt: -1,
+    createdAt: orderByCreatedAtForServiceType,
   });
+  orderByCreatedAtForServiceType =
+    orderByCreatedAtForServiceType === 1 ? -1 : 1;
+
+  console.log(orderByCreatedAtForServiceType);
 
   if (!services.length) {
     res.status(404);

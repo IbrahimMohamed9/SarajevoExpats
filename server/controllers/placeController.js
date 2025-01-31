@@ -4,6 +4,9 @@ const { checkNotFound } = require("../utils");
 const PlaceType = require("../models/placeTypeModel");
 const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
+let orderByCreatedAtForAll = 1;
+let orderByCreatedAtForType = 1;
+
 //@desc Get all places
 //@route /places
 //@access public
@@ -11,8 +14,10 @@ const getAllPlaces = asyncHandler(async (req, res) => {
   const places = await Place.find().sort({
     priority: -1,
     pinned: -1,
-    createdAt: -1,
+    createdAt: orderByCreatedAtForAll,
   });
+  orderByCreatedAtForAll = orderByCreatedAtForAll === 1 ? -1 : 1;
+
   const formattedPlaces = formatArrayDates(places);
   res.status(200).json(formattedPlaces);
 });
@@ -24,8 +29,10 @@ const getPlacesByPlaceType = asyncHandler(async (req, res) => {
   const places = await Place.find({ type: req.params.placeType }).sort({
     priority: -1,
     pinned: -1,
-    createdAt: -1,
+    createdAt: orderByCreatedAtForType,
   });
+  orderByCreatedAtForType = orderByCreatedAtForType === 1 ? -1 : 1;
+
   const formattedPlaces = formatArrayDates(places);
   res.status(200).json(formattedPlaces);
 });
