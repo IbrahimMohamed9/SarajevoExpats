@@ -161,6 +161,7 @@ const deleteEventById = asyncHandler(async (req, res) => {
 const updateEventById = asyncHandler(async (req, res) => {
   const event = await Event.findById(req.params.id);
   checkNotFound(event, "Event");
+  delete req.body.date;
 
   const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

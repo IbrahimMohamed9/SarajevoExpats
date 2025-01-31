@@ -33,7 +33,14 @@ export default function AdminModal() {
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const excludeFields = ["_id", "__v", "createdAt", "updatedAt", "subData"];
+  const excludeFields = [
+    "_id",
+    "__v",
+    "createdAt",
+    "updatedAt",
+    "subData",
+    "date",
+  ];
   const setSnackbar = useSetRecoilState(snackbarState);
   const title = tableKey?.split("/")[0] || "";
   const tables = useRecoilValue(tablesAtom);
@@ -83,70 +90,88 @@ export default function AdminModal() {
     return isValid;
   }, [formData, title]);
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      setSnackbar({
-        message: "Please fill in all required fields",
-        open: true,
-        severity: "error",
-      });
-      return;
-    }
-
-    setLoading(true);
-    setError("");
-
-    try {
-      if (!tableKey) {
-        throw new Error("Table key is required");
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!validateForm()) {
+        setSnackbar({
+          message: "Please fill in all required fields",
+          open: true,
+          severity: "error",
+        });
+        return;
       }
 
-      const data = await onSubmit(formData);
-      handleClose();
+      setLoading(true);
+      setError("");
 
-      setSnackbar({
-        message: data.message,
-        open: true,
-        severity: "success",
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setError(
-        error.response?.data?.message ||
-          error.message ||
-          "An error occurred while saving"
-      );
-      setSnackbar({
-        message: error.response?.data?.message || "Failed to save changes",
-        open: true,
-        severity: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [formData, tableKey, onSubmit, validateForm, handleClose, setSnackbar]);
+      try {
+        if (!tableKey) {
+          throw new Error("Table key is required");
+        }
 
-  const formElements = useMemo(() =>
-    keys.map((key) => (
-      <AdminModalField
-        key={key}
-        keyVal={key}
-        formData={formData}
-        handleChange={handleChange}
-        title={title}
-        requiredFields={requiredFields}
-        fieldErrors={fieldErrors}
-        loading={loading}
-        error={error}
-        setError={setError}
-        setLoading={setLoading}
-        setFieldErrors={setFieldErrors}
-        setSnackbar={setSnackbar}
-        tables={tables}
-      />
-    ))
-  , [keys, formData, handleChange, title, fieldErrors, loading, error, setError, setLoading, setFieldErrors, setSnackbar, tables]);
+        const data = await onSubmit(formData);
+        handleClose();
+
+        setSnackbar({
+          message: data.message,
+          open: true,
+          severity: "success",
+        });
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        setError(
+          error.response?.data?.message ||
+            error.message ||
+            "An error occurred while saving"
+        );
+        setSnackbar({
+          message: error.response?.data?.message || "Failed to save changes",
+          open: true,
+          severity: "error",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [formData, tableKey, onSubmit, validateForm, handleClose, setSnackbar]
+  );
+
+  const formElements = useMemo(
+    () =>
+      keys.map((key) => (
+        <AdminModalField
+          key={key}
+          keyVal={key}
+          formData={formData}
+          handleChange={handleChange}
+          title={title}
+          requiredFields={requiredFields}
+          fieldErrors={fieldErrors}
+          loading={loading}
+          error={error}
+          setError={setError}
+          setLoading={setLoading}
+          setFieldErrors={setFieldErrors}
+          setSnackbar={setSnackbar}
+          tables={tables}
+        />
+      )),
+    [
+      keys,
+      formData,
+      handleChange,
+      title,
+      fieldErrors,
+      loading,
+      error,
+      setError,
+      setLoading,
+      setFieldErrors,
+      setSnackbar,
+      tables,
+    ]
+  );
 
   return (
     <Dialog
