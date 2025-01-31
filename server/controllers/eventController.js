@@ -11,7 +11,11 @@ const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 //@route GET /api/events
 //@access public
 const getEvents = asyncHandler(async (req, res) => {
-  const events = await Event.find({}).sort({ pinned: -1, date: -1 });
+  const events = await Event.find({}).sort({
+    priority: -1,
+    pinned: -1,
+    date: -1,
+  });
   const formattedEvents = formatArrayDates(events);
   res.json(formattedEvents);
 });

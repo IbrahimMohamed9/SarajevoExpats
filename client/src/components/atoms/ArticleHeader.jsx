@@ -1,5 +1,3 @@
-import { formatDateTime } from "@/utils/formatters";
-
 const ArticleHeader = ({ title, date, type }) => (
   <header className="relative mb-12 text-center animate-fade-in">
     <div className="space-y-6">
@@ -36,7 +34,7 @@ const ArticleHeader = ({ title, date, type }) => (
           </svg>
         </div>
         <span className="group-hover:text-gray-900 transition-colors duration-300">
-          Last updated: {formatDateTime(date)}
+          Last updated: {date}
         </span>
       </div>
     </div>

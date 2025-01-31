@@ -17,6 +17,7 @@ const eventSchema = new mongoose.Schema({
   date: { type: Date },
   childPosts: [childPostSchema],
   pinned: { type: Boolean, default: false },
+  priority: { type: Number, default: 0 },
 });
 
 const Event = mongoose.model("Events", eventSchema);

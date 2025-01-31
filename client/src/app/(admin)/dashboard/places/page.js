@@ -1,7 +1,7 @@
 import AdminTableTemplete from "@adminTem/AdminTableTemplete";
 import axiosInstance, { serverAxiosInstance } from "@/config/axios";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 const Page = async () => {
   const placesResponse = await axiosInstance.get("places");
@@ -17,6 +17,8 @@ const Page = async () => {
     email: "",
     link: "",
     type: "",
+    priority: 0,
+    pinned: false,
   };
   const dataTemp2 = {
     name: "",

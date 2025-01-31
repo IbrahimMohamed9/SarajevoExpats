@@ -7,7 +7,11 @@ const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 //@route GET /api/QaAs
 //@access public
 const getQaAs = asyncHandler(async (req, res) => {
-  const qaas = await QaA.find().sort({ createdAt: -1 });
+  const qaas = await QaA.find().sort({
+    priority: -1,
+    pinned: -1,
+    createdAt: -1,
+  });
   const formattedQaas = formatArrayDates(qaas);
   res.status(200).json(formattedQaas);
 });

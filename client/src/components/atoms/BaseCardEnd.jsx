@@ -1,10 +1,7 @@
 import { Typography } from "@mui/material";
 import BaseCardExtraContent from "@atoms/BaseCardExtraContent";
-import { formatDateTime } from "@/utils/formatters";
 
 const BaseCardEnd = ({ isHovered, date, values }) => {
-  const readableDate = formatDateTime(date);
-
   return (
     <div
       className={`mt-auto transition-all duration-300 transform ${
@@ -18,7 +15,7 @@ const BaseCardEnd = ({ isHovered, date, values }) => {
           isHovered ? "text-gray-600" : "text-gray-500"
         }`}
       >
-        {readableDate}
+        {date}
       </Typography>
     </div>
   );

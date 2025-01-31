@@ -1,4 +1,3 @@
-import { formatDateTime } from "@/utils/formatters";
 import dynamic from "next/dynamic";
 const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
@@ -8,16 +7,16 @@ const LatestNewsContent = ({ latestNews }) => {
       <div className="space-y-4">
         <div className="flex items-center gap-4 text-gray-300">
           <time dateTime={latestNews.createdAt} className="text-sm">
-            {formatDateTime(latestNews.createdAt)}
+            {latestNews.createdAt}
           </time>
           <span className="text-main font-medium px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-sm">
             Latest News
           </span>
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-white group-hover:text-main transition-colors">
+        <h1 className="text-4xl max-[850px]:text-3xl max-sm:text-2xl line-clamp-2 font-bold text-white group-hover:text-main transition-colors">
           {latestNews.title}
         </h1>
-        <p className="line-clamp-3 text-lg text-gray-200 max-w-3xl">
+        <p className="line-clamp-3 text-md max-sm:text-sm text-gray-200 max-w-3xl">
           <SafeHtml content={latestNews.content} />
         </p>
         <button className="inline-flex items-center gap-2 text-main hover:text-white transition-colors">

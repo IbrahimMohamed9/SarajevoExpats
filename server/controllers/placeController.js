@@ -8,7 +8,11 @@ const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 //@route /places
 //@access public
 const getAllPlaces = asyncHandler(async (req, res) => {
-  const places = await Place.find().sort({ createdAt: -1 });
+  const places = await Place.find().sort({
+    priority: -1,
+    pinned: -1,
+    createdAt: -1,
+  });
   const formattedPlaces = formatArrayDates(places);
   res.status(200).json(formattedPlaces);
 });
