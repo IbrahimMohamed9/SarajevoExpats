@@ -1,6 +1,10 @@
 import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
 import HomeTemplate from "@templates/HomeTemplate";
+import { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
@@ -19,22 +23,36 @@ export const metadata = {
   },
 };
 
+async function getData() {
+  try {
+    const [newsRes, placesRes, servicesRes, eventsRes] = await Promise.all([
+      axiosInstance.get("/news"),
+      axiosInstance.get("/places"),
+      axiosInstance.get("/services"),
+      axiosInstance.get("/events"),
+    ]);
+
+    return {
+      news: newsRes.data,
+      places: placesRes.data,
+      services: servicesRes.data,
+      events: eventsRes.data,
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      news: [],
+      places: [],
+      services: [],
+      events: [],
+    };
+  }
+}
+
 const Home = async () => {
-  const [newsRes, placesRes, servicesRes, eventsRes] = await Promise.all([
-    axiosInstance.get("/news"),
-    axiosInstance.get("/places"),
-    axiosInstance.get("/services"),
-    axiosInstance.get("/events"),
-  ]);
+  const data = await getData();
 
-  const [news, places, services, events] = [
-    newsRes.data,
-    placesRes.data,
-    servicesRes.data,
-    eventsRes.data,
-  ];
-
-  const eventsColumnElements = events.map((event, index) => (
+  const eventsColumnElements = data.events.map((event, index) => (
     <div key={index} className=" w-full">
       <BaseCard item={event} type="events" className="!w-11/12 mx-auto" />
     </div>
@@ -42,10 +60,10 @@ const Home = async () => {
 
   return (
     <HomeTemplate
-      news={news}
-      places={places}
-      services={services}
-      events={events}
+      news={data.news}
+      places={data.places}
+      services={data.services}
+      events={data.events}
       eventsColumnElements={eventsColumnElements}
     />
   );
