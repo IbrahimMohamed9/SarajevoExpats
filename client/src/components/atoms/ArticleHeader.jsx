@@ -6,7 +6,7 @@ const ArticleHeader = ({ title, date, type, contentType }) => {
       <div className="space-y-6">
         {type && (
           <div
-            className="inline-block px-6 py-2 bg-main/5 text-main text-sm font-medium 
+            className="inline-block px-3 md:px-6 py-1 md:py-2  bg-main/5 text-main text-xs md:text-sm font-medium 
           rounded-full transform hover:scale-105 transition-all duration-300 cursor-default
           hover:bg-main/10 hover:shadow-sm hover:shadow-main/10"
           >
