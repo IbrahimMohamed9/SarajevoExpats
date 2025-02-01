@@ -14,7 +14,7 @@ const ArticleHeader = ({ title, date, type, contentType }) => {
           </div>
         )}
         <h1
-          className="[850px]:text-4xl sm:text-3xl text-2xl font-bold mb-4 bg-gradient-to-r from-main to-main/70 bg-clip-text 
+          className="[850px]:text-5xl sm:text-4xl text-3xl font-bold mb-4 bg-gradient-to-r from-main to-main/70 bg-clip-text 
         text-transparent hover:from-main/70 hover:to-main transition-all duration-500
         leading-tight tracking-tight"
         >
