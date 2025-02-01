@@ -24,10 +24,10 @@ const LatestNewsContent = ({ latestNews }) => {
             Latest News
           </span>
         </div>
-        <h1 className="text-4xl max-[850px]:text-3xl max-sm:text-2xl line-clamp-2 font-bold text-white group-hover:text-main transition-colors">
+        <h1 className="[850px]:text-4xl sm:text-3xl text-2xl line-clamp-2 font-bold text-white group-hover:text-main transition-colors">
           {latestNews.title}
         </h1>
-        <p className="line-clamp-3 text-md max-sm:text-sm text-gray-200 max-w-3xl">
+        <p className="line-clamp-3 sm:text-md text-sm text-gray-200 max-w-3xl">
           <SafeHtml content={latestNews.content} />
         </p>
         <button className="inline-flex items-center gap-2 text-main hover:text-white transition-colors">

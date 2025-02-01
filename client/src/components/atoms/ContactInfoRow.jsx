@@ -17,7 +17,7 @@ const ContactInfoRow = ({
       </div>
       <div className="overflow-hidden">
         <p className="text-sm font-medium text-gray-500">{title}</p>
-        <p className="text-lg font-semibold text-gray-800 group-hover:text-main transition-colors duration-300 block overflow-hidden text-ellipsis">
+        <p className="md:text-lg text-base font-semibold text-gray-800 group-hover:text-main transition-colors duration-300 block overflow-hidden text-ellipsis">
           {content}
         </p>
       </div>

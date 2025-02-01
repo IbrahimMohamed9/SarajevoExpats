@@ -74,7 +74,12 @@ const ArticleTemplate = ({ contentType, url }) => {
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4 py-12">
         <article className="max-w-4xl mx-auto">
-          <ArticleHeader title={title} date={date} type={type} />
+          <ArticleHeader
+            title={title}
+            date={date}
+            type={type}
+            contentType={contentType}
+          />
           {selectedMedia && (
             <ArticleMedia
               src={selectedMedia}
