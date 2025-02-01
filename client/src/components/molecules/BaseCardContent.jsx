@@ -12,12 +12,12 @@ const BaseCardContent = ({ title, content, date, values, isHovered }) => {
     >
       {title && <BaseCardTitle title={title} isHovered={isHovered} />}
       <div
-        className={`max-h-fit flex-1 transition-all line-clamp-3 duration-300 ${
+        className={`max-h-fit flex-1 transition-all line-clamp-3 duration-300 overflow-hidden ${
           isHovered ? "text-gray-800" : "text-gray-600"
         } ${
           title
-            ? "text-xs mt-1"
-            : "text-sm leading-relaxed tracking-wide line-clamp-5"
+            ? "text-xs mt-1 max-h-12"
+            : "text-sm max-h-[6.25rem] leading-relaxed tracking-wide line-clamp-5"
         }`}
       >
         <SafeHtml content={content.replace(/<[^>]*>/g, "")} />
