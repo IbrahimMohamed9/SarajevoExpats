@@ -17,7 +17,7 @@ const BaseCardContent = ({ title, content, date, values, isHovered }) => {
         } ${
           title
             ? "text-xs mt-1 max-h-12"
-            : "text-sm max-h-[6.25rem] leading-relaxed tracking-wide line-clamp-5"
+            : "text-sm h-[6.25rem] leading-relaxed tracking-wide line-clamp-5"
         }`}
       >
         <SafeHtml content={content.replace(/<[^>]*>/g, "")} />
