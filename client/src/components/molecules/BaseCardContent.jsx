@@ -12,7 +12,7 @@ const BaseCardContent = ({ title, content, date, values, isHovered }) => {
     >
       {title && <BaseCardTitle title={title} isHovered={isHovered} />}
       <div
-        className={`max-h-fit flex-1 transition-all line-clamp-3 duration-300 overflow-hidden ${
+        className={`flex-1 transition-all line-clamp-3 duration-300 overflow-hidden ${
           isHovered ? "text-gray-800" : "text-gray-600"
         } ${
           title
