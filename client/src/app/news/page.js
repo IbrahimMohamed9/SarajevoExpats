@@ -1,6 +1,6 @@
 import CardsTemplate from "@templates/CardsTemplate";
 import { serverAxiosInstance } from "@/config/axios";
-import LatestNewsLayout from "@molecules/LatestNewsLayout";
+import NewsCarousel from "@organisms/NewsCarousel";
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
@@ -33,10 +33,12 @@ export const metadata = {
 const News = async () => {
   const response = await serverAxiosInstance.get("/news");
   const news = response.data;
+  const slides = await serverAxiosInstance.get("/news/slides");
+  const slideNews = slides.data;
 
   return (
     <div className="-mt-7 container mx-auto">
-      {news[0] && <LatestNewsLayout latestNews={news[0]} />}
+      <NewsCarousel slides={slideNews} />
       <div className="max-w-7xl mx-auto px-4">
         <CardsTemplate data={news} type="news" />
       </div>

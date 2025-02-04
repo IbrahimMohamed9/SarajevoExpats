@@ -2,7 +2,7 @@
 
 import CarouselSection from "@molecules/CarouselSection";
 import SectionHeder from "@atoms/SectionHeder";
-import LatestNewsLayout from "@molecules/LatestNewsLayout";
+import SingleNewsLayout from "@molecules/SingleNewsLayout";
 import AdBanner from "@atoms/AdBanner";
 import WhatsappLink from "@atoms/WhatsappLink";
 import { useRecoilValue } from "recoil";
@@ -28,7 +28,7 @@ const HomeTemplate = ({
         <div className="bg-gray-50">
           <AdBanner slot="1234567890" format="auto" responsive={true} />
         </div>
-        {news[0] && <LatestNewsLayout latestNews={news[0]} />}
+        {news[0] && <SingleNewsLayout latestNews={news[0]} />}
         <WhatsappLink className="md:hidden text-center border border-main flex justify-center max-w-80 mx-auto" />
 
         <div className="md:hidden">

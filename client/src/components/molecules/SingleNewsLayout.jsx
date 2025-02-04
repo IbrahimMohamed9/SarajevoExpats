@@ -2,7 +2,7 @@ import LatestNewsImage from "@atoms/LatestNewsImage";
 import LatestNewsContent from "@atoms/LatestNewsContent";
 import Link from "next/link";
 
-const LatestNewsLayout = ({ latestNews }) => {
+const SingleNewsLayout = ({ latestNews }) => {
   return (
     <div className="overflow-hidden">
       <Link href={`/news/${latestNews._id}`} className="block group">
@@ -15,4 +15,4 @@ const LatestNewsLayout = ({ latestNews }) => {
   );
 };
 
-export default LatestNewsLayout;
+export default SingleNewsLayout;
