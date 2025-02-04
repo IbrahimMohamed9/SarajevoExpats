@@ -25,18 +25,21 @@ export const metadata = {
 
 async function getData() {
   try {
-    const [newsRes, placesRes, servicesRes, eventsRes] = await Promise.all([
-      axiosInstance.get("/news"),
-      axiosInstance.get("/places"),
-      axiosInstance.get("/services"),
-      axiosInstance.get("/events"),
-    ]);
+    const [newsRes, placesRes, servicesRes, eventsRes, slidesRes] =
+      await Promise.all([
+        axiosInstance.get("/news"),
+        axiosInstance.get("/places"),
+        axiosInstance.get("/services"),
+        axiosInstance.get("/events"),
+        axiosInstance.get("/news/slides"),
+      ]);
 
     return {
       news: newsRes.data,
       places: placesRes.data,
       services: servicesRes.data,
       events: eventsRes.data,
+      slides: slidesRes.data,
     };
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -45,6 +48,7 @@ async function getData() {
       places: [],
       services: [],
       events: [],
+      slides: [],
     };
   }
 }
@@ -64,6 +68,7 @@ const Home = async () => {
       places={data.places}
       services={data.services}
       events={data.events}
+      newsSlides={data.slides}
       eventsColumnElements={eventsColumnElements}
     />
   );

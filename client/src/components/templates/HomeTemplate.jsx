@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
 import LoadingArticle from "./LoadingArticle";
 import mapToBeEvents from "@/images/mapToBe.jpg";
+import NewsCarousel from "@organisms/NewsCarousel";
 
 const HomeTemplate = ({
   news,
@@ -16,6 +17,7 @@ const HomeTemplate = ({
   services,
   events,
   eventsColumnElements,
+  newsSlides,
 }) => {
   const loading = useRecoilValue(loadingAtom);
 
@@ -28,7 +30,7 @@ const HomeTemplate = ({
         <div className="bg-gray-50">
           <AdBanner slot="1234567890" format="auto" responsive={true} />
         </div>
-        {news[0] && <SingleNewsLayout latestNews={news[0]} />}
+        <NewsCarousel slides={newsSlides} />
         <WhatsappLink className="md:hidden text-center border border-main flex justify-center max-w-80 mx-auto" />
 
         <div className="md:hidden">
