@@ -8,7 +8,7 @@ const SponsorsBar = ({ sponsors }) => {
 
   return (
     <>
-      <SectionHeder title="Truested By" />
+      <SectionHeder title="Trusted By" />
       <div className="flex flex-wrap justify-center items-center gap-8 bg-[#ff7003]/10">
         {sponsors.map((sponsor) => (
           <div
