@@ -1,5 +1,6 @@
 const Sponsor = require("../models/sponsorModel");
 const asyncHandler = require("express-async-handler");
+const { formatArrayDates } = require("../utils/formatDate");
 
 // @desc    Get all sponsors
 // @route   GET /api/sponsors
@@ -10,7 +11,8 @@ const getSponsors = asyncHandler(async (req, res) => {
     pinned: -1,
     createdAt: -1,
   });
-  res.status(200).json(sponsors);
+  const formattedSponsors = formatArrayDates(sponsors);
+  res.status(200).json(formattedSponsors);
 });
 
 // @desc    Get single sponsor
@@ -29,7 +31,7 @@ const getSponsor = asyncHandler(async (req, res) => {
 // @route   POST /api/sponsors
 // @access  Private
 const createSponsor = asyncHandler(async (req, res) => {
-  const { name, picture, pictureDescription, priority, pinned } = req.body;
+  const { name, picture, priority, pinned } = req.body;
 
   if (!name || !picture) {
     res.status(400);
@@ -39,12 +41,11 @@ const createSponsor = asyncHandler(async (req, res) => {
   const sponsor = await Sponsor.create({
     name,
     picture,
-    pictureDescription,
     priority,
     pinned,
   });
 
-  res.status(201).json(sponsor);
+  res.status(201).json({ message: "Sponsor created successfully", sponsor });
 });
 
 // @desc    Update sponsor

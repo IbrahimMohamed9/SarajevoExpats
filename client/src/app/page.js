@@ -24,12 +24,13 @@ export const metadata = {
 
 async function getData() {
   try {
-    const [newsRes, placesRes, servicesRes, eventsRes, slidesRes] =
+    const [newsRes, placesRes, servicesRes, eventsRes, sponsorsRes, slidesRes] =
       await Promise.all([
         axiosInstance.get("/news"),
         axiosInstance.get("/places"),
         axiosInstance.get("/services"),
         axiosInstance.get("/events"),
+        axiosInstance.get("/sponsors"),
         axiosInstance.get("/news/slides"),
       ]);
 
@@ -38,6 +39,7 @@ async function getData() {
       places: placesRes.data,
       services: servicesRes.data,
       events: eventsRes.data,
+      sponsors: sponsorsRes.data,
       slides: slidesRes.data,
     };
   } catch (error) {
@@ -47,6 +49,7 @@ async function getData() {
       places: [],
       services: [],
       events: [],
+      sponsors: [],
       slides: [],
     };
   }
@@ -69,6 +72,7 @@ const Home = async () => {
       events={data.events}
       newsSlides={data.slides}
       eventsColumnElements={eventsColumnElements}
+      sponsors={data.sponsors}
     />
   );
 };

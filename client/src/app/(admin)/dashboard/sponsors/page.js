@@ -8,7 +8,6 @@ const Page = async () => {
   const dataTemp = {
     name: "",
     picture: "",
-    pictureDescription: "",
     priority: 0,
     pinned: false,
   };
