@@ -11,7 +11,6 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [startPosition, setStartPosition] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
   const setLoadingState = useSetRecoilState(loadingAtom);
   const timeoutRef = useRef(null);
   const elementRef = useRef(null);
@@ -34,24 +33,12 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
   const handleMouseLeave = () => {
     setIsHovered(false);
     setIsPressed(false);
-    setIsDragging(false);
   };
 
   const handleMouseDown = () => {
     setIsPressed(true);
     const rect = elementRef.current?.getBoundingClientRect();
     setStartPosition(rect?.left || 0);
-  };
-
-  const handleMouseMove = () => {
-    if (isPressed) {
-      const rect = elementRef.current?.getBoundingClientRect();
-      const moveDistance = Math.abs(rect?.left - startPosition);
-      if (moveDistance > 5) {
-        // Small threshold to detect intentional drag
-        setIsDragging(true);
-      }
-    }
   };
 
   const handleMouseUp = () => {
@@ -63,15 +50,7 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
   };
 
   const handleClick = (e) => {
-    const rect = elementRef.current?.getBoundingClientRect();
-    const moveDistance = Math.abs(rect?.left - startPosition);
-    if (moveDistance > 50 && isDragging) {
-      e.preventDefault();
-    } else {
-      if (!e.ctrlKey) setLoadingState(true);
-    }
-    setIsDragging(false);
-    setStartPosition(0);
+    if (!e.ctrlKey) setLoadingState(true);
   };
 
   const getHref = () => {
@@ -99,7 +78,6 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       draggable={false}
       className={`relative m-2 h-40 w-full grid grid-cols-[128px_1fr] min-[430px]:grid-cols-[160px_1fr] gap-0 transition-all duration-300 ${
