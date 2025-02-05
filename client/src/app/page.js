@@ -1,7 +1,6 @@
 import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
 import HomeTemplate from "@templates/HomeTemplate";
-import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;

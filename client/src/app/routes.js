@@ -67,6 +67,7 @@ const routes = async () => {
         { href: "/dashboard/news", title: "Manage News" },
         { href: "/dashboard/places", title: "Manage Places" },
         { href: "/dashboard/services", title: "Manage Services" },
+        { href: "/dashboard/sponsors", title: "Manage Sponsors" },
         { href: "/dashboard/users", title: "Manage Users" },
       ],
     });

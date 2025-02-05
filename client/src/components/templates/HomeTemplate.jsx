@@ -25,7 +25,11 @@ const HomeTemplate = ({
   const eventsTitle = "Map To Be Events";
 
   return (
-    <div className="grid md:grid-cols-[1fr,340px] gap-4  max-w-7xl mx-auto -mt-11">
+    <div
+      className={`grid md:grid-cols-[1fr,340px] gap-4  max-w-7xl mx-auto ${
+        newsSlides.length ? "-mt-11" : ""
+      }`}
+    >
       <div className="flex flex-col pt-4 gap-8 overflow-hidden -mt-11">
         <div className="bg-gray-50">
           <AdBanner slot="1234567890" format="auto" responsive={true} />

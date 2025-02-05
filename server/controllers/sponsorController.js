@@ -5,7 +5,11 @@ const asyncHandler = require("express-async-handler");
 // @route   GET /api/sponsors
 // @access  Public
 const getSponsors = asyncHandler(async (req, res) => {
-  const sponsors = await Sponsor.find().sort({ priority: -1, pinned: -1 });
+  const sponsors = await Sponsor.find().sort({
+    priority: -1,
+    pinned: -1,
+    createdAt: -1,
+  });
   res.status(200).json(sponsors);
 });
 
