@@ -14,6 +14,7 @@ const CarouselWithSingleSlide = ({ children }) => {
         modules={[Navigation, Pagination, Autoplay]}
         slidesPerView={1}
         navigation
+        speed={700}
         pagination={{
           clickable: true,
           renderBullet: function (index, className) {

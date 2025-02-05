@@ -24,6 +24,13 @@
   font-size: 18px !important;
   font-weight: 900 !important;
   color: white !important;
+  position: absolute;
+}
+.swiper-button-next:after {
+  left: 12px;
+}
+.swiper-button-prev:after {
+  right: 12px;
 }
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
