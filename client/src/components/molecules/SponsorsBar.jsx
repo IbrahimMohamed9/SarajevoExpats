@@ -7,8 +7,8 @@ const SponsorsBar = ({ sponsors }) => {
   if (!sponsors?.length) return null;
 
   return (
-    <div className="bg-[#ff7003]/10 py-8 px-4 -mt-6">
-      <SectionHeder title="Trusted By" />
+    <div className="bg-[#ff7003]/10 py-3 px-4 -mt-6">
+      <h3 className="text-lg font-semibold text-main text-center mb-3">Trusted By</h3>
       <div className="flex flex-wrap justify-center items-center gap-8">
         {sponsors.map((sponsor) => (
           <Image

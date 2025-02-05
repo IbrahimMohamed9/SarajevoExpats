@@ -15,7 +15,7 @@ const SectionHeder = ({ title, src }) => {
               alt={title}
             />
           )}
-          <Typography variant="h5" className="text-lg font-semibold text-main">
+          <Typography variant="h3" className="text-lg font-semibold text-main">
             {title}
           </Typography>
         </div>
