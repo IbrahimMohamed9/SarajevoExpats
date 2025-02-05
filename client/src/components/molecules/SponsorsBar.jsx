@@ -7,7 +7,7 @@ const SponsorsBar = ({ sponsors }) => {
   if (!sponsors?.length) return null;
 
   return (
-    <div className="bg-[#ff7003]/10 py-8 px-4">
+    <div className="bg-[#ff7003]/10 py-8 px-4 -mt-6">
       <SectionHeder title="Trusted By" />
       <div className="flex flex-wrap justify-center items-center gap-8">
         {sponsors.map((sponsor) => (
