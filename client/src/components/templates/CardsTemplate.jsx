@@ -10,11 +10,6 @@ import { useRecoilState } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
 import LoadingArticle from "@templates/LoadingArticle";
 
-const getSingularForm = (string) => {
-  if (string === "news") return string;
-  return string.slice(0, string.length - 1);
-};
-
 const CardsTemplate = ({ url, type, data }) => {
   const [items, setItems] = useState(data);
   const [loading, setLoading] = useRecoilState(loadingAtom);
@@ -53,7 +48,7 @@ const CardsTemplate = ({ url, type, data }) => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <p className="text-gray-500">
-        {items.length} {items.length === 1 ? getSingularForm(type) : type} found
+        {items.length} {type} found
       </p>
       <div className="flex flex-wrap justify-center py-5">{cardsElements}</div>
     </div>
