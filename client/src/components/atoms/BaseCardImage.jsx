@@ -4,7 +4,14 @@ import { useState } from "react";
 import { Skeleton } from "@mui/material";
 import Image from "next/image";
 
-const BaseCardImage = ({ image, title, isHovered, isPressed, type }) => {
+const BaseCardImage = ({
+  image,
+  title,
+  isHovered,
+  isPressed,
+  type,
+  className = "",
+}) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
 
@@ -16,7 +23,7 @@ const BaseCardImage = ({ image, title, isHovered, isPressed, type }) => {
     <div
       className={`relative w-full h-32 bg-gray-100 overflow-hidden  ${
         type === "events" ? "h-64" : ""
-      }`}
+      } ${className}`}
     >
       {imageLoading && (
         <div className="absolute inset-0 z-10">
