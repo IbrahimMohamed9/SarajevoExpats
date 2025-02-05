@@ -15,7 +15,7 @@ const getSingularForm = (string) => {
   return string.slice(0, string.length - 1);
 };
 
-const CardsTemplate = ({ url, type, data, vertical }) => {
+const CardsTemplate = ({ url, type, data }) => {
   const [items, setItems] = useState(data);
   const [loading, setLoading] = useRecoilState(loadingAtom);
   const [firstLoad, setFirstLoad] = useState(true);

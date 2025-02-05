@@ -41,10 +41,11 @@ const BaseCardImage = ({
         src={imageSource}
         alt={title || "Image"}
         fill
-        sizes="200px"
         className={`object-cover transition-all duration-500 ${
           imageLoading ? "opacity-0" : "opacity-100"
-        } ${isHovered ? "scale-110" : ""} ${isPressed ? "scale-105" : ""}`}
+        } ${isHovered ? "scale-110" : ""} w-full ${
+          isPressed ? "scale-105" : ""
+        }`}
         priority
         onLoadingComplete={() => setImageLoading(false)}
         onError={() => {

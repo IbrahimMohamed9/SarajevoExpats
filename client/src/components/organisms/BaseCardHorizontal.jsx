@@ -102,7 +102,7 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       draggable={false}
-      className={`relative m-2 h-40 w-full sm:w-[500px] flex flex-row transition-all duration-300 ${
+      className={`relative m-2 h-40 w-full grid grid-cols-[128px_1fr] min-[430px]:grid-cols-[160px_1fr] gap-0 transition-all duration-300 ${
         isPressed
           ? "scale-[0.98] shadow-sm"
           : isHovered
@@ -116,7 +116,7 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
         isHovered={isHovered}
         isPressed={isPressed}
         type={type}
-        className="!w-48 !h-40"
+        className="h-40 rounded-lg text-wrap"
       />
       <BaseCardContent
         title={title}
@@ -125,6 +125,8 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
         type={type}
         values={values}
         isHovered={isHovered}
+        horizontal={true}
+        className="w-full h-full"
       />
       <div
         className={`absolute inset-0 bg-main/5 transition-opacity duration-150

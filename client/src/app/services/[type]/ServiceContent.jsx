@@ -10,7 +10,7 @@ const ServiceContent = async ({ type }) => {
 
     const services = servicesRes.data;
 
-    return <CardsTemplate data={services} type="services" />;
+    return <CardsTemplate data={services} type={decodeURIComponent(type)} />;
   } catch (err) {
     return (
       <ErrorDisplay

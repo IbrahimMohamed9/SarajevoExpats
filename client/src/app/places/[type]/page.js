@@ -19,8 +19,12 @@ export const metadata = {
 };
 
 const Page = async ({ params }) => {
+  const { type } = params;
   return (
-    <CardsTemplate url={`/places/by-place-type/${params.type}`} type="places" />
+    <CardsTemplate
+      url={`/places/by-place-type/${type}`}
+      type={decodeURIComponent(type)}
+    />
   );
 };
 

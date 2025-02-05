@@ -124,6 +124,7 @@ const BaseCard = ({ item, type, className = "" }) => {
         type={type}
         values={values}
         isHovered={isHovered}
+        horizontal={false}
       />
       <div
         className={`absolute inset-0 bg-main/5 transition-opacity duration-150
