@@ -41,7 +41,6 @@ const ArticleMedia = ({ src, alt, description }) => {
             alt={alt || ""}
             width={800}
             height={500}
-            className="object-contain w-auto h-auto"
             priority
           />
         )}
