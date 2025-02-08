@@ -100,6 +100,7 @@ const ArticleTemplate = ({ contentType, url }) => {
             email={article.email}
             location={!isEvent ? article.link : null}
             instagramLink={isEvent ? article.url : null}
+            website={article.website}
           />
         </article>
       </div>
