@@ -9,6 +9,7 @@ const serviceSchema = new mongoose.Schema(
     pictureDescription: { type: String },
     phone: { type: String },
     email: { type: String },
+    website: { type: String },
     serviceType: {
       type: String,
       required: [true, "please add the serviceType"],

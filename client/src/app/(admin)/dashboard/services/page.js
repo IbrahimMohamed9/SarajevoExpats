@@ -14,6 +14,7 @@ const Page = async () => {
     pictureDescription: "",
     phone: "",
     email: "",
+    website: "",
     serviceType: "",
     priority: 0,
     pinned: false,

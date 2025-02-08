@@ -9,6 +9,7 @@ const placeSchema = new mongoose.Schema(
     pictureDescription: { type: String },
     phone: { type: String },
     email: { type: String },
+    website: { type: String },
     link: { type: String, required: [true, "please add the link"] },
     priority: { type: Number, default: 0 },
     pinned: { type: Boolean, default: false },

@@ -4,6 +4,7 @@ import EmailIcon from "../icons/EmailIcon";
 import LocationIcon from "../icons/LocationIcon";
 import InstagramIcon from "../icons/InstagramIcon";
 import ContactInfoRow from "@atoms/ContactInfoRow";
+import WebAssetIcon from "@mui/icons-material/WebAsset";
 
 const ContactInfo = ({
   phone,
@@ -12,9 +13,18 @@ const ContactInfo = ({
   whatsappLink,
   instagramLink,
   className = "",
+  website,
   whatsappNumber,
 }) => {
-  if (!phone && !email && !location && !whatsappLink && !instagramLink)
+  if (
+    !phone &&
+    !email &&
+    !location &&
+    !whatsappLink &&
+    !instagramLink &&
+    !website &&
+    !whatsappNumber
+  )
     return null;
 
   const rows = [
@@ -30,6 +40,12 @@ const ContactInfo = ({
       title: "Location",
       icon: LocationIcon,
       content: location,
+    },
+    {
+      href: website,
+      title: "Website",
+      icon: WebAssetIcon,
+      content: website,
     },
   ];
 

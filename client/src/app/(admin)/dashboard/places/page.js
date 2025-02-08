@@ -15,6 +15,7 @@ const Page = async () => {
     pictureDescription: "",
     phone: "",
     email: "",
+    website: "",
     link: "",
     type: "",
     priority: 0,
