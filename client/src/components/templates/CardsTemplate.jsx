@@ -10,7 +10,7 @@ import { useRecoilState } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
 import LoadingArticle from "@templates/LoadingArticle";
 
-const CardsTemplate = ({ url, type, data }) => {
+const CardsTemplate = ({ url, pageType, type, data }) => {
   const [items, setItems] = useState(data);
   const [loading, setLoading] = useRecoilState(loadingAtom);
   const [firstLoad, setFirstLoad] = useState(true);
@@ -42,7 +42,7 @@ const CardsTemplate = ({ url, type, data }) => {
   }
 
   let cardsElements = items.map((item, index) => (
-    <BaseCardHorizontal item={item} key={index} type={type} />
+    <BaseCardHorizontal item={item} key={index} type={pageType} />
   ));
 
   return (

@@ -19,7 +19,7 @@ export const metadata = {
 };
 
 const Places = async () => {
-  return <CardsTemplate url="/places" type="places" />;
+  return <CardsTemplate pageType="place" url="/places" type="places" />;
 };
 
 export default Places;

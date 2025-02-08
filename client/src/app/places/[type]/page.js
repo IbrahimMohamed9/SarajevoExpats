@@ -22,6 +22,7 @@ const Page = async ({ params }) => {
   const { type } = params;
   return (
     <CardsTemplate
+      pageType={"place"}
       url={`/places/by-place-type/${type}`}
       type={decodeURIComponent(type)}
     />

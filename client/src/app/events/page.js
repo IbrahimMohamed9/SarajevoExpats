@@ -30,7 +30,7 @@ export const metadata = {
 };
 
 const Events = () => {
-  return <CardsTemplate url="/events" type="events" />;
+  return <CardsTemplate pageType="event" url="/events" type="events" />;
 };
 
 export default Events;

@@ -40,7 +40,7 @@ const News = async () => {
     <div className="-mt-7 container mx-auto">
       <NewsCarousel slides={slideNews} />
       <div className="max-w-7xl mx-auto px-4">
-        <CardsTemplate data={news} type="news" />
+        <CardsTemplate data={news} pageType="news" type="news" />
       </div>
     </div>
   );

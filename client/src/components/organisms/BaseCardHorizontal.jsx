@@ -10,7 +10,6 @@ import { loadingAtom } from "@/store/atoms/loadingAtom";
 const BaseCardHorizontal = ({ item, type, className = "" }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
-  const [startPosition, setStartPosition] = useState(0);
   const setLoadingState = useSetRecoilState(loadingAtom);
   const timeoutRef = useRef(null);
   const elementRef = useRef(null);
@@ -37,8 +36,6 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
 
   const handleMouseDown = () => {
     setIsPressed(true);
-    const rect = elementRef.current?.getBoundingClientRect();
-    setStartPosition(rect?.left || 0);
   };
 
   const handleMouseUp = () => {
@@ -55,13 +52,13 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
 
   const getHref = () => {
     switch (type) {
-      case "services":
+      case "service":
         return `/services/${item.serviceType.replace("/", "%2F")}/${item._id}`;
-      case "places":
+      case "place":
         return `/places/${item.type.replace("/", "%2F")}/${item._id}`;
       case "news":
         return `/news/${item._id}`;
-      case "events":
+      case "event":
         return `/events/${item._id}`;
       default:
         return "/";
