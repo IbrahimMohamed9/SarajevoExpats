@@ -4,6 +4,8 @@ import Footer from "@organisms/Footer";
 import RecoilRootWrapper from "@atoms/RecoilRootWrapper";
 import AdSense from "@atoms/AdSense";
 import { Roboto } from "next/font/google";
+import Head from "next/head";
+import { favicon } from "@/favicon";
 
 const roboto = Roboto({
   weight: "400",
@@ -76,9 +78,52 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <head>
+      <Head>
+        {/* Favicon Links */}
+        {favicon.map((item, index) => (
+          <link
+            key={index}
+            rel={item.rel}
+            href={item.href}
+            sizes={item.sizes}
+            type={item.type}
+          />
+        ))}
+        {/* Meta Tags for SEO */}
+        <meta name="description" content={metadata.description} />
+        <meta
+          name="keywords"
+          content="Sarajevo, expats, living in Sarajevo, local services, news, events"
+        />
+        <meta property="og:title" content={metadata.openGraph.title} />
+        <meta
+          property="og:description"
+          content={metadata.openGraph.description}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={metadata.openGraph.siteName} />
+        <meta property="og:url" content={metadata.openGraph.url} />
+        <meta property="og:image" content={metadata.openGraph.images[0].url} />
+        <meta
+          property="og:image:width"
+          content={metadata.openGraph.images[0].width}
+        />
+        <meta
+          property="og:image:height"
+          content={metadata.openGraph.images[0].height}
+        />
+        <meta name="twitter:card" content={metadata.twitter.card} />
+        <meta name="twitter:title" content={metadata.twitter.title} />
+        <meta
+          name="twitter:description"
+          content={metadata.twitter.description}
+        />
+        <meta name="twitter:image" content={metadata.twitter.images[0]} />
+        {/* Manifest Link */}
+        <link rel="manifest" href={metadata.manifest} />
+        {/* AdSense */}
         <AdSense />
-      </head>
+      </Head>
       <body className={roboto.className}>
         <RecoilRootWrapper>
           <Header />
@@ -89,4 +134,5 @@ const RootLayout = ({ children }) => {
     </html>
   );
 };
+
 export default RootLayout;
