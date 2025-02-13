@@ -1,6 +1,7 @@
 import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
 import HomeTemplate from "@templates/HomeTemplate";
+import { favicon } from "@/favicon";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600;
@@ -20,6 +21,7 @@ export const metadata = {
     locale: "en_US",
     siteName: "Sarajevo Expats",
   },
+  head: [...favicon],
 };
 
 async function getData() {
