@@ -7,8 +7,8 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
 import AdminModal from "@adminMol/AdminModal";
-import { notFound } from "next/navigation";
 import { verifyAdmin } from "@/utils/";
+import UnauthorizedTemplates from "@adminTem/UnauthorizedTemplates";
 
 export const metadata = {
   title: "Dashboard - Sarajevo Expats",
@@ -21,7 +21,7 @@ export default function DashboardLayout({ children }) {
   const isAdmin = verifyAdmin();
 
   if (!isAdmin) {
-    notFound();
+    return UnauthorizedTemplates();
   }
 
   const navigationItems = [
