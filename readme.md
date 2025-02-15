@@ -38,12 +38,18 @@ SarajevoExpats is a platform designed to help expatriates and visitors in Saraje
 
    Create a `.env` file in the server and client directories and add the necessary environment variables.
 
-6. **Start the Application**:
+6. **Start the Back-End Application**:
 
    ```bash
-   npm start
+   cd server
+   npm run dev
    ```
+7. **Start the Front-End Application**:
 
+   ```bash
+   cd client
+   npm run dev
+   ```
 ## Contributing
 
 We welcome contributions from the community. To contribute:
