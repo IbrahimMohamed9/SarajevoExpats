@@ -13,9 +13,7 @@ const validateAdminToken = (req, res, next) => {
     } else if (tokenFromCookie) {
       token = tokenFromCookie.split(" ")[1];
     } else {
-      const ip = req.ip || req.connection.remoteAddress;
-      const forwardedFor = req.headers["x-forwarded-for"];
-      console.log({ ip, forwardedFor });
+      console.log({ req });
 
       return res.status(401).json({ message: "No token provided" });
     }
