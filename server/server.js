@@ -59,6 +59,7 @@ app.use(
     maxAge: 600,
   })
 );
+app.set("trust proxy", true);
 
 app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api/events/", require("./routes/eventRoutes"));
