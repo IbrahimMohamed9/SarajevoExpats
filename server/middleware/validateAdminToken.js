@@ -4,11 +4,18 @@ const { USER_TYPES } = require("../constants");
 const validateAdminToken = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    const tokenFromCookie = req.cookies?.access_token;
+
+    let token;
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    } else if (tokenFromCookie) {
+      token = tokenFromCookie.split(" ")[1];
+    } else {
       return res.status(401).json({ message: "No token provided" });
     }
 
-    const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded.user || decoded.user.type !== USER_TYPES.ADMIN) {
