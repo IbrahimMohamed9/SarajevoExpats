@@ -1,4 +1,4 @@
-import { serverAxiosInstance } from "@/config/axios";
+import axiosInstance from "@/config/axios";
 import { verifyAdmin } from "@/utils";
 
 export const dynamic = "force-dynamic";
@@ -21,8 +21,8 @@ const getStaticRoutes = () => [
 const getDynamicRoutes = async () => {
   try {
     const [serviceType, placeType] = await Promise.all([
-      serverAxiosInstance.get("/serviceTypes"),
-      serverAxiosInstance.get("/placeTypes"),
+      axiosInstance.get("/serviceTypes"),
+      axiosInstance.get("/placeTypes"),
     ]);
 
     return {

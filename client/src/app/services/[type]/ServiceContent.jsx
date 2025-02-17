@@ -1,10 +1,10 @@
 import CardsTemplate from "@templates/CardsTemplate";
-import { serverAxiosInstance } from "@/config/axios";
+import axiosInstance from "@/config/axios";
 import ErrorDisplay from "@molecules/ErrorDisplay";
 
 const ServiceContent = async ({ type }) => {
   try {
-    const servicesRes = await serverAxiosInstance.get(
+    const servicesRes = await axiosInstance.get(
       `/services/by-service-type/${type}`
     );
 

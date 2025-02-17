@@ -1,10 +1,10 @@
 import AdminTableTemplete from "@adminTem/AdminTableTemplete";
-import { serverAxiosInstance } from "@/config/axios";
+import axiosInstance from "@/config/axios";
 
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
-  const usersResponse = await serverAxiosInstance.get("sponsors");
+  const usersResponse = await axiosInstance.get("sponsors");
   const dataTemp = {
     name: "",
     picture: "",

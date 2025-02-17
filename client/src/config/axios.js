@@ -1,7 +1,7 @@
 import axios from "axios";
 import https from "https";
 
-const createAxiosInstance = (isServer = false) => {
+const createAxiosInstance = () => {
   const instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     timeout: 10000,
@@ -17,15 +17,7 @@ const createAxiosInstance = (isServer = false) => {
 
   instance.interceptors.request.use(
     (config) => {
-      if (isServer) {
-        // For server-side requests, get token from cookies
-        const { cookies } = require('next/headers');
-        const cookieStore = cookies();
-        const token = cookieStore.get('access_token')?.value;
-        if (token) {
-          config.headers.authorization = `Bearer ${token}`;
-        }
-      } else if (typeof window !== "undefined" && localStorage) {
+      if (typeof window !== "undefined" && localStorage) {
         // For client-side requests, continue using localStorage
         if (config.data instanceof FormData) {
           delete config.headers["Content-Type"];
@@ -72,6 +64,5 @@ const createAxiosInstance = (isServer = false) => {
 
 // Create two instances - one for client-side and one for server-side
 const axiosInstance = createAxiosInstance();
-export const serverAxiosInstance = createAxiosInstance(true);
 
 export default axiosInstance;

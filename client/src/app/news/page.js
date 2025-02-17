@@ -1,5 +1,5 @@
 import CardsTemplate from "@templates/CardsTemplate";
-import { serverAxiosInstance } from "@/config/axios";
+import axiosInstance from "@/config/axios";
 import NewsCarousel from "@organisms/NewsCarousel";
 
 export const metadata = {
@@ -31,9 +31,9 @@ export const metadata = {
 };
 
 const News = async () => {
-  const response = await serverAxiosInstance.get("/news");
+  const response = await axiosInstance.get("/news");
   const news = response.data;
-  const slides = await serverAxiosInstance.get("/news/slides");
+  const slides = await axiosInstance.get("/news/slides");
   const slideNews = slides.data;
 
   return (
