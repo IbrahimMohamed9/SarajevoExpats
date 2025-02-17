@@ -3,7 +3,7 @@ const { USER_TYPES } = require("../constants");
 
 const validateAdminToken = (req, res, next) => {
   // Allow requests from the server IP address without token
-  if (req.ip === "46.202.159.229") next();
+  if (req.ip === "46.202.159.229") return next();
 
   try {
     const authHeader = req.headers.authorization;
