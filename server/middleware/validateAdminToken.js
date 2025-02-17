@@ -13,8 +13,10 @@ const validateAdminToken = (req, res, next) => {
     } else if (tokenFromCookie) {
       token = tokenFromCookie.split(" ")[1];
     } else {
-      console.log({ req });
-
+      const ip = req.ip; // Will now return the client's IP even behind a proxy
+      const forwardedIp = req.headers['x-forwarded-for']; // For additional info
+  
+      console.log(`Your IP is: ${ip}, Forwarded IP: ${forwardedIp}`)
       return res.status(401).json({ message: "No token provided" });
     }
 
