@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+
+# Host
+Host: sarajevoexpats.com/
+
+# Sitemaps
+Sitemap: sarajevoexpats.com/sitemap.xml
