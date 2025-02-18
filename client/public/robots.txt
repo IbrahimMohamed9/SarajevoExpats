@@ -7,7 +7,7 @@ Disallow: /login
 Disallow: /register
 
 # Host
-Host: sarajevoexpats.com/
+Host: https://sarajevoexpats.com
 
 # Sitemaps
-Sitemap: sarajevoexpats.com/sitemap.xml
+Sitemap: https://sarajevoexpats.com/sitemap.xml
