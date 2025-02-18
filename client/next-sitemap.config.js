@@ -1,7 +1,8 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "sarajevoexpats.com/",
-  generateRobotsTxt: true,
+  siteUrl: "https://sarajevoexpats.com", 
+  generateRobotsTxt: true, 
+  sitemapSize: 50000, 
   exclude: ["/dashboard/*", "/api/*", "/login", "/register"],
   robotsTxtOptions: {
     policies: [
