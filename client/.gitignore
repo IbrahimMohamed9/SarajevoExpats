@@ -49,3 +49,6 @@ next-env.d.ts
 # Logs
 logs
 *.log
+
+/public/robots.txt
+/public/sitemap.xml
