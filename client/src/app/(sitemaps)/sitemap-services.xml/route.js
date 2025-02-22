@@ -4,16 +4,13 @@ import parseFormattedDate, { getValidDateOrNow } from "@/utils/date";
 
 function getServiceSiteMap(service, encodedType) {
   const updatedDate = parseFormattedDate(service.updatedAt);
-  const createdDate = parseFormattedDate(service.createdAt);
-  const lastmod = getValidDateOrNow(updatedDate); // Ensures valid ISO format
-  const created = getValidDateOrNow(createdDate);
+  const lastmod = getValidDateOrNow(updatedDate);
 
   return {
     loc: `https://sarajevoexpats.com/services/${encodedType}/${
       service._id
     }/${encodeURIComponent(service.name)}`,
     lastmod,
-    created,
     priority: 0.7,
     changefreq: "monthly",
     images: service.picture ? [{ loc: { href: service.picture.trim() } }] : [],
@@ -36,14 +33,11 @@ export async function GET() {
     );
 
     const updatedTypeDate = parseFormattedDate(type.updatedAt);
-    const createdTypeDate = parseFormattedDate(type.createdAt);
     const lastmod = getValidDateOrNow(updatedTypeDate);
-    const created = getValidDateOrNow(createdTypeDate);
 
     fields.push({
       loc: `https://sarajevoexpats.com/services/${encodedType}`,
       lastmod,
-      created,
       priority: 0.7,
       changefreq: "monthly",
     });
