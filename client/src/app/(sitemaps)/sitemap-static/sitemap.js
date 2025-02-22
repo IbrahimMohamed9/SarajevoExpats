@@ -1,6 +1,6 @@
 export default function sitemap() {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://sarajevoexpats.com";
+    process.env.SITE_URL || "https://sarajevoexpats.com";
 
   return [
     {
