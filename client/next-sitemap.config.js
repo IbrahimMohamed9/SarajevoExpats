@@ -6,7 +6,7 @@ module.exports = {
   exclude: ["/dashboard/*", "/api/*", "/login", "/register"],
   robotsTxtOptions: {
     additionalSitemaps: [
-      `${process.env.SITE_URL}/sitemap-static.xml`,
+      `${process.env.SITE_URL}/sitemap-static/sitemap.xml`,
       `${process.env.SITE_URL}/sitemap-events.xml`,
       `${process.env.SITE_URL}/sitemap-news.xml`,
       `${process.env.SITE_URL}/sitemap-places.xml`,
