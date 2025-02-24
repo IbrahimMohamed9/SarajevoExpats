@@ -153,11 +153,12 @@ const getEventFromInstagram = asyncHandler(async (req, res) => {
         token: process.env.APIFY_TOKEN,
       });
 
+      console.log(req.params);
+
       const input = {
         directUrls: [req.params.url],
         resultsType: "posts",
-        resultsLimit: 200,
-        searchType: "hashtag",
+        resultsLimit: 1,
         searchLimit: 1,
         addParentData: false,
       };

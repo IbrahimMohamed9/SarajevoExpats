@@ -100,7 +100,7 @@
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: url
  *         schema:
  *           type: string
  *         required: true
