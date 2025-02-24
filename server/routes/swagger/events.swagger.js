@@ -98,6 +98,13 @@
  *     tags: [Events]
  *     security:
  *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The event ID (must be a valid MongoDB ObjectId)
  *     description: Fetches post from Instagram and creates it as event.
  *     responses:
  *       201:
@@ -125,7 +132,6 @@
  *                   type: string
  *                   example: All fields are mandatory
  */
-
 
 /**
  * @swagger
