@@ -62,7 +62,7 @@
  *     tags: [Events]
  *     security:
  *       - BearerAuth: []
- *     description: Fetches recent posts from Instagram and creates them as events. Only the first 2 posts will be returned in the response.
+ *     description: Fetches recent posts from Instagram and creates them as events.
  *     responses:
  *       201:
  *         description: Events successfully created from Instagram posts
@@ -89,6 +89,43 @@
  *                   type: string
  *                   example: All fields are mandatory
  */
+
+/**
+ * @swagger
+ * /api/events/{url}:
+ *   post:
+ *     summary: Fetch and create new event from Instagram post
+ *     tags: [Events]
+ *     security:
+ *       - BearerAuth: []
+ *     description: Fetches post from Instagram and creates it as event.
+ *     responses:
+ *       201:
+ *         description: Event successfully created from Instagram posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: The event added successfully
+ *                 subEvents:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Event'
+ *       400:
+ *         description: Invalid input data or missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: All fields are mandatory
+ */
+
 
 /**
  * @swagger

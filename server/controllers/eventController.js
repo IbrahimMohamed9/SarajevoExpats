@@ -7,6 +7,68 @@ const downloadVideo = require("../utils/downloadVideo");
 const { logError } = require("../utils/logger");
 const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
 
+const createEvents = async (events) => {
+  const createdEvents = [];
+  for (const event of events) {
+    const eventExists = await Event.findOne({ url: event.url });
+    if (eventExists) continue;
+
+    const childPosts = await Promise.all(
+      event.childPosts.map(async (post) => {
+        try {
+          if (!post.displayUrl && !post.videoUrl) {
+            logError(`Missing URLs for child post: ${post.id}`);
+            return null;
+          }
+
+          const [displayUrl, videoUrl] = await Promise.all([
+            post.displayUrl
+              ? downloadImage(post.displayUrl, true).catch((err) => {
+                  logError(`Error downloading image for post ${post.id}:`, err);
+                  return null;
+                })
+              : null,
+            post.type === "Video" && post.videoUrl
+              ? downloadVideo(post.videoUrl, true).catch((err) => {
+                  logError(`Error downloading video for post ${post.id}:`, err);
+                  return null;
+                })
+              : null,
+          ]);
+
+          return {
+            type: post.type,
+            displayUrl,
+            videoUrl,
+            alt: post.alt,
+          };
+        } catch (error) {
+          logError(`Failed to process child post ${post.id}:`, error);
+          return null;
+        }
+      })
+    );
+
+    let displayUrl = null;
+    try {
+      displayUrl = await downloadImage(event.displayUrl, true);
+    } catch (err) {
+      logError(`Error downloading main event image:`, err);
+    }
+
+    const newEvent = await Event.create({
+      content: event.caption,
+      url: event.url,
+      displayUrl: displayUrl,
+      date: event.timestamp,
+      childPosts: childPosts,
+    });
+
+    createdEvents.push(newEvent);
+  }
+  return createdEvents;
+};
+
 //@desc Get all events
 //@route GET /api/events
 //@access public
@@ -43,7 +105,7 @@ const getPinnedEvents = asyncHandler(async (req, res) => {
   res.json(events);
 });
 
-//@desc Create new event from Instagram
+//@desc Create new events from Instagram
 //@route POST /api/events
 //@access private/admin
 const getEventsFromInstagram = asyncHandler(async (req, res) => {
@@ -70,73 +132,55 @@ const getEventsFromInstagram = asyncHandler(async (req, res) => {
         .status(404)
         .json({ message: "No events found from Instagram" });
 
-    const createdEvents = [];
-    for (const event of events) {
-      const eventExists = await Event.findOne({ url: event.url });
-      if (eventExists) continue;
-
-      const childPosts = await Promise.all(
-        event.childPosts.map(async (post) => {
-          try {
-            if (!post.displayUrl && !post.videoUrl) {
-              logError(`Missing URLs for child post: ${post.id}`);
-              return null;
-            }
-
-            const [displayUrl, videoUrl] = await Promise.all([
-              post.displayUrl
-                ? downloadImage(post.displayUrl, true).catch((err) => {
-                    logError(
-                      `Error downloading image for post ${post.id}:`,
-                      err
-                    );
-                    return null;
-                  })
-                : null,
-              post.type === "Video" && post.videoUrl
-                ? downloadVideo(post.videoUrl, true).catch((err) => {
-                    logError(
-                      `Error downloading video for post ${post.id}:`,
-                      err
-                    );
-                    return null;
-                  })
-                : null,
-            ]);
-
-            return {
-              type: post.type,
-              displayUrl,
-              videoUrl,
-              alt: post.alt,
-            };
-          } catch (error) {
-            logError(`Failed to process child post ${post.id}:`, error);
-            return null;
-          }
-        })
-      );
-
-      let displayUrl = null;
-      try {
-        displayUrl = await downloadImage(event.displayUrl, true);
-      } catch (err) {
-        logError(`Error downloading main event image:`, err);
-      }
-
-      const newEvent = await Event.create({
-        content: event.caption,
-        url: event.url,
-        displayUrl: displayUrl,
-        date: event.timestamp,
-        childPosts: childPosts,
-      });
-
-      createdEvents.push(newEvent);
-    }
+    const createdEvents = await createEvents(events);
 
     res.status(201).json({
       message: "Events added successfully",
+      events: createdEvents,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+//@desc Create new event from Instagram
+//@route POST /api/events
+//@access private/admin
+const getEventFromInstagram = asyncHandler(async (req, res) => {
+  try {
+    async function fetchPost() {
+      const client = new ApifyClient({
+        token: process.env.APIFY_TOKEN,
+      });
+
+      const input = {
+        directUrls: [req.body.url],
+        resultsType: "posts",
+        resultsLimit: 200,
+        searchType: "hashtag",
+        searchLimit: 1,
+        addParentData: false,
+      };
+
+      return await (async () => {
+        const run = await client.actor("shu8hvrXbJbY3Eb9W").call(input);
+
+        const { items } = await client
+          .dataset(run.defaultDatasetId)
+          .listItems();
+        return items;
+      })();
+    }
+
+    const event = await fetchPost();
+
+    if (!event || event.length === 0)
+      return res.status(404).json({ message: "No event found from Instagram" });
+
+    const createdEvents = await createEvents(event);
+
+    res.status(201).json({
+      message: "Event added successfully",
       events: createdEvents,
     });
   } catch (error) {
@@ -194,4 +238,5 @@ module.exports = {
   getPinnedEvents,
   updateEventById,
   deleteEventImage,
+  getEventFromInstagram,
 };

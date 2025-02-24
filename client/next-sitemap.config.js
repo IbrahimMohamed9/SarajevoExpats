@@ -1,16 +1,19 @@
 /** @type {import('next-sitemap').IConfig} */
+
+const siteUrl = process.env.SITE_URL || "https://sarajevoexpats.com";
+
 module.exports = {
-  siteUrl: "https://sarajevoexpats.com",
+  siteUrl,
   generateRobotsTxt: true,
   sitemapSize: 50000,
   exclude: ["/dashboard/*", "/api/*", "/login", "/register"],
   robotsTxtOptions: {
     additionalSitemaps: [
-      `${process.env.SITE_URL}/sitemap-static/sitemap.xml`,
-      `${process.env.SITE_URL}/sitemap-events.xml`,
-      `${process.env.SITE_URL}/sitemap-news.xml`,
-      `${process.env.SITE_URL}/sitemap-places.xml`,
-      `${process.env.SITE_URL}/sitemap-services.xml`,
+      `${siteUrl}/sitemap-static/sitemap.xml`,
+      `${siteUrl}/sitemap-events.xml`,
+      `${siteUrl}/sitemap-news.xml`,
+      `${siteUrl}/sitemap-places.xml`,
+      `${siteUrl}/sitemap-services.xml`,
     ],
     policies: [
       {
