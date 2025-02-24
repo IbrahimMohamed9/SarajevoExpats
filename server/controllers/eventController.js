@@ -154,7 +154,7 @@ const getEventFromInstagram = asyncHandler(async (req, res) => {
       });
 
       const input = {
-        directUrls: [req.body.url],
+        directUrls: [req.params.url],
         resultsType: "posts",
         resultsLimit: 200,
         searchType: "hashtag",
