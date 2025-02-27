@@ -26,9 +26,11 @@ const ArticleMedia = ({ src, alt, description }) => {
       >
         {isVideo ? (
           <video
-            controls=""
-            autoplay=""
-            playsInline=""
+            controls
+            autoPlay
+            muted
+            crossOrigin="anonymous"
+            playsInline
             name="media"
             className="max-h-[600px] w-auto mx-auto"
           >
