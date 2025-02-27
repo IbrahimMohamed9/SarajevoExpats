@@ -26,14 +26,13 @@ const ArticleMedia = ({ src, alt, description }) => {
       >
         {isVideo ? (
           <video
-            src={mediaUrl}
-            controls
-            autoPlay
-            playsInline
+            controls=""
+            autoplay=""
+            playsInline=""
+            name="media"
             className="max-h-[600px] w-auto mx-auto"
-            preload="metadata"
           >
-            Your browser does not support the video tag.
+            <source src={mediaUrl} type="video/mp4" />
           </video>
         ) : (
           <Image
