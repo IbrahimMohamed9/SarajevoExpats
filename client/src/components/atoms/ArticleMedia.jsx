@@ -9,7 +9,7 @@ const ArticleMedia = ({ src, alt, description }) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true); // Set client-side flag to true after the component mounts
+    setIsClient(true);
   }, []);
 
   if (!src) return null;
@@ -30,9 +30,10 @@ const ArticleMedia = ({ src, alt, description }) => {
   return (
     <div className="space-y-4 mb-12 animate-fade-in">
       <div
-        className={`relative mx-auto overflow-hidden shadow-2xl w-fit rounded-xl
-        transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20`}
-        style={{ minHeight: `${maxHeight}px` }}
+        className={`relative mx-auto overflow-hidden rounded-xl ${
+          isVideo ? "w-fit" : " w-full"
+        } transform hover:scale-[1.02] transition-all duration-300`}
+        style={{ height: `${maxHeight}px` }}
       >
         {isVideo && isClient ? (
           <video
@@ -46,13 +47,7 @@ const ArticleMedia = ({ src, alt, description }) => {
             <source src={mediaUrl} type="video/mp4" />
           </video>
         ) : (
-          <Image
-            src={mediaUrl}
-            alt={alt || ""}
-            width={800}
-            height={500}
-            priority
-          />
+          <Image src={mediaUrl} alt={alt || ""} fill sizes="600" priority />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
       </div>
