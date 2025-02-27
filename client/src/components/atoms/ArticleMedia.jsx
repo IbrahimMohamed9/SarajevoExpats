@@ -1,8 +1,17 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const ArticleMedia = ({ src, alt, description }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // Set client-side flag to true after the component mounts
+  }, []);
+
   if (!src) return null;
 
   let isVideo = false;
@@ -12,6 +21,7 @@ const ArticleMedia = ({ src, alt, description }) => {
   if (typeof src === "string") mediaUrl = src;
   else if (src?.type === "Video") mediaUrl = src.videoUrl;
   else mediaUrl = src.displayUrl;
+
   let maxHeight;
   const hasMultipleMedia = typeof src === "object";
   if (window.innerWidth > 630 && hasMultipleMedia) maxHeight = 600;
@@ -24,12 +34,11 @@ const ArticleMedia = ({ src, alt, description }) => {
         transform hover:scale-[1.02] transition-all duration-300 hover:shadow-main/20`}
         style={{ minHeight: `${maxHeight}px` }}
       >
-        {isVideo ? (
+        {isVideo && isClient ? (
           <video
             controls
             autoPlay
             muted
-            crossOrigin="anonymous"
             playsInline
             name="media"
             className="max-h-[600px] w-auto mx-auto"
