@@ -15,7 +15,14 @@ const SectionHeder = ({ title, src }) => {
               alt={title}
             />
           )}
-          <Typography variant="h1" className="text-lg font-semibold text-main">
+          <Typography
+            variant="h1"
+            className="font-semibold text-main"
+            style={{
+              fontSize: "1.125rem" /* 18px */,
+              lineHeight: "1.75rem" /* 28px */,
+            }}
+          >
             {title}
           </Typography>
         </div>
