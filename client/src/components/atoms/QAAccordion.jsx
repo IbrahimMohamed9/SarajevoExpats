@@ -40,9 +40,9 @@ const QAAccordion = ({ question, answer }) => {
       >
         <div className="flex items-center space-x-4">
           <QABadge />
-          <h3 className="text-lg font-medium text-gray-900 group-open:text-main">
+          <h1 className="text-lg font-medium text-gray-900 group-open:text-main">
             <SafeHtml as="span" content={question} />
-          </h3>
+          </h1>
         </div>
       </AccordionSummary>
       <AccordionDetails className="px-8 pb-8 pt-2">

@@ -8,7 +8,7 @@ const SponsorsBar = ({ sponsors }) => {
 
   return (
     <div className="bg-[#ff7003]/10 py-3 px-4 -mt-6">
-      <h3 className="text-lg font-semibold text-main text-center mb-3">Trusted By</h3>
+      <h1 className="text-lg font-semibold text-main text-center mb-3">Trusted By</h1>
       <div className="flex flex-wrap justify-center items-center gap-8">
         {sponsors.map((sponsor) => (
           <Image
