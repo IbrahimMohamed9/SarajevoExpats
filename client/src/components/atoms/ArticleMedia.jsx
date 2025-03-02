@@ -31,7 +31,7 @@ const ArticleMedia = ({ src, alt, description }) => {
     <div className="space-y-4 mb-12 animate-fade-in">
       <div
         className={`relative mx-auto overflow-hidden rounded-xl ${
-          isVideo ? "w-fit" : " w-full"
+          isVideo ? "w-fit" : "w-full"
         } transform hover:scale-[1.02] transition-all duration-300`}
         style={{ height: `${maxHeight}px` }}
       >
