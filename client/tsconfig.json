@@ -26,6 +26,7 @@
       "@atoms/*": ["./src/components/atoms/*"],
       "@organisms/*": ["./src/components/organisms/*"],
       "@templates/*": ["./src/components/templates/*"],
+      "@icons/*": ["./src/components/icons/*"],
       "@adminMol/*": ["./src/app/(admin)/components/molecules/*"],
       "@adminAto/*": ["./src/app/(admin)/components/atoms/*"],
       "@adminOrg/*": ["./src/app/(admin)/components/organisms/*"],

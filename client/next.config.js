@@ -8,6 +8,7 @@ const nextConfig = {
       "@molecules": "./src/components/molecules",
       "@organisms": "./src/components/organisms",
       "@templates": "./src/components/templates",
+      "@icons": "./src/components/icons",
       "@adminAto": "./src/app/(admin)/components/atoms",
       "@adminMol": "./src/app/(admin)/components/molecules",
       "@adminOrg": "./src/app/(admin)/components/organisms",

@@ -1,8 +1,8 @@
 import WhatsappLink from "./WhatsappLink";
-import PhoneIcon from "../icons/PhoneIcon";
-import EmailIcon from "../icons/EmailIcon";
-import LocationIcon from "../icons/LocationIcon";
-import InstagramIcon from "../icons/InstagramIcon";
+import PhoneIcon from "@icons/PhoneIcon";
+import EmailIcon from "@icons/EmailIcon";
+import LocationIcon from "@icons/LocationIcon";
+import InstagramIcon from "@icons/InstagramIcon";
 import ContactInfoRow from "@atoms/ContactInfoRow";
 import WebAssetIcon from "@mui/icons-material/WebAsset";
 

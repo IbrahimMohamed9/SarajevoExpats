@@ -1,5 +1,5 @@
 import React from "react";
-import WhatsAppIcon from "../icons/WhatsAppIcon";
+import WhatsAppIcon from "@icons/WhatsAppIcon";
 
 const WhatsappLink = ({ phone, title, className = "" }) => {
   const href = phone
