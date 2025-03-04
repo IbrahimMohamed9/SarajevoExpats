@@ -82,13 +82,32 @@ a:visited {
   background-color: #ff6f00;
 }
 
-.instagram-embed {
-  width: 100% !important;
-  max-width: 540px !important;
-  margin: 0 auto !important;
+/* MUI TextField Custom Styles */
+
+.MuiOutlinedInput-root fieldset {
+  border-color: #e2e8f0 !important;
 }
 
-.instagram-embed iframe {
-  width: 100% !important;
-  min-width: unset !important;
+.MuiOutlinedInput-root:hover fieldset,
+.MuiSelect-root:hover .MuiOutlinedInput-notchedOutline {
+  @apply !border-main;
+}
+
+.MuiOutlinedInput-root.Mui-focused fieldset,
+.MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  @apply !border-main;
+  border-width: 2px !important;
+}
+
+.MuiInputLabel-root {
+  color: #475569 !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  @apply !text-main;
+  font-weight: 500 !important;
+}
+
+.MuiSelect-root .MuiOutlinedInput-notchedOutline {
+  border-color: #e2e8f0 !important;
 }
