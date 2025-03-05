@@ -1,13 +1,14 @@
 "use client";
 
-import { TextField, Button, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { useState } from "react";
 import countries from "@/data/countries";
 import MeetingMohammed from "@/app/consultation/components/MeetingMohammed";
 import Pricing from "@/app/consultation/components/Pricing";
 import HowItWorks from "@/app/consultation/components/HowItWorks";
 import LoadingIcon from "@icons/LoadingIcon";
-import DropList from "@atoms/DropList";
+import FormElement from "@molecules/FormElement";
+import SubmitBtn from "@atoms/SubmitBtn";
 
 const Consultation = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,6 +19,7 @@ const Consultation = () => {
       label: "Name",
       type: "text",
       placeholder: "Enter your full name",
+      required: true,
       multiline: false,
     },
     {
@@ -25,15 +27,23 @@ const Consultation = () => {
       label: "Email",
       type: "email",
       placeholder: "Enter your email address",
+      required: true,
       multiline: false,
     },
-    // Remove citizenship from inputFields as we'll handle it separately
+    {
+      name: "citizenship",
+      label: "Citizenship",
+      type: "droplist",
+      items: countries,
+      required: true,
+    },
     {
       name: "message",
       label: "Message",
       type: "text",
       placeholder: "Enter your message",
       multiline: true,
+      required: true,
       rows: 4,
     },
     {
@@ -41,6 +51,7 @@ const Consultation = () => {
       label: "How did you find us?",
       type: "text",
       placeholder: "How did you hear about us?",
+      required: true,
       multiline: false,
     },
   ];
@@ -53,6 +64,10 @@ const Consultation = () => {
     setIsSubmitting(false);
   };
 
+  const fieldsElements = inputFields.map((field) => (
+    <FormElement field={field} />
+  ));
+
   return (
     <div className="max-w-[816px] mx-auto px-12 py-16 bg-white min-h-screen">
       {/* Documentation Section */}
@@ -60,7 +75,6 @@ const Consultation = () => {
         <h1 className="text-3xl font-semibold text-gray-900 mb-8 pb-2 border-b border-gray-200">
           Consultation Services
         </h1>
-
         <HowItWorks />
         <MeetingMohammed />
         <Pricing />
@@ -79,52 +93,9 @@ const Consultation = () => {
           onSubmit={handleSubmit}
           className="max-w-2xl mx-auto space-y-8 bg-white/80 backdrop-blur-sm p-10 rounded-2xl shadow-lg border border-gray-100"
         >
-          {inputFields.map((field) => (
-            <div key={field.name} className="group">
-              <TextField
-                name={field.name}
-                label={field.label}
-                type={field.type}
-                required
-                fullWidth
-                multiline={field.multiline}
-                rows={field.rows}
-                placeholder={field.placeholder}
-                className="transition-all duration-300 group-hover:-translate-y-1"
-              />
-            </div>
-          ))}
+          {fieldsElements}
 
-          {/* Citizenship Select Field */}
-          <DropList
-            items={countries}
-            label={"Citizenship"}
-            name={"citizenship"}
-            required={true}
-          />
-
-          <div className="pt-4">
-            <Button
-              type="submit"
-              fullWidth
-              disabled={isSubmitting}
-              className="relative overflow-hidden bg-gradient-to-r from-main to-secondary hover:from-secondary hover:to-main 
-                transition-all duration-500 text-white py-5 rounded-xl shadow-md hover:shadow-xl 
-                normal-case text-lg font-medium transform hover:-translate-y-1 active:translate-y-0
-                disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0
-                before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/0 before:via-white/20 before:to-white/0
-                before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000"
-            >
-              {isSubmitting ? (
-                <span className="flex items-center justify-center gap-3">
-                  <LoadingIcon />
-                  <span className="animate-pulse">Processing...</span>
-                </span>
-              ) : (
-                "Schedule Meeting"
-              )}
-            </Button>
-          </div>
+          <SubmitBtn label={"Schedule Meeting"} isSubmitting={isSubmitting} />
         </Box>
       </div>
     </div>

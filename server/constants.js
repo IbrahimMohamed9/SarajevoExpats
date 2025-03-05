@@ -1,4 +1,4 @@
-const constants = {
+const errorCode = {
   VALIDATION_ERROR: 400,
   UNAUTHORIZED: 401,
   FORBIDDEN: 403,
@@ -11,4 +11,4 @@ const USER_TYPES = {
   ADMIN: "admin",
 };
 
-module.exports = { constants, USER_TYPES };
+module.exports = { errorCode, USER_TYPES };
