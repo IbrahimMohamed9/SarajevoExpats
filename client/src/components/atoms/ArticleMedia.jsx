@@ -22,10 +22,8 @@ const ArticleMedia = ({ src, alt, description }) => {
   else if (src?.type === "Video") mediaUrl = src.videoUrl;
   else mediaUrl = src.displayUrl;
 
-  let maxHeight;
-  const hasMultipleMedia = typeof src === "object";
-  if (window.innerWidth > 630 && hasMultipleMedia) maxHeight = 600;
-  else if (hasMultipleMedia) maxHeight = window.innerWidth - 32;
+  let maxHeight = 600;
+  if (window.innerWidth < 630) maxHeight = window.innerWidth - 32;
 
   return (
     <div className="space-y-4 mb-12 animate-fade-in">
