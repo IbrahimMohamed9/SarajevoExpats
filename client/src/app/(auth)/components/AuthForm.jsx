@@ -60,7 +60,7 @@ const AuthForm = ({ login, fields }) => {
 
         router.push("/");
       } else {
-        const response = await axiosInstance.post("/users", {
+        await axiosInstance.post("/users", {
           username: formData.username,
           email: formData.email,
           password: formData.password,

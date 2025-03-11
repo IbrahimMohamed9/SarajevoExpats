@@ -50,7 +50,6 @@ const AddItemBtn = ({ tableKey, data }) => {
 
       return response.data;
     } catch (error) {
-      console.error("Error in handlePost:", error);
       setSnackbar({
         open: true,
         message:

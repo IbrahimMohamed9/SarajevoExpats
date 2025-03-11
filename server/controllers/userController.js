@@ -59,14 +59,6 @@ const registerUser = errorHandler(async (req, res) => {
     throw new Error("User with this email already exists");
   }
 
-  // Validate password length
-  if (password.length < 6) {
-    res.status(400).json({
-      message: "Password must be at least 6 characters long",
-    });
-    throw new Error("Password must be at least 6 characters long");
-  }
-
   // Hash password
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -76,6 +68,8 @@ const registerUser = errorHandler(async (req, res) => {
     username,
     email,
     password: hashedPassword,
+    createdAt: new Date(),
+    updatedAt: new Date(),
     type,
   });
 

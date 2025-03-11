@@ -121,15 +121,10 @@ export default function AdminModal() {
       } catch (error) {
         console.error("Error submitting form:", error);
         setError(
-          error.response?.data?.message ||
-            error.message ||
+          error?.response?.data?.message ||
+            error?.message ||
             "An error occurred while saving"
         );
-        setSnackbar({
-          message: error.response?.data?.message || "Failed to save changes",
-          open: true,
-          severity: "error",
-        });
       } finally {
         setLoading(false);
       }

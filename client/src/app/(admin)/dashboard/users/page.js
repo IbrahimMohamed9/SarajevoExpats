@@ -9,7 +9,6 @@ const Page = async () => {
     username: "",
     email: "",
     password: "",
-    type: "",
   };
 
   return (
