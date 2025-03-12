@@ -16,8 +16,6 @@ const Page = async () => {
     website: "",
     link: "",
     type: "",
-    priority: 0,
-    pinned: false,
   };
   const dataTemp2 = {
     name: "",

@@ -6,8 +6,6 @@ const Page = async () => {
   const dataTemp = {
     question: "",
     answer: "",
-    priority: 0,
-    pinned: false,
   };
 
   return (
