@@ -7,7 +7,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
   loading: () => <p>Loading editor...</p>,
 });
 
-const CustomTextarea = ({ keyVal, isRequired, fieldErrors, formData }) => {
+const CustomTextarea = ({ keyVal,handleChange, isRequired, fieldErrors, formData }) => {
   const quillModules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],

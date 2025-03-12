@@ -111,6 +111,7 @@ export default function AdminModal() {
         }
 
         const data = await onSubmit(formData);
+        console.log(formData);
         handleClose();
 
         setSnackbar({

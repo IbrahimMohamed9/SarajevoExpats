@@ -99,6 +99,7 @@ const AdminModalField = memo(
           keyVal={keyVal}
           isRequired={isRequired}
           fieldErrors={fieldErrors}
+          handleChange={handleChange}
           formData={formData}
         />
       );
