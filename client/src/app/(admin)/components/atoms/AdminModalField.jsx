@@ -5,6 +5,7 @@ import axiosInstance from "@/config/axios";
 import { useEffect, useState, useCallback, memo } from "react";
 import ImagesField from "@adminAto/ImagesField";
 import CustomTextarea from "@adminAto/CustomTextarea";
+import CustomCheckbox from "@adminAto/CustomCheckbox";
 import CustomDropList from "@adminAto/CustomDropList";
 import dynamic from "next/dynamic";
 
