@@ -51,9 +51,14 @@ const ValueTableRow = ({
       );
     }
 
-    if (ignoreKeys.includes(key) || typeof val === "object") return null;
+    if (
+      ignoreKeys.includes(key) ||
+      (typeof val === "object" && !Array.isArray(val))
+    ) {
+      return null;
+    }
 
-    if (key === "picture" && val) {
+    if (key === "picture" && val && !Array.isArray(val)) {
       return (
         <TableCell key={key} component="th" scope="row">
           <div
@@ -71,7 +76,13 @@ const ValueTableRow = ({
         </TableCell>
       );
     }
-
+    if (key === "picture" && val && Array.isArray(val)) {
+      return (
+        <TableCell key={key} component="th" scope="row" className="min-w-24">
+          {val.length} images
+        </TableCell>
+      );
+    }
     const value = isNumber ? String(val) : val;
 
     return (

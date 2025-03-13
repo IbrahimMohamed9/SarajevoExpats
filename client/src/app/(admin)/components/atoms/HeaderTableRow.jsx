@@ -10,7 +10,10 @@ export default function HeaderTableRow({
   const ignoreKeys = ["_id", "subData", "__v", "password"];
 
   const headerCells = Object.entries(data).map(([key, value]) => {
-    if (ignoreKeys.includes(key) || typeof value === "object") {
+    if (
+      ignoreKeys.includes(key) ||
+      (typeof value === "object" && !Array.isArray(value))
+    ) {
       return null;
     }
     return (

@@ -1,9 +1,9 @@
 import { Button, Box, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Image from "next/image";
 import axiosInstance from "@/config/axios";
 import { useCallback } from "react";
 import { styled } from "@mui/material/styles";
+import ImageGallery from "@/components/molecules/ImageGallery";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -54,7 +54,7 @@ const ImagesField = ({
         const response = await axiosInstance.post("/upload", imageForm, config);
         const imageUrl = response.data.url;
 
-        handleChange("picture", imageUrl);
+        handleChange("picture", [imageUrl]);
         setFieldErrors((prev) => ({ ...prev, picture: "" }));
         setSnackbar({
           message: "Image uploaded successfully!",
@@ -81,41 +81,41 @@ const ImagesField = ({
   );
 
   return (
-    <Box key={keyVal} className="mb-6">
-      <Button
-        component="label"
-        variant="contained"
-        startIcon={<CloudUploadIcon />}
-        className={`${
-          fieldErrors[keyVal] ? "bg-red-500" : "bg-main"
-        } hover:bg-main/90 mb-2 w-full`}
-        disabled={loading}
-      >
-        {loading ? "Uploading..." : "Upload Image"}
-        {isRequired && " *"}
-        <VisuallyHiddenInput
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          required={Boolean(isRequired)}
-        />
-      </Button>
-      {(error || fieldErrors[keyVal]) && (
-        <Typography color="error" variant="caption" display="block">
-          {fieldErrors[keyVal] || error}
-        </Typography>
-      )}
-      {formData[keyVal]?.includes("http") && (
-        <Box className="relative w-full h-48 mt-2 rounded-lg overflow-hidden">
-          <Image
-            src={formData[keyVal]}
-            alt="Preview"
-            fill
-            className="object-cover"
+    <>
+      <Box key={keyVal} className="mb-6">
+        <Button
+          component="label"
+          variant="contained"
+          startIcon={<CloudUploadIcon />}
+          className={`${
+            fieldErrors[keyVal] ? "bg-red-500" : "bg-main"
+          } hover:bg-main/90 mb-2 w-full`}
+          disabled={loading}
+        >
+          {loading ? "Uploading..." : "Upload Image"}
+          {isRequired && " *"}
+          <VisuallyHiddenInput
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required={Boolean(isRequired)}
           />
-        </Box>
-      )}
-    </Box>
+        </Button>
+        {(error || fieldErrors[keyVal]) && (
+          <Typography color="error" variant="caption" display="block">
+            {fieldErrors[keyVal] || error}
+          </Typography>
+        )}
+      </Box>
+      <div className="mt-0">
+        <ImageGallery
+          childPosts={formData[keyVal]}
+          // selectedMedia
+          // onClick
+          adminModal={true}
+        />
+      </div>
+    </>
   );
 };
 

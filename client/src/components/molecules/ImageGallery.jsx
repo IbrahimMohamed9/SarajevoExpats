@@ -32,6 +32,34 @@ const ImageGallery = ({
   const containerWidth = getContainerWidth();
   const overflow = totalWidth > containerWidth;
 
+  const imagesBtnsElements = childPosts.map((media, index) => {
+    const imgUrl = media?.displayUrl || media;
+    const selectedMediaUrl = selectedMedia?.displayUrl || selectedMedia;
+
+    return (
+      <button
+        key={index}
+        onClick={(e) => {
+          e.preventDefault();
+          if (onClick) onClick(media);
+        }}
+        className={`relative transition-all duration-200 snap-start ${
+          selectedMediaUrl === imgUrl
+            ? "ring-2 ring-main ring-offset-2"
+            : "hover:ring-2 hover:ring-gray-300 hover:ring-offset-2"
+        } flex-shrink-0 p-4 size-20 rounded-lg overflow-hidden`}
+      >
+        <Image
+          src={imgUrl}
+          alt={media.alt || `Image ${index + 1}`}
+          fill
+          className="object-cover"
+          sizes="80px"
+        />
+      </button>
+    );
+  });
+
   return (
     <div
       className={`-mt-6 mb-8 flex gap-2 ${
@@ -40,28 +68,7 @@ const ImageGallery = ({
         !overflow ? "justify-center" : ""
       }`}
     >
-      {childPosts.map((media, index) => (
-        <button
-          key={media.displayUrl || index}
-          onClick={(e) => {
-            e.preventDefault();
-            if (onClick) onClick(media);
-          }}
-          className={`relative flex-shrink-0 p-4 size-20 rounded-lg overflow-hidden transition-all duration-200 snap-start ${
-            selectedMedia?.displayUrl === media.displayUrl
-              ? "ring-2 ring-main ring-offset-2"
-              : "hover:ring-2 hover:ring-gray-300 hover:ring-offset-2"
-          }`}
-        >
-          <Image
-            src={media.displayUrl}
-            alt={media.alt || `Image ${index + 1}`}
-            fill
-            className="object-cover"
-            sizes="80px"
-          />
-        </button>
-      ))}
+      {imagesBtnsElements}
     </div>
   );
 };

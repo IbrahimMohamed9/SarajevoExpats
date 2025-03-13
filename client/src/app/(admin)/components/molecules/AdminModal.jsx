@@ -67,7 +67,14 @@ export default function AdminModal() {
   }, [onClose]);
 
   const handleChange = useCallback((key, value) => {
-    setFormData((prev) => ({ ...prev, [key]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [key]:
+        Array.isArray(value) && Array.isArray(prev[key])
+          ? [...prev[key], ...value]
+          : value,
+    }));
+
     setFieldErrors((prev) => ({ ...prev, [key]: "" }));
   }, []);
 
