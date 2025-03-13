@@ -1,12 +1,11 @@
 "use client";
 
-import { Button, Box } from "@mui/material";
+import {  Box } from "@mui/material";
 import { useState } from "react";
 import countries from "@/data/countries";
 import MeetingMohammed from "@/app/consultation/components/MeetingMohammed";
 import Pricing from "@/app/consultation/components/Pricing";
 import HowItWorks from "@/app/consultation/components/HowItWorks";
-import LoadingIcon from "@icons/LoadingIcon";
 import FormElement from "@molecules/FormElement";
 import SubmitBtn from "@atoms/SubmitBtn";
 
