@@ -4,7 +4,7 @@ const newsSchema = new mongoose.Schema(
   {
     title: { type: String, require: [true, "Please add a title"] },
     content: { type: String, require: [true, "Please add a content"] },
-    picture: { type: String, require: [true, "Please add a picture"] },
+    pictures: { type: [String], required: [true, "Please add the picture"] },
     pictureDescription: { type: String },
     sources: { type: String, require: [true, "Please add a sources"] },
     showInSlider: { type: Boolean, default: false },

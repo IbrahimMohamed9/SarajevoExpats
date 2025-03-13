@@ -7,7 +7,7 @@
  *       required:
  *         - name
  *         - content
- *         - picture
+ *         - pictures
  *         - serviceType
  *       properties:
  *         name:
@@ -16,9 +16,11 @@
  *         content:
  *           type: string
  *           description: Description of the service
- *         picture:
- *           type: string
- *           description: URL of the service picture
+ *         pictures:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: URLs of the service pictures
  *         pictureDescription:
  *           type: string
  *           description: Description of the service picture

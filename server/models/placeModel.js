@@ -5,7 +5,7 @@ const placeSchema = new mongoose.Schema(
   {
     title: { type: String, required: [true, "please add the title"] },
     content: { type: String, required: [true, "please add the content"] },
-    picture: { type: String, required: [true, "please add the picture"] },
+    pictures: { type: [String], required: [true, "Please add the picture"] },
     pictureDescription: { type: String },
     phone: { type: String },
     email: { type: String },

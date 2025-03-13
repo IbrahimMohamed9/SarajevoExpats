@@ -7,6 +7,8 @@
  *       required:
  *         - title
  *         - content
+ *         - pictures
+ *         - sources
  *       properties:
  *         title:
  *           type: string
@@ -14,6 +16,31 @@
  *         content:
  *           type: string
  *           description: The content of the news article
+ *         pictures:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Array of picture URLs
+ *         pictureDescription:
+ *           type: string
+ *           description: Description of the pictures
+ *         sources:
+ *           type: string
+ *           description: Sources of the news article
+ *         showInSlider:
+ *           type: boolean
+ *           description: Whether to show this article in the slider
+ *           default: false
+ *         slidePriority:
+ *           type: number
+ *           description: Priority for slider display order
+ *           default: 0
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
  *   securitySchemes:
  *     BearerAuth:
  *       type: http

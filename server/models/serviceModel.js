@@ -5,7 +5,7 @@ const serviceSchema = new mongoose.Schema(
   {
     name: { type: String, required: [true, "Please add the name"] },
     content: { type: String, required: [true, "Please add the content"] },
-    picture: { type: String, required: [true, "Please add the picture"] },
+    pictures: { type: [String], required: [true, "Please add the picture"] },
     pictureDescription: { type: String },
     phone: { type: String },
     email: { type: String },

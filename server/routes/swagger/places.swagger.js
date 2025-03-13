@@ -7,7 +7,7 @@
  *       required:
  *         - title
  *         - content
- *         - picture
+ *         - pictures
  *         - link
  *       properties:
  *         title:
@@ -16,9 +16,11 @@
  *         content:
  *           type: string
  *           description: Content or description of the place
- *         picture:
- *           type: string
- *           description: URL or path to the place's picture
+ *         pictures:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: URLs or paths to the place's pictures
  *         pictureDescription:
  *           type: string
  *           description: Description of the picture
