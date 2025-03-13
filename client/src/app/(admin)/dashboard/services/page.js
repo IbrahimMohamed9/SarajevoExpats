@@ -10,7 +10,7 @@ const Page = async () => {
   const dataTemp1 = {
     name: "",
     content: "",
-    picture: "",
+    pictures: [],
     pictureDescription: "",
     phone: "",
     email: "",
