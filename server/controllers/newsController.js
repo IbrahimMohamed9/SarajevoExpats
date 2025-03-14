@@ -110,7 +110,7 @@ const updateNewsById = asyncHandler(async (req, res) => {
 });
 
 //@desc Delete image from news
-//@route DELETE /news/:id/images/:index
+//@route DELETE /news/:id/images
 //@access private
 const deleteNewsImage = asyncHandler(async (req, res) => {
   const news = await News.findById(req.params.id);
@@ -119,12 +119,9 @@ const deleteNewsImage = asyncHandler(async (req, res) => {
     throw new Error("News not found");
   }
 
-  const index = parseInt(req.params.index);
-  if (index < 0 || index >= news.pictures.length) {
-    res.status(400);
-    throw new Error("Invalid image index");
-  }
-
+  const { imageUrl } = req.body;
+  const index = news.pictures.findIndex((img) => img === imageUrl);
+  if (index === -1) return res.status(404).send("Image not found");
   news.pictures.splice(index, 1);
   await news.save();
 
@@ -135,7 +132,8 @@ const deleteNewsImage = asyncHandler(async (req, res) => {
 //@route PUT /news/:id/images/reorder
 //@access private
 const reorderNewsImages = asyncHandler(async (req, res) => {
-  const { fromIndex, toIndex } = req.body;
+  let { imageUrl, toIndex } = req.body;
+
   const news = await News.findById(req.params.id);
 
   if (!news) {
@@ -143,17 +141,17 @@ const reorderNewsImages = asyncHandler(async (req, res) => {
     throw new Error("News not found");
   }
 
-  if (fromIndex < 0 || fromIndex >= news.pictures.length) {
-    res.status(400);
-    throw new Error("Invalid index");
-  }
+  const oldIndex = news.pictures.findIndex((img) => img === imageUrl);
+  if (oldIndex === -1 || toIndex === -1)
+    return res.status(404).send("Image not found");
+  const [movedImage] = news.pictures.splice(oldIndex, 1);
 
-  const [movedItem] = news.pictures.splice(fromIndex, 1);
-
-  if (toIndex >= news.pictures.length) toIndex = news.pictures.length - 1;
+  if (toIndex >= news.pictures.length) toIndex = news.pictures.length;
   else if (toIndex < 0) toIndex = 0;
 
-  news.pictures.splice(toIndex, 0, movedItem);
+  console.log(news.pictures);
+  news.pictures.splice(toIndex, 0, movedImage);
+  console.log(news.pictures);
   await news.save();
 
   res.status(200).json({ message: "Images reordered successfully", news });
