@@ -176,9 +176,9 @@
 
 /**
  * @swagger
- * /api/news/{id}/images/{index}:
+ * /api/news/{id}/images:
  *   delete:
- *     summary: Delete an image from a news item by index
+ *     summary: Delete an image from a news item
  *     tags: [News]
  *     security:
  *       - BearerAuth: []
@@ -189,12 +189,16 @@
  *           type: string
  *         required: true
  *         description: The news ID
- *       - in: path
- *         name: index
- *         schema:
- *           type: integer
- *         required: true
- *         description: The index of the image to delete
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [imageUrl]
+ *             properties:
+ *               imageUrl:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Image deleted successfully
@@ -209,7 +213,7 @@
  *                 news:
  *                   $ref: '#/components/schemas/News'
  *       400:
- *         description: Invalid image index
+ *         description: Invalid image URL
  *       401:
  *         description: Unauthorized
  *       404:
@@ -239,12 +243,12 @@
  *           schema:
  *             type: object
  *             required:
- *               - fromIndex
+ *               - imageUrl
  *               - toIndex
  *             properties:
- *               fromIndex:
- *                 type: integer
- *                 description: The current index of the image (must be within array bounds)
+ *               imageUrl:
+ *                 type: string
+ *                 description: URL of the image to move
  *               toIndex:
  *                 type: integer
  *                 description: The desired target index. If it exceeds array length, image will be moved to last position
@@ -262,7 +266,7 @@
  *                 news:
  *                   $ref: '#/components/schemas/News'
  *       400:
- *         description: Invalid source index
+ *         description: Invalid source URL
  *       401:
  *         description: Unauthorized
  *       404:

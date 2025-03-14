@@ -8,6 +8,8 @@ const {
   updatePlaceById,
   deletePlaceById,
   getPlacesByPlaceType,
+  deletePlaceImage,
+  reorderPlaceImages,
 } = require("../controllers/placeController");
 const { validateMongoId } = require("../utils");
 
@@ -21,6 +23,9 @@ router
   .all(validateAdminToken)
   .put(updatePlaceById)
   .delete(deletePlaceById);
+
+router.route("/:id/images").delete(validateAdminToken, deletePlaceImage);
+router.route("/:id/images/reorder").put(validateAdminToken, reorderPlaceImages);
 
 router.param("id", validateMongoId);
 

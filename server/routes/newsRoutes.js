@@ -8,6 +8,8 @@ const {
   updateNewsById,
   deleteNewsById,
   getSliderNews,
+  deleteNewsImage,
+  reorderNewsImages,
 } = require("../controllers/newsController");
 const { validateMongoId } = require("../utils");
 
@@ -19,6 +21,9 @@ router
   .all(validateAdminToken)
   .put(updateNewsById)
   .delete(deleteNewsById);
+
+router.delete("/:id/images", validateAdminToken, deleteNewsImage);
+router.put("/:id/images/reorder", validateAdminToken, reorderNewsImages);
 
 router.param("id", validateMongoId);
 

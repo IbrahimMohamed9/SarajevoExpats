@@ -131,7 +131,7 @@ const getServiceById = asyncHandler(async (req, res) => {
 });
 
 //@desc Delete image from service
-//@route DELETE /services/:id/images/:index
+//@route DELETE /services/:id/images
 //@access private
 const deleteServiceImage = asyncHandler(async (req, res) => {
   const service = await Service.findById(req.params.id);
@@ -140,12 +140,9 @@ const deleteServiceImage = asyncHandler(async (req, res) => {
     throw new Error("Service not found");
   }
 
-  const index = parseInt(req.params.index);
-  if (index < 0 || index >= service.pictures.length) {
-    res.status(400);
-    throw new Error("Invalid image index");
-  }
-
+  const { imageUrl } = req.body;
+  const index = service.pictures.findIndex((img) => img.url === imageUrl);
+  if (index === -1) return res.status(404).send("Image not found");
   service.pictures.splice(index, 1);
   await service.save();
 
@@ -156,26 +153,21 @@ const deleteServiceImage = asyncHandler(async (req, res) => {
 //@route PUT /services/:id/images/reorder
 //@access private
 const reorderServiceImages = asyncHandler(async (req, res) => {
-  const { fromIndex, toIndex } = req.body;
   const service = await Service.findById(req.params.id);
-
   if (!service) {
     res.status(404);
     throw new Error("Service not found");
   }
 
-  if (
-    fromIndex < 0 ||
-    fromIndex >= service.pictures.length ||
-    toIndex < 0 ||
-    toIndex >= service.pictures.length
-  ) {
-    res.status(400);
-    throw new Error("Invalid index");
-  }
+  let { imageUrl, toIndex } = req.body;
+  const oldIndex = service.pictures.findIndex((img) => img.url === imageUrl);
+  if (oldIndex === -1) return res.status(404).send("Image not found");
+  const [movedImage] = service.pictures.splice(oldIndex, 1);
 
-  const [movedItem] = service.pictures.splice(fromIndex, 1);
-  service.pictures.splice(toIndex, 0, movedItem);
+  if (toIndex > service.pictures.length) toIndex = service.pictures.length;
+  else if (toIndex < 0) toIndex = 0;
+
+  service.pictures.splice(toIndex, 0, movedImage);
   await service.save();
 
   res.status(200).json({ message: "Images reordered successfully", service });

@@ -205,7 +205,7 @@
 
 /**
  * @swagger
- * /api/services/{id}/images/{index}:
+ * /api/services/{id}/images/{imageUrl}:
  *   delete:
  *     summary: Delete an image from a service
  *     tags: [Services]
@@ -214,16 +214,22 @@
  *     parameters:
  *       - in: path
  *         name: id
- *         required: true
  *         schema:
  *           type: string
- *         description: The service ID
- *       - in: path
- *         name: index
  *         required: true
- *         schema:
- *           type: integer
- *         description: The index of the image to delete
+ *         description: The service ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - imageUrl
+ *             properties:
+ *               imageUrl:
+ *                 type: string
+ *                 description: URL of the image to delete
  *     responses:
  *       200:
  *         description: Image deleted successfully
@@ -232,7 +238,7 @@
  *       404:
  *         description: Service not found
  *       400:
- *         description: Invalid image index
+ *         description: Invalid image URL
  *
  * /api/services/{id}/images/reorder:
  *   put:
@@ -254,12 +260,12 @@
  *           schema:
  *             type: object
  *             required:
- *               - fromIndex
+ *               - imageUrl
  *               - toIndex
  *             properties:
- *               fromIndex:
- *                 type: integer
- *                 description: The current index of the image
+ *               imageUrl:
+ *                 type: string
+ *                 description: URL of the image to move
  *               toIndex:
  *                 type: integer
  *                 description: The desired new index for the image
@@ -271,5 +277,5 @@
  *       404:
  *         description: Service not found
  *       400:
- *         description: Invalid index
+ *         description: Invalid image URL
  */

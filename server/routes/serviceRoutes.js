@@ -23,7 +23,7 @@ router
   .put(validateAdminToken, updateServiceById)
   .delete(validateAdminToken, deleteServiceById);
 
-router.delete("/:id/images/:index", validateAdminToken, deleteServiceImage);
+router.delete("/:id/images", validateAdminToken, deleteServiceImage);
 router.put("/:id/images/reorder", validateAdminToken, reorderServiceImages);
 
 router.param("id", validateMongoId);

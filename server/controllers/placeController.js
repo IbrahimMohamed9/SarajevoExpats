@@ -147,7 +147,7 @@ const getPlaceById = asyncHandler(async (req, res) => {
 });
 
 //@desc Delete image from place
-//@route DELETE /places/:id/images/:index
+//@route DELETE /places/:id/images
 //@access private
 const deletePlaceImage = asyncHandler(async (req, res) => {
   const place = await Place.findById(req.params.id);
@@ -156,12 +156,9 @@ const deletePlaceImage = asyncHandler(async (req, res) => {
     throw new Error("Place not found");
   }
 
-  const index = parseInt(req.params.index);
-  if (index < 0 || index >= place.pictures.length) {
-    res.status(400);
-    throw new Error("Invalid image index");
-  }
-
+  const { imageUrl } = req.body;
+  const index = place.pictures.findIndex((img) => img.url === imageUrl);
+  if (index === -1) return res.status(404).send("Image not found");
   place.pictures.splice(index, 1);
   await place.save();
 
@@ -172,7 +169,6 @@ const deletePlaceImage = asyncHandler(async (req, res) => {
 //@route PUT /places/:id/images/reorder
 //@access private
 const reorderPlaceImages = asyncHandler(async (req, res) => {
-  const { fromIndex, toIndex } = req.body;
   const place = await Place.findById(req.params.id);
 
   if (!place) {
@@ -180,18 +176,15 @@ const reorderPlaceImages = asyncHandler(async (req, res) => {
     throw new Error("Place not found");
   }
 
-  if (fromIndex < 0 || fromIndex >= place.pictures.length) {
-    res.status(400);
-    throw new Error("Invalid index");
-  }
+  let { imageUrl, toIndex } = req.body;
+  const oldIndex = place.pictures.findIndex((img) => img.url === imageUrl);
+  if (oldIndex === -1) return res.status(404).send("Image not found");
+  const [movedImage] = place.pictures.splice(oldIndex, 1);
 
-  const [movedItem] = place.pictures.splice(fromIndex, 1);
+  if (toIndex > place.pictures.length) toIndex = place.pictures.length;
+  else if (toIndex < 0) toIndex = 0;
 
-  if (toIndex >= place.pictures.length) {
-    toIndex = place.pictures.length - 1;
-  } else if (toIndex < 0) toIndex = 0;
-
-  place.pictures.splice(toIndex, 0, movedItem);
+  place.pictures.splice(toIndex, 0, movedImage);
   await place.save();
 
   res.status(200).json({ message: "Images reordered successfully", place });
