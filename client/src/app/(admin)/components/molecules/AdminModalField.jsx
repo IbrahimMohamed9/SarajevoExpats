@@ -105,7 +105,7 @@ const AdminModalField = memo(
       );
     }
 
-    if (keyVal === "picture") {
+    if (keyVal === "pictures") {
       return (
         <ImagesField
           handleChange={handleChange}

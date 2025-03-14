@@ -14,14 +14,14 @@ import { snackbarState } from "@/store/atoms/snackbarAtom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { adminModalState } from "@/store/atoms/adminModalAtom";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
-import AdminModalField from "@adminAto/AdminModalField";
+import AdminModalField from "@adminMol/AdminModalField";
 
 // Define required fields for each table type
 const requiredFields = {
   events: ["content", "displayUrl", "url", "date"],
-  places: ["title", "content", "picture", "type", "link"],
-  news: ["title", "content", "picture", "sources"],
-  services: ["name", "content", "picture", "serviceType"],
+  places: ["title", "content", "pictures", "type", "link"],
+  news: ["title", "content", "pictures", "sources"],
+  services: ["name", "content", "pictures", "serviceType"],
   serviceTypes: ["name"],
   placeTypes: ["name"],
 };
@@ -84,7 +84,12 @@ export default function AdminModal() {
 
     if (title && requiredFields[title]) {
       requiredFields[title].forEach((field) => {
-        if (!formData[field] || formData[field].trim() === "") {
+        const isEmptyArray =
+          Array.isArray(formData[field]) && formData[field].length === 0;
+        const isEmptyString =
+          typeof formData[field] === "string" && formData[field].trim() === "";
+
+        if (!formData[field] || isEmptyString || isEmptyArray) {
           errors[field] = `${
             field.charAt(0).toUpperCase() + field.slice(1)
           } is required`;
