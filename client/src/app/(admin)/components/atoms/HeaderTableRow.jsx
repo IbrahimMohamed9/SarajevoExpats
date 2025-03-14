@@ -4,7 +4,7 @@ import TableRow from "@mui/material/TableRow";
 
 export default function HeaderTableRow({
   data,
-  includeEmpty = false,
+  subDataTitle = false,
   actions = true,
 }) {
   const ignoreKeys = ["_id", "subData", "__v", "password"];
@@ -31,7 +31,7 @@ export default function HeaderTableRow({
     );
   }
 
-  if (includeEmpty) {
+  if (subDataTitle) {
     headerCells.unshift(<TableCell key="empty"></TableCell>);
   }
 
