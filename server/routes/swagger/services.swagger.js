@@ -259,16 +259,12 @@
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - imageUrl
- *               - toIndex
  *             properties:
- *               imageUrl:
- *                 type: string
- *                 description: URL of the image to move
- *               toIndex:
- *                 type: integer
- *                 description: The desired new index for the image
+ *               images:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: Array of URLs of the images to move
  *     responses:
  *       200:
  *         description: Images reordered successfully

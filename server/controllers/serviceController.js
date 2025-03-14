@@ -153,21 +153,28 @@ const deleteServiceImage = asyncHandler(async (req, res) => {
 //@route PUT /services/:id/images/reorder
 //@access private
 const reorderServiceImages = asyncHandler(async (req, res) => {
+  const { images } = req.body;
+
+  if (!images || !Array.isArray(images)) {
+    res.status(400);
+    throw new Error("Images array is required");
+  }
+
   const service = await Service.findById(req.params.id);
   if (!service) {
     res.status(404);
     throw new Error("Service not found");
   }
 
-  let { imageUrl, toIndex } = req.body;
-  const oldIndex = service.pictures.findIndex((img) => img.url === imageUrl);
-  if (oldIndex === -1) return res.status(404).send("Image not found");
-  const [movedImage] = service.pictures.splice(oldIndex, 1);
+  const existingUrls = service.pictures.map((img) => img);
+  const allImagesExist = images.every((url) => existingUrls.includes(url));
 
-  if (toIndex > service.pictures.length) toIndex = service.pictures.length;
-  else if (toIndex < 0) toIndex = 0;
+  if (!allImagesExist) {
+    res.status(400);
+    throw new Error("One or more image URLs are invalid");
+  }
 
-  service.pictures.splice(toIndex, 0, movedImage);
+  service.pictures = images;
   await service.save();
 
   res.status(200).json({ message: "Images reordered successfully", service });

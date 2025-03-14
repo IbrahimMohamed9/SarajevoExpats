@@ -157,7 +157,7 @@ const deletePlaceImage = asyncHandler(async (req, res) => {
   }
 
   const { imageUrl } = req.body;
-  const index = place.pictures.findIndex((img) => img.url === imageUrl);
+  const index = place.pictures.findIndex((img) => img === imageUrl);
   if (index === -1) return res.status(404).send("Image not found");
   place.pictures.splice(index, 1);
   await place.save();
@@ -169,6 +169,13 @@ const deletePlaceImage = asyncHandler(async (req, res) => {
 //@route PUT /places/:id/images/reorder
 //@access private
 const reorderPlaceImages = asyncHandler(async (req, res) => {
+  const { images } = req.body;
+
+  if (!images || !Array.isArray(images)) {
+    res.status(400);
+    throw new Error("Images array is required");
+  }
+
   const place = await Place.findById(req.params.id);
 
   if (!place) {
@@ -176,15 +183,15 @@ const reorderPlaceImages = asyncHandler(async (req, res) => {
     throw new Error("Place not found");
   }
 
-  let { imageUrl, toIndex } = req.body;
-  const oldIndex = place.pictures.findIndex((img) => img.url === imageUrl);
-  if (oldIndex === -1) return res.status(404).send("Image not found");
-  const [movedImage] = place.pictures.splice(oldIndex, 1);
+  const existingUrls = place.pictures.map((img) => img);
+  const allImagesExist = images.every((url) => existingUrls.includes(url));
 
-  if (toIndex > place.pictures.length) toIndex = place.pictures.length;
-  else if (toIndex < 0) toIndex = 0;
+  if (!allImagesExist) {
+    res.status(400);
+    throw new Error("One or more image URLs are invalid");
+  }
 
-  place.pictures.splice(toIndex, 0, movedImage);
+  place.pictures = images;
   await place.save();
 
   res.status(200).json({ message: "Images reordered successfully", place });

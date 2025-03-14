@@ -132,26 +132,28 @@ const deleteNewsImage = asyncHandler(async (req, res) => {
 //@route PUT /news/:id/images/reorder
 //@access private
 const reorderNewsImages = asyncHandler(async (req, res) => {
-  let { imageUrl, toIndex } = req.body;
+  const { images } = req.body;
+
+  if (!images || !Array.isArray(images)) {
+    res.status(400);
+    throw new Error("Images array is required");
+  }
 
   const news = await News.findById(req.params.id);
-
   if (!news) {
     res.status(404);
     throw new Error("News not found");
   }
 
-  const oldIndex = news.pictures.findIndex((img) => img === imageUrl);
-  if (oldIndex === -1 || toIndex === -1)
-    return res.status(404).send("Image not found");
-  const [movedImage] = news.pictures.splice(oldIndex, 1);
+  const existingUrls = news.pictures.map(img => img);
+  const allImagesExist = images.every(url => existingUrls.includes(url));
+  
+  if (!allImagesExist) {
+    res.status(400);
+    throw new Error("One or more image URLs are invalid");
+  }
 
-  if (toIndex >= news.pictures.length) toIndex = news.pictures.length;
-  else if (toIndex < 0) toIndex = 0;
-
-  console.log(news.pictures);
-  news.pictures.splice(toIndex, 0, movedImage);
-  console.log(news.pictures);
+  news.pictures = images;
   await news.save();
 
   res.status(200).json({ message: "Images reordered successfully", news });
