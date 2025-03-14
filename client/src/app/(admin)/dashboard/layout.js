@@ -7,6 +7,7 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
 import AdminModal from "@adminOrg/AdminModal";
+import ImagePreviewDialog from "@adminMol/ImagePreviewDialog";
 import { verifyAdmin } from "@/utils/";
 import UnauthorizedTemplates from "@adminTem/UnauthorizedTemplates";
 
@@ -45,6 +46,7 @@ export default function DashboardLayout({ children }) {
       </AdminDashboardGrid>
 
       <AdminModal />
+      <ImagePreviewDialog />
     </main>
   );
 }

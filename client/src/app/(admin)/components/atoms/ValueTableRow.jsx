@@ -30,6 +30,7 @@ const ValueTableRow = ({
   const cells = Object.entries(values).map(([key, val]) => {
     const isCheckbox = ["pinned", "showInSlider"].includes(key);
     const isNumber = typeof val === "number";
+    const isPictures = key === "pictures" || key === "childPosts";
 
     if (isCheckbox) {
       return (
@@ -58,7 +59,7 @@ const ValueTableRow = ({
       return null;
     }
 
-    if (key === "pictures") {
+    if (isPictures) {
       const imagesElements = val.map((imageUrl, index) => (
         <div
           key={index}
@@ -67,7 +68,7 @@ const ValueTableRow = ({
           onClick={() => handleImageClick(imageUrl)}
         >
           <Image
-            src={imageUrl}
+            src={imageUrl.displayUrl || imageUrl}
             alt={`Image ${index + 1}`}
             fill
             className="object-cover rounded-lg group-hover:scale-110 transition-transform duration-200"
