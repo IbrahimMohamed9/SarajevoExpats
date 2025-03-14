@@ -9,6 +9,8 @@ const {
   updateServiceById,
   getServiceById,
   getServicesByServiceType,
+  deleteServiceImage,
+  reorderServiceImages,
 } = require("../controllers/serviceController");
 
 router.route("/").get(getAllServices).post(validateAdminToken, createService);
@@ -20,6 +22,9 @@ router
   .get(getServiceById)
   .put(validateAdminToken, updateServiceById)
   .delete(validateAdminToken, deleteServiceById);
+
+router.delete("/:id/images/:index", validateAdminToken, deleteServiceImage);
+router.put("/:id/images/reorder", validateAdminToken, reorderServiceImages);
 
 router.param("id", validateMongoId);
 

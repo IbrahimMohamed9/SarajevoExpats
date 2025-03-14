@@ -146,6 +146,57 @@ const getPlaceById = asyncHandler(async (req, res) => {
   res.status(200).json(formattedPlace);
 });
 
+//@desc Delete image from place
+//@route DELETE /places/:id/images/:index
+//@access private
+const deletePlaceImage = asyncHandler(async (req, res) => {
+  const place = await Place.findById(req.params.id);
+  if (!place) {
+    res.status(404);
+    throw new Error("Place not found");
+  }
+
+  const index = parseInt(req.params.index);
+  if (index < 0 || index >= place.pictures.length) {
+    res.status(400);
+    throw new Error("Invalid image index");
+  }
+
+  place.pictures.splice(index, 1);
+  await place.save();
+
+  res.status(200).json({ message: "Image deleted successfully", place });
+});
+
+//@desc Change image position in place
+//@route PUT /places/:id/images/reorder
+//@access private
+const reorderPlaceImages = asyncHandler(async (req, res) => {
+  const { fromIndex, toIndex } = req.body;
+  const place = await Place.findById(req.params.id);
+
+  if (!place) {
+    res.status(404);
+    throw new Error("Place not found");
+  }
+
+  if (
+    fromIndex < 0 ||
+    fromIndex >= place.pictures.length ||
+    toIndex < 0 ||
+    toIndex >= place.pictures.length
+  ) {
+    res.status(400);
+    throw new Error("Invalid index");
+  }
+
+  const [movedItem] = place.pictures.splice(fromIndex, 1);
+  place.pictures.splice(toIndex, 0, movedItem);
+  await place.save();
+
+  res.status(200).json({ message: "Images reordered successfully", place });
+});
+
 module.exports = {
   getAllPlaces,
   createPlace,
@@ -153,4 +204,6 @@ module.exports = {
   updatePlaceById,
   getPlaceById,
   getPlacesByPlaceType,
+  deletePlaceImage,
+  reorderPlaceImages,
 };

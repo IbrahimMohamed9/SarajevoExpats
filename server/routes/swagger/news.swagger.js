@@ -173,3 +173,97 @@
  *       500:
  *         description: Server error
  */
+
+/**
+ * @swagger
+ * /api/news/{id}/images/{index}:
+ *   delete:
+ *     summary: Delete an image from a news item by index
+ *     tags: [News]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The news ID
+ *       - in: path
+ *         name: index
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The index of the image to delete
+ *     responses:
+ *       200:
+ *         description: Image deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Image deleted successfully
+ *                 news:
+ *                   $ref: '#/components/schemas/News'
+ *       400:
+ *         description: Invalid image index
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: News not found
+ */
+
+/**
+ * @swagger
+ * /api/news/{id}/images/reorder:
+ *   put:
+ *     summary: Reorder images in a news item
+ *     tags: [News]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The news ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - fromIndex
+ *               - toIndex
+ *             properties:
+ *               fromIndex:
+ *                 type: integer
+ *                 description: The current index of the image
+ *               toIndex:
+ *                 type: integer
+ *                 description: The new index for the image
+ *     responses:
+ *       200:
+ *         description: Images reordered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Images reordered successfully
+ *                 news:
+ *                   $ref: '#/components/schemas/News'
+ *       400:
+ *         description: Invalid index
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: News not found
+ */

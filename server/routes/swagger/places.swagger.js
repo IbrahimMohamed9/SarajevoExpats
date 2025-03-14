@@ -172,3 +172,97 @@
  *       404:
  *         description: Place not found
  */
+
+/**
+ * @swagger
+ * /api/places/{id}/images/{index}:
+ *   delete:
+ *     summary: Delete an image from a place by index
+ *     tags: [Places]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The place ID
+ *       - in: path
+ *         name: index
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The index of the image to delete
+ *     responses:
+ *       200:
+ *         description: Image deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Image deleted successfully
+ *                 place:
+ *                   $ref: '#/components/schemas/Place'
+ *       400:
+ *         description: Invalid image index
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Place not found
+ */
+
+/**
+ * @swagger
+ * /api/places/{id}/images/reorder:
+ *   put:
+ *     summary: Reorder images in a place
+ *     tags: [Places]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The place ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - fromIndex
+ *               - toIndex
+ *             properties:
+ *               fromIndex:
+ *                 type: integer
+ *                 description: The current index of the image
+ *               toIndex:
+ *                 type: integer
+ *                 description: The new index for the image
+ *     responses:
+ *       200:
+ *         description: Images reordered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Images reordered successfully
+ *                 place:
+ *                   $ref: '#/components/schemas/Place'
+ *       400:
+ *         description: Invalid index
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Place not found
+ */

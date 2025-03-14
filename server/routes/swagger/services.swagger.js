@@ -202,3 +202,74 @@
  *       401:
  *         description: Unauthorized
  */
+
+/**
+ * @swagger
+ * /api/services/{id}/images/{index}:
+ *   delete:
+ *     summary: Delete an image from a service
+ *     tags: [Services]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The service ID
+ *       - in: path
+ *         name: index
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The index of the image to delete
+ *     responses:
+ *       200:
+ *         description: Image deleted successfully
+ *       401:
+ *         description: Not authorized
+ *       404:
+ *         description: Service not found
+ *       400:
+ *         description: Invalid image index
+ *
+ * /api/services/{id}/images/reorder:
+ *   put:
+ *     summary: Change position of images in a service
+ *     tags: [Services]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The service ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - fromIndex
+ *               - toIndex
+ *             properties:
+ *               fromIndex:
+ *                 type: integer
+ *                 description: The current index of the image
+ *               toIndex:
+ *                 type: integer
+ *                 description: The desired new index for the image
+ *     responses:
+ *       200:
+ *         description: Images reordered successfully
+ *       401:
+ *         description: Not authorized
+ *       404:
+ *         description: Service not found
+ *       400:
+ *         description: Invalid index
+ */

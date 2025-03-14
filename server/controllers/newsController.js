@@ -109,6 +109,57 @@ const updateNewsById = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "News updated successfully", updatedNews });
 });
 
+//@desc Delete image from news
+//@route DELETE /news/:id/images/:index
+//@access private
+const deleteNewsImage = asyncHandler(async (req, res) => {
+  const news = await News.findById(req.params.id);
+  if (!news) {
+    res.status(404);
+    throw new Error("News not found");
+  }
+
+  const index = parseInt(req.params.index);
+  if (index < 0 || index >= news.pictures.length) {
+    res.status(400);
+    throw new Error("Invalid image index");
+  }
+
+  news.pictures.splice(index, 1);
+  await news.save();
+
+  res.status(200).json({ message: "Image deleted successfully", news });
+});
+
+//@desc Change image position in news
+//@route PUT /news/:id/images/reorder
+//@access private
+const reorderNewsImages = asyncHandler(async (req, res) => {
+  const { fromIndex, toIndex } = req.body;
+  const news = await News.findById(req.params.id);
+
+  if (!news) {
+    res.status(404);
+    throw new Error("News not found");
+  }
+
+  if (
+    fromIndex < 0 ||
+    fromIndex >= news.pictures.length ||
+    toIndex < 0 ||
+    toIndex >= news.pictures.length
+  ) {
+    res.status(400);
+    throw new Error("Invalid index");
+  }
+
+  const [movedItem] = news.pictures.splice(fromIndex, 1);
+  news.pictures.splice(toIndex, 0, movedItem);
+  await news.save();
+
+  res.status(200).json({ message: "Images reordered successfully", news });
+});
+
 module.exports = {
   getAllNews,
   createNews,
@@ -116,4 +167,6 @@ module.exports = {
   deleteNewsById,
   updateNewsById,
   getSliderNews,
+  deleteNewsImage,
+  reorderNewsImages,
 };

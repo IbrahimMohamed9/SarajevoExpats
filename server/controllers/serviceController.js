@@ -130,6 +130,57 @@ const getServiceById = asyncHandler(async (req, res) => {
   res.status(200).json(formattedService);
 });
 
+//@desc Delete image from service
+//@route DELETE /services/:id/images/:index
+//@access private
+const deleteServiceImage = asyncHandler(async (req, res) => {
+  const service = await Service.findById(req.params.id);
+  if (!service) {
+    res.status(404);
+    throw new Error("Service not found");
+  }
+
+  const index = parseInt(req.params.index);
+  if (index < 0 || index >= service.pictures.length) {
+    res.status(400);
+    throw new Error("Invalid image index");
+  }
+
+  service.pictures.splice(index, 1);
+  await service.save();
+
+  res.status(200).json({ message: "Image deleted successfully", service });
+});
+
+//@desc Change image position in service
+//@route PUT /services/:id/images/reorder
+//@access private
+const reorderServiceImages = asyncHandler(async (req, res) => {
+  const { fromIndex, toIndex } = req.body;
+  const service = await Service.findById(req.params.id);
+
+  if (!service) {
+    res.status(404);
+    throw new Error("Service not found");
+  }
+
+  if (
+    fromIndex < 0 ||
+    fromIndex >= service.pictures.length ||
+    toIndex < 0 ||
+    toIndex >= service.pictures.length
+  ) {
+    res.status(400);
+    throw new Error("Invalid index");
+  }
+
+  const [movedItem] = service.pictures.splice(fromIndex, 1);
+  service.pictures.splice(toIndex, 0, movedItem);
+  await service.save();
+
+  res.status(200).json({ message: "Images reordered successfully", service });
+});
+
 module.exports = {
   getAllServices,
   createService,
@@ -137,4 +188,6 @@ module.exports = {
   updateServiceById,
   getServiceById,
   getServicesByServiceType,
+  deleteServiceImage,
+  reorderServiceImages,
 };
