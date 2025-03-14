@@ -58,28 +58,28 @@ const ValueTableRow = ({
       return null;
     }
 
-    if (key === "picture" && val && !Array.isArray(val)) {
-      return (
-        <TableCell key={key} component="th" scope="row">
-          <div
-            className="relative w-20 h-20 group cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
-            onClick={() => handleImageClick(val)}
-          >
-            <Image
-              src={val}
-              alt="Item picture"
-              fill
-              className="object-cover rounded-lg group-hover:scale-110 transition-transform duration-200"
-              sizes="80px"
-            />
-          </div>
-        </TableCell>
-      );
-    }
-    if (key === "picture" && val && Array.isArray(val)) {
+    if (key === "pictures") {
+      const imagesElements = val.map((imageUrl, index) => (
+        <div
+          key={index}
+          className="relative w-20 h-20 group cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-200 -ml-[60px] first:ml-0 hover:translate-x-2 hover:z-10"
+          style={{ zIndex: val.length - index }}
+          onClick={() => handleImageClick(imageUrl)}
+        >
+          <Image
+            src={imageUrl}
+            alt={`Image ${index + 1}`}
+            fill
+            className="object-cover rounded-lg group-hover:scale-110 transition-transform duration-200"
+            sizes="80px"
+          />
+        </div>
+      ));
       return (
         <TableCell key={key} component="th" scope="row" className="min-w-24">
-          {val.length} images
+          <div className="flex flex-row items-center pl-[60px]">
+            {imagesElements}
+          </div>
         </TableCell>
       );
     }

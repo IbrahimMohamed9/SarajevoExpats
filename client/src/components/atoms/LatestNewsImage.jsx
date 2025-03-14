@@ -4,7 +4,7 @@ const LatestNewsImage = ({ latestNews }) => {
   return (
     <>
       <Image
-        src={latestNews.picture}
+        src={latestNews.pictures[0]}
         alt={latestNews.title}
         fill
         priority

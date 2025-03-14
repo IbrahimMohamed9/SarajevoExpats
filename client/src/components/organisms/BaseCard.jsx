@@ -19,7 +19,7 @@ const BaseCard = ({ item, type, className = "" }) => {
   if (!item) return null;
 
   const title = item?.title || item?.name;
-  const image = item?.picture || item?.displayUrl;
+  let image = item?.pictures || item?.displayUrl;
   const content = item?.content;
   const date = item?.createdAt || item?.date;
   const values = {
@@ -29,6 +29,10 @@ const BaseCard = ({ item, type, className = "" }) => {
     location: item?.location,
     service: item?.serviceType,
   };
+
+  if (Array.isArray(image)) {
+    image = image[0];
+  }
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {

@@ -21,6 +21,9 @@ const ArticleTemplate = ({ contentType, url }) => {
   const [article, setArticle] = useState();
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [firstLoad, setFirstLoad] = useState(true);
+  const containsImages =
+    article?.childPosts?.length > 1 || article?.pictures?.length > 1;
+  const images = article?.childPosts || article?.pictures;
 
   useEffect(() => {
     const init = async () => {
@@ -34,11 +37,13 @@ const ArticleTemplate = ({ contentType, url }) => {
       // Set initial selected media
       const containsChildPosts = currentArticle?.childPosts?.length > 0;
       const containsPicture =
-        currentArticle?.picture || currentArticle?.displayUrl;
+        currentArticle?.pictures?.length > 0 || currentArticle?.displayUrl;
       if (containsChildPosts) {
         setSelectedMedia(currentArticle.childPosts[0]);
       } else if (containsPicture) {
-        setSelectedMedia(currentArticle?.picture || currentArticle?.displayUrl);
+        setSelectedMedia(
+          currentArticle?.pictures[0] || currentArticle?.displayUrl
+        );
       }
     };
 
@@ -87,9 +92,9 @@ const ArticleTemplate = ({ contentType, url }) => {
               description={article.pictureDescription}
             />
           )}
-          {article?.childPosts?.length > 1 && (
+          {containsImages && (
             <ImageGallery
-              childPosts={article.childPosts}
+              childPosts={images}
               selectedMedia={selectedMedia}
               onClick={setSelectedMedia}
             />

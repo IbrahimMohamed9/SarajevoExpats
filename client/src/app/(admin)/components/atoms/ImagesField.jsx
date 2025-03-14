@@ -54,8 +54,8 @@ const ImagesField = ({
         const response = await axiosInstance.post("/upload", imageForm, config);
         const imageUrl = response.data.url;
 
-        handleChange("picture", [imageUrl]);
-        setFieldErrors((prev) => ({ ...prev, picture: "" }));
+        handleChange("pictures", [imageUrl]);
+        setFieldErrors((prev) => ({ ...prev, pictures: "" }));
         setSnackbar({
           message: "Image uploaded successfully!",
           open: true,
