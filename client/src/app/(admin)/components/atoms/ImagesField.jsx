@@ -1,9 +1,30 @@
+"use client";
+
 import { Button, Box, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import ReorderIcon from "@mui/icons-material/Reorder";
+import CheckIcon from "@mui/icons-material/Check";
 import axiosInstance from "@/config/axios";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { imageDialogState } from "@/recoil/imageDialog";
+import { loadingAtom } from "@/store/atoms/loadingAtom";
+import { snackbarState } from "@/store/atoms/snackbarAtom";
+import { errorAtom, fieldErrorsAtom } from "@/store/atoms/formAtoms";
 import { styled } from "@mui/material/styles";
 import ImageGallery from "@/components/molecules/ImageGallery";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -23,13 +44,26 @@ const ImagesField = ({
   isRequired,
   formData,
   handleChange,
-  loading,
-  setFieldErrors,
-  setSnackbar,
-  setLoading,
-  error,
-  setError,
 }) => {
+  const [reordering, setReordering] = useState(false);
+  const setImageDialog = useSetRecoilState(imageDialogState);
+  const loading = useRecoilValue(loadingAtom);
+  const setLoading = useSetRecoilState(loadingAtom);
+  const setSnackbar = useSetRecoilState(snackbarState);
+  const error = useRecoilValue(errorAtom);
+  const setError = useSetRecoilState(errorAtom);
+  const setFieldErrors = useSetRecoilState(fieldErrorsAtom);
+
+  let currentType = window.location.href.split("/");
+  currentType = currentType[currentType.length - 1];
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   const handleImageChange = useCallback(
     async (e) => {
       const file = e.target.files[0];
@@ -54,8 +88,11 @@ const ImagesField = ({
         const response = await axiosInstance.post("/upload", imageForm, config);
         const imageUrl = response.data.url;
 
-        handleChange("pictures", [imageUrl]);
-        setFieldErrors((prev) => ({ ...prev, pictures: "" }));
+        // Add to existing images
+        const updatedImages = [...(formData[keyVal] || []), imageUrl];
+        handleChange(keyVal, updatedImages, false);
+
+        setFieldErrors((prev) => ({ ...prev, [keyVal]: "" }));
         setSnackbar({
           message: "Image uploaded successfully!",
           open: true,
@@ -77,8 +114,121 @@ const ImagesField = ({
         setLoading(false);
       }
     },
-    [handleChange, setError, setFieldErrors, setLoading, setSnackbar]
+    [
+      handleChange,
+      setError,
+      setFieldErrors,
+      setLoading,
+      setSnackbar,
+      formData,
+      keyVal,
+    ]
   );
+
+  const handleImageClick = (image) => {
+    // Open the image dialog with Recoil
+    if (reordering) return; // Don't open dialog when reordering
+    
+    setImageDialog({
+      open: true,
+      image,
+      onDelete: handleDeleteImage,
+      loading: false,
+    });
+  };
+
+  const handleDeleteImage = async (selectedImage) => {
+    try {
+      setLoading(true);
+
+      const imageUrl = selectedImage?.displayUrl || selectedImage;
+
+      const response = await axiosInstance.delete(
+        `/${currentType}/${formData._id}/images`,
+        {
+          data: {
+            imageUrl: imageUrl,
+          },
+        }
+      );
+
+      const updatedImages = (formData[keyVal] || []).filter(
+        (img) =>
+          (img?.displayUrl || img) !==
+          (selectedImage?.displayUrl || selectedImage)
+      );
+      handleChange(keyVal, updatedImages, false);
+
+      setSnackbar({
+        message: "Image deleted successfully",
+        open: true,
+        severity: "success",
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      setSnackbar({
+        message: error.response?.data?.message || "Failed to delete image",
+        open: true,
+        severity: "error",
+      });
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDragEnd = async (event) => {
+    if (event.active.id !== event.over?.id) {
+      const items = formData[keyVal] || [];
+      const oldIndex = items.findIndex(
+        (item) => (item?.displayUrl || item) === event.active.id
+      );
+      const newIndex = items.findIndex(
+        (item) => (item?.displayUrl || item) === event.over?.id
+      );
+
+      const reorderedImages = [...items];
+      const [movedItem] = reorderedImages.splice(oldIndex, 1);
+      reorderedImages.splice(newIndex, 0, movedItem);
+
+      handleChange(keyVal, reorderedImages, false);
+    }
+  };
+
+  const handleDragBtnClick = async () => {
+    const currentReorderingState = !reordering;
+    setReordering(currentReorderingState);
+
+    // Only submit the changes when clicking "Done" (finishing reordering)
+    if (reordering) {
+      try {
+        const items = formData[keyVal] || [];
+
+        await axiosInstance.put(
+          `/${currentType}/${formData._id}/images/reorder`,
+          {
+            images: items.map((img) => img?.displayUrl || img),
+          }
+        );
+
+        setSnackbar({
+          message: "Images reordered successfully",
+          open: true,
+          severity: "success",
+        });
+      } catch (error) {
+        console.error("Error reordering images:", error);
+        setSnackbar({
+          message:
+            error.response?.data?.message || "Failed to update image order",
+          open: true,
+          severity: "error",
+        });
+      }
+    }
+  };
 
   return (
     <>
@@ -99,6 +249,7 @@ const ImagesField = ({
             accept="image/*"
             onChange={handleImageChange}
             required={Boolean(isRequired)}
+            disabled={reordering}
           />
         </Button>
         {(error || fieldErrors[keyVal]) && (
@@ -107,13 +258,44 @@ const ImagesField = ({
           </Typography>
         )}
       </Box>
+
       <div className="mt-0">
-        <ImageGallery
-          childPosts={formData[keyVal]}
-          // selectedMedia
-          // onClick
-          adminModal={true}
-        />
+        {formData[keyVal]?.length > 1 && (
+          <div className="flex justify-between items-center mb-2">
+            <p className="text-sm text-gray-500">
+              {reordering
+                ? "Drag images to reorder them"
+                : "Click on image to view. Use reorder button to change order."}
+            </p>
+            <Button
+              variant="outlined"
+              size="small"
+              color={reordering ? "success" : "primary"}
+              startIcon={reordering ? <CheckIcon /> : <ReorderIcon />}
+              onClick={handleDragBtnClick}
+              className="ml-2"
+              disabled={loading}
+            >
+              {reordering ? "Done" : "Reorder"}
+            </Button>
+          </div>
+        )}
+
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={() => setReordering(true)}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={(formData[keyVal] || []).map((img) => img)}>
+            <ImageGallery
+              childPosts={formData[keyVal] || []}
+              onClick={handleImageClick}
+              adminModal={true}
+              reordering={reordering}
+            />
+          </SortableContext>
+        </DndContext>
       </div>
     </>
   );

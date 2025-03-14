@@ -13,7 +13,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { snackbarState } from "@/store/atoms/snackbarAtom";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { adminModalState } from "@/store/atoms/adminModalAtom";
-import { tablesAtom } from "@/store/atoms/tablesAtom";
+import { loadingAtom } from "@/store/atoms/loadingAtom";
+import { errorAtom, fieldErrorsAtom } from "@/store/atoms/formAtoms";
 import AdminModalField from "@adminMol/AdminModalField";
 
 // Define required fields for each table type
@@ -30,9 +31,12 @@ export default function AdminModal() {
   const info = useRecoilValue(adminModalState);
   const { open, onClose, data, onSubmit, tableKey, update } = info;
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState("");
-  const [fieldErrors, setFieldErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const setError = useSetRecoilState(errorAtom);
+  const setFieldErrors = useSetRecoilState(fieldErrorsAtom);
+  const setLoading = useSetRecoilState(loadingAtom);
+  const loading = useRecoilValue(loadingAtom);
+  const setSnackbar = useSetRecoilState(snackbarState);
+
   const excludeFields = [
     "_id",
     "__v",
@@ -41,16 +45,14 @@ export default function AdminModal() {
     "subData",
     "date",
   ];
-  const setSnackbar = useSetRecoilState(snackbarState);
+
   const title = tableKey?.split("/")[0] || "";
-  const tables = useRecoilValue(tablesAtom);
   const keys = Object.keys(formData).filter(
     (key) => !excludeFields.includes(key)
   );
 
   useEffect(() => {
     setFormData(data || {});
-
     setFieldErrors({});
 
     return () => {
@@ -58,25 +60,39 @@ export default function AdminModal() {
       setFieldErrors({});
       setError("");
     };
-  }, [data, title]);
+  }, [data, title, setFieldErrors, setError]);
 
   const handleClose = useCallback(() => {
     setError("");
     setFieldErrors({});
     onClose();
-  }, [onClose]);
+  }, [onClose, setError, setFieldErrors]);
 
-  const handleChange = useCallback((key, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [key]:
-        Array.isArray(value) && Array.isArray(prev[key])
-          ? [...prev[key], ...value]
-          : value,
-    }));
+  const handleChange = useCallback(
+    (key, value, withPrev = true) => {
+      setFormData((prev) => {
+        if (!withPrev) {
+          return {
+            ...prev,
+            [key]:
+              Array.isArray(value) && Array.isArray(prev[key])
+                ? [...value]
+                : value,
+          };
+        }
+        return {
+          ...prev,
+          [key]:
+            Array.isArray(value) && Array.isArray(prev[key])
+              ? [...prev[key], ...value]
+              : value,
+        };
+      });
 
-    setFieldErrors((prev) => ({ ...prev, [key]: "" }));
-  }, []);
+      setFieldErrors((prev) => ({ ...prev, [key]: "" }));
+    },
+    [setFieldErrors]
+  );
 
   const validateForm = useCallback(() => {
     const errors = {};
@@ -100,7 +116,7 @@ export default function AdminModal() {
 
     setFieldErrors(errors);
     return isValid;
-  }, [formData, title]);
+  }, [formData, title, setFieldErrors]);
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -142,7 +158,16 @@ export default function AdminModal() {
         setLoading(false);
       }
     },
-    [formData, tableKey, onSubmit, validateForm, handleClose, setSnackbar]
+    [
+      formData,
+      tableKey,
+      onSubmit,
+      validateForm,
+      handleClose,
+      setSnackbar,
+      setLoading,
+      setError,
+    ]
   );
 
   const formElements = useMemo(
@@ -155,30 +180,9 @@ export default function AdminModal() {
           handleChange={handleChange}
           title={title}
           requiredFields={requiredFields}
-          fieldErrors={fieldErrors}
-          loading={loading}
-          error={error}
-          setError={setError}
-          setLoading={setLoading}
-          setFieldErrors={setFieldErrors}
-          setSnackbar={setSnackbar}
-          tables={tables}
         />
       )),
-    [
-      keys,
-      formData,
-      handleChange,
-      title,
-      fieldErrors,
-      loading,
-      error,
-      setError,
-      setLoading,
-      setFieldErrors,
-      setSnackbar,
-      tables,
-    ]
+    [keys, formData, handleChange, title]
   );
 
   return (
@@ -190,30 +194,40 @@ export default function AdminModal() {
         className: "max-h-[90vh]",
       }}
     >
-      <DialogTitle className="flex justify-between items-center">
-        {`${update ? "Edit" : "Create"} ${
-          title.charAt(0).toUpperCase() + title.slice(1)
-        }`}
-        <IconButton onClick={handleClose} size="small">
+      <DialogTitle className="pb-4 bg-gray-100">
+        {update ? "Edit" : "Add"} {title ? title.slice(0, -1) : "Item"}
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+          }}
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent className="pt-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           {formElements}
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="inherit">
+      <DialogActions className="px-4 pb-4">
+        <Button
+          onClick={handleClose}
+          style={{ backgroundColor: "#CCC" }}
+          className="text-gray-800 bg-gray-300 hover:bg-gray-400"
+        >
           Cancel
         </Button>
         <Button
           onClick={handleSubmit}
           variant="contained"
-          className="bg-main hover:bg-main/90"
           disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700"
         >
-          {loading ? "Saving..." : update ? "Update" : "Create"}
+          {loading ? "Saving..." : "Save"}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,12 +1,10 @@
-"use client";
-
-import Image from "next/image";
+import SortableImage from "@atoms/SortableImage";
 
 const ImageGallery = ({
   childPosts,
-  selectedMedia,
   onClick,
   adminModal = true,
+  reordering = false,
 }) => {
   if (!childPosts || childPosts.length === 0) return null;
 
@@ -32,33 +30,15 @@ const ImageGallery = ({
   const containerWidth = getContainerWidth();
   const overflow = totalWidth > containerWidth;
 
-  const imagesBtnsElements = childPosts.map((media, index) => {
-    const imgUrl = media?.displayUrl || media;
-    const selectedMediaUrl = selectedMedia?.displayUrl || selectedMedia;
-
-    return (
-      <button
-        key={index}
-        onClick={(e) => {
-          e.preventDefault();
-          if (onClick) onClick(media);
-        }}
-        className={`relative transition-all duration-200 snap-start ${
-          selectedMediaUrl === imgUrl
-            ? "ring-2 ring-main ring-offset-2"
-            : "hover:ring-2 hover:ring-gray-300 hover:ring-offset-2"
-        } flex-shrink-0 p-4 size-20 rounded-lg overflow-hidden`}
-      >
-        <Image
-          src={imgUrl}
-          alt={media.alt || `Image ${index + 1}`}
-          fill
-          className="object-cover"
-          sizes="80px"
-        />
-      </button>
-    );
-  });
+  const imagesBtnsElements = childPosts.map((media, index) => (
+    <SortableImage
+      key={index}
+      media={media.displayUrl || media}
+      index={index}
+      onClick={onClick}
+      reordering={reordering}
+    />
+  ));
 
   return (
     <div
@@ -66,7 +46,7 @@ const ImageGallery = ({
         adminModal ? "overflow-x-auto" : "flex-wrap"
       } py-2 px-4 md:px-0 snap-x snap-mandatory scroll-pl-4 ${
         !overflow ? "justify-center" : ""
-      }`}
+      } ${reordering ? "bg-gray-100 rounded-lg" : ""}`}
     >
       {imagesBtnsElements}
     </div>
