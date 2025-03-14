@@ -180,21 +180,42 @@ const reorderPlaceImages = asyncHandler(async (req, res) => {
     throw new Error("Place not found");
   }
 
-  if (
-    fromIndex < 0 ||
-    fromIndex >= place.pictures.length ||
-    toIndex < 0 ||
-    toIndex >= place.pictures.length
-  ) {
+  if (fromIndex < 0 || fromIndex >= place.pictures.length) {
     res.status(400);
     throw new Error("Invalid index");
   }
 
   const [movedItem] = place.pictures.splice(fromIndex, 1);
+
+  if (toIndex >= place.pictures.length) {
+    toIndex = place.pictures.length - 1;
+  } else if (toIndex < 0) toIndex = 0;
+
   place.pictures.splice(toIndex, 0, movedItem);
   await place.save();
 
   res.status(200).json({ message: "Images reordered successfully", place });
+});
+
+//@desc Add category to place
+//@route PUT /places/:id/categories
+//@access private
+const addCategoryToPlace = asyncHandler(async (req, res) => {
+  const place = await Place.findById(req.params.id);
+  if (!place) {
+    res.status(404);
+    throw new Error("Place not found");
+  }
+
+  const categoryId = req.body.categoryId;
+  place.categories = place.categories || [];
+  if (toIndex >= place.categories.length) {
+    toIndex = place.categories.length - 1;
+  }
+  place.categories.splice(toIndex, 0, categoryId);
+  await place.save();
+
+  res.status(200).json({ message: "Category added successfully", place });
 });
 
 module.exports = {
@@ -206,4 +227,5 @@ module.exports = {
   getPlacesByPlaceType,
   deletePlaceImage,
   reorderPlaceImages,
+  addCategoryToPlace,
 };

@@ -143,17 +143,16 @@ const reorderNewsImages = asyncHandler(async (req, res) => {
     throw new Error("News not found");
   }
 
-  if (
-    fromIndex < 0 ||
-    fromIndex >= news.pictures.length ||
-    toIndex < 0 ||
-    toIndex >= news.pictures.length
-  ) {
+  if (fromIndex < 0 || fromIndex >= news.pictures.length) {
     res.status(400);
     throw new Error("Invalid index");
   }
 
   const [movedItem] = news.pictures.splice(fromIndex, 1);
+
+  if (toIndex >= news.pictures.length) toIndex = news.pictures.length - 1;
+  else if (toIndex < 0) toIndex = 0;
+
   news.pictures.splice(toIndex, 0, movedItem);
   await news.save();
 

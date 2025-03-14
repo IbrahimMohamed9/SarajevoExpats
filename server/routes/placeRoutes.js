@@ -8,8 +8,6 @@ const {
   updatePlaceById,
   deletePlaceById,
   getPlacesByPlaceType,
-  deletePlaceImage,
-  reorderPlaceImages,
 } = require("../controllers/placeController");
 const { validateMongoId } = require("../utils");
 
@@ -23,10 +21,6 @@ router
   .all(validateAdminToken)
   .put(updatePlaceById)
   .delete(deletePlaceById);
-
-// Image management routes
-router.delete("/:id/images/:index", validateAdminToken, deletePlaceImage);
-router.put("/:id/images/reorder", validateAdminToken, reorderPlaceImages);
 
 router.param("id", validateMongoId);
 

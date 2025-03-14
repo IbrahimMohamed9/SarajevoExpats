@@ -220,6 +220,7 @@
  * /api/places/{id}/images/reorder:
  *   put:
  *     summary: Reorder images in a place
+ *     description: Moves an image from one position to another. If the target position exceeds the array length, the image will be moved to the last position.
  *     tags: [Places]
  *     security:
  *       - BearerAuth: []
@@ -242,10 +243,10 @@
  *             properties:
  *               fromIndex:
  *                 type: integer
- *                 description: The current index of the image
+ *                 description: The current index of the image (must be within array bounds)
  *               toIndex:
  *                 type: integer
- *                 description: The new index for the image
+ *                 description: The desired target index. If it exceeds array length, image will be moved to last position
  *     responses:
  *       200:
  *         description: Images reordered successfully
@@ -260,7 +261,7 @@
  *                 place:
  *                   $ref: '#/components/schemas/Place'
  *       400:
- *         description: Invalid index
+ *         description: Invalid source index
  *       401:
  *         description: Unauthorized
  *       404:
