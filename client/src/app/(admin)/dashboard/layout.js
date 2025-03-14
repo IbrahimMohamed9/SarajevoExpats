@@ -6,7 +6,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import HandshakeIcon from "@mui/icons-material/Handshake";
 import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
-import AdminModal from "@adminMol/AdminModal";
+import AdminModal from "@adminOrg/AdminModal";
 import { verifyAdmin } from "@/utils/";
 import UnauthorizedTemplates from "@adminTem/UnauthorizedTemplates";
 

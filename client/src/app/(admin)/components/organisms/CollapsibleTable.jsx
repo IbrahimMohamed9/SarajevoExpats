@@ -16,7 +16,7 @@ const CollapsibleTable = ({ tableKey, subDataTitle, data }) => {
   return (
     <TableContainer className="border border-gray-300 rounded-lg shadow-sm">
       <Table stickyHeader>
-        <HeaderTableRow data={data[0]} includeEmpty={subDataTitle} />
+        <HeaderTableRow data={data[0]} subDataTitle={subDataTitle} />
         <CustomTableRows
           data={data}
           tableKey={tableKey}
