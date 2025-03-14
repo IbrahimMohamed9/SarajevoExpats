@@ -26,12 +26,12 @@ const getSliderNews = asyncHandler(async (req, res) => {
 //@route POST /api/news
 //@access Private
 const createNews = asyncHandler(async (req, res) => {
-  const { title, content, picture, pictureDescription, sources } = req.body;
+  const { title, content, pictures, pictureDescription, sources } = req.body;
 
   const requiredFields = {
     title,
     content,
-    picture,
+    pictures,
     sources,
   };
 
@@ -49,7 +49,7 @@ const createNews = asyncHandler(async (req, res) => {
   const news = await News.create({
     title,
     content,
-    picture,
+    pictures,
     pictureDescription,
     sources,
   });

@@ -52,12 +52,12 @@ const getServicesByServiceType = asyncHandler(async (req, res) => {
 //@route /services
 //@access public
 const createService = asyncHandler(async (req, res) => {
-  const { name, content, picture, serviceType, phone, email } = req.body;
+  const { name, content, pictures, serviceType, phone, email } = req.body;
 
   const requiredFields = {
     name,
     content,
-    picture,
+    pictures,
     serviceType,
   };
 

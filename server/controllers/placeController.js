@@ -44,7 +44,7 @@ const createPlace = asyncHandler(async (req, res) => {
   const {
     title,
     content,
-    picture,
+    pictures,
     pictureDescription,
     type,
     phone,
@@ -55,7 +55,7 @@ const createPlace = asyncHandler(async (req, res) => {
   const requiredFields = {
     title,
     content,
-    picture,
+    pictures,
     type,
   };
 
@@ -96,7 +96,7 @@ const createPlace = asyncHandler(async (req, res) => {
   const place = await Place.create({
     title,
     content,
-    picture,
+    pictures,
     pictureDescription,
     type,
     phone,
