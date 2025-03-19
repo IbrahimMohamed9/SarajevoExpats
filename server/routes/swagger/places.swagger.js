@@ -85,14 +85,14 @@
 
 /**
  * @swagger
- * /api/places/by-place-type/{placeType}:
+ * /api/places/by-place-type/{type}:
  *   get:
  *     summary: Get places by place type
  *     description: Retrieves all places that match the specified place type
  *     tags: [Places]
  *     parameters:
  *       - in: path
- *         name: placeType
+ *         name: type
  *         required: true
  *         schema:
  *           type: string

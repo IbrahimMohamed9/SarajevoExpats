@@ -5,10 +5,10 @@
  *     PlaceTag:
  *       type: object
  *       required:
- *         - placeType
+ *         - type
  *         - tag
  *       properties:
- *         placeType:
+ *         type:
  *           type: string
  *           description: The place type (must exist in PlaceTypes collection)
  *         tag:
@@ -58,14 +58,14 @@
 
 /**
  * @swagger
- * /api/place-tags/by-place-type/{placeType}:
+ * /api/place-tags/by-place-type/{type}:
  *   get:
  *     summary: Get tags by place type
  *     description: Retrieves all tags that match the specified place type
  *     tags: [Place Tags]
  *     parameters:
  *       - in: path
- *         name: placeType
+ *         name: type
  *         required: true
  *         schema:
  *           type: string

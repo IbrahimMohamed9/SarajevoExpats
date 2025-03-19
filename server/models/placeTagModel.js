@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const placeTagSchema = new mongoose.Schema(
   {
-    placeType: { 
+    type: { 
       type: String, 
       required: [true, "Please add the place type"],
       validate: {
@@ -22,8 +22,8 @@ const placeTagSchema = new mongoose.Schema(
   }
 );
 
-// Compound index to ensure uniqueness of placeType+tag combination
-placeTagSchema.index({ placeType: 1, tag: 1 }, { unique: true });
+// Compound index to ensure uniqueness of type+tag combination
+placeTagSchema.index({ type: 1, tag: 1 }, { unique: true });
 
 const PlaceTag = mongoose.model("PlaceTags", placeTagSchema);
 module.exports = PlaceTag;

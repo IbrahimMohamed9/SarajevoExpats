@@ -12,7 +12,7 @@ const { validateMongoId } = require("../utils");
 
 // Public routes
 router.get("/", getAllPlaceTags);
-router.get("/by-place-type/:placeType", getTagsByPlaceType);
+router.get("/by-place-type/:type", getTagsByPlaceType);
 
 // Admin routes
 router.post("/", validateAdminToken, createPlaceTag);
