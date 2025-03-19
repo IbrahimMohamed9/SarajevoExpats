@@ -67,7 +67,7 @@ app.use("/api/qaas/", require("./routes/QaARoutes"));
 app.use("/api/news/", require("./routes/newsRoutes"));
 app.use("/api/places/", require("./routes/placeRoutes"));
 app.use("/api/placeTypes/", require("./routes/placeTypeRoutes"));
-app.use("/api/place-tags/", require("./routes/placeTagRoutes"));
+app.use("/api/placeTags/", require("./routes/placeTagRoutes"));
 app.use("/api/services/", require("./routes/serviceRoutes"));
 app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));

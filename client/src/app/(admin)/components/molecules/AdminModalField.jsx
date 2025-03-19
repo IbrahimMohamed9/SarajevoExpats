@@ -6,27 +6,14 @@ import ImagesField from "@adminAto/ImagesField";
 import CustomTextarea from "@adminAto/CustomTextarea";
 import CustomCheckbox from "@adminAto/CustomCheckbox";
 import CustomDropList from "@adminAto/CustomDropList";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { loadingAtom } from "@/store/atoms/loadingAtom";
-import { snackbarState } from "@/store/atoms/snackbarAtom";
-import { errorAtom, fieldErrorsAtom } from "@/store/atoms/formAtoms";
+import { useRecoilValue } from "recoil";
+import { fieldErrorsAtom } from "@/store/atoms/formAtoms";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
 
 const AdminModalField = memo(
-  ({
-    keyVal,
-    formData,
-    handleChange,
-    title,
-    requiredFields,
-  }) => {
+  ({ keyVal, formData, handleChange, title, requiredFields }) => {
     // Access state from Recoil instead of props
-    const loading = useRecoilValue(loadingAtom);
-    const setSnackbar = useSetRecoilState(snackbarState);
-    const error = useRecoilValue(errorAtom);
-    const setError = useSetRecoilState(errorAtom);
     const fieldErrors = useRecoilValue(fieldErrorsAtom);
-    const setFieldErrors = useSetRecoilState(fieldErrorsAtom);
     const tables = useRecoilValue(tablesAtom);
 
     const lowerKey = keyVal.toLowerCase();
@@ -42,7 +29,7 @@ const AdminModalField = memo(
       "answer",
     ].includes(lowerKey);
 
-    const isDropList = ["type", "serviceType"].includes(keyVal);
+    const isDropList = ["type", "serviceType", "tags"].includes(keyVal);
     const isCheckbox = ["pinned", "showInSlider"].includes(keyVal);
     const isImages = ["childPosts", "pictures"].includes(keyVal);
     const isNumber = ["priority", "slidePriority"].includes(keyVal);

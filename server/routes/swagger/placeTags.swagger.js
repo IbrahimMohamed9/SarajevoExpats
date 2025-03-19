@@ -23,7 +23,7 @@
 
 /**
  * @swagger
- * /api/place-tags:
+ * /api/placeTags:
  *   get:
  *     summary: Get all place tags
  *     tags: [Place Tags]
@@ -58,7 +58,7 @@
 
 /**
  * @swagger
- * /api/place-tags/by-place-type/{type}:
+ * /api/placeTags/by-place-type/{type}:
  *   get:
  *     summary: Get tags by place type
  *     description: Retrieves all tags that match the specified place type
@@ -87,7 +87,7 @@
 
 /**
  * @swagger
- * /api/place-tags/{id}:
+ * /api/placeTags/{id}:
  *   put:
  *     summary: Update a place tag
  *     tags: [Place Tags]

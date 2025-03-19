@@ -31,6 +31,7 @@ const ValueTableRow = ({
     const isCheckbox = ["pinned", "showInSlider"].includes(key);
     const isNumber = typeof val === "number";
     const isPictures = key === "pictures" || key === "childPosts";
+    const isTags = key === "tags" && Array.isArray(val);
 
     if (isCheckbox) {
       return (
@@ -84,6 +85,28 @@ const ValueTableRow = ({
         </TableCell>
       );
     }
+
+    if (isTags) {
+      return (
+        <TableCell key={key} component="th" scope="row" align="center">
+          <div className="flex flex-wrap gap-1 justify-center">
+            {val.length > 0 ? (
+              val.map((tag, index) => (
+                <span
+                  key={index}
+                  className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))
+            ) : (
+              <span className="text-gray-400 text-sm">No tags</span>
+            )}
+          </div>
+        </TableCell>
+      );
+    }
+
     const value = isNumber ? String(val) : val;
 
     return (

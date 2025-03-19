@@ -4,7 +4,7 @@ const Place = require("../models/placeModel");
 const { checkNotFound } = require("../utils");
 
 //@desc Get all tags
-//@route GET /place-tags
+//@route GET /placeTags
 //@access public
 const getAllPlaceTags = asyncHandler(async (req, res) => {
   const tags = await PlaceTag.find().sort({ type: 1, tag: 1 });
@@ -12,7 +12,7 @@ const getAllPlaceTags = asyncHandler(async (req, res) => {
 });
 
 //@desc Get tags by place type
-//@route GET /place-tags/by-place-type/:type
+//@route GET /placeTags/by-place-type/:type
 //@access public
 const getTagsByPlaceType = asyncHandler(async (req, res) => {
   const tags = await PlaceTag.find({ type: req.params.type }).sort({ tag: 1 });
@@ -20,7 +20,7 @@ const getTagsByPlaceType = asyncHandler(async (req, res) => {
 });
 
 //@desc Create new tag
-//@route POST /place-tags
+//@route POST /placeTags
 //@access private (admin)
 const createPlaceTag = asyncHandler(async (req, res) => {
   const { type, tag } = req.body;
@@ -47,7 +47,7 @@ const createPlaceTag = asyncHandler(async (req, res) => {
 });
 
 //@desc Update tag
-//@route PUT /place-tags/:id
+//@route PUT /placeTags/:id
 //@access private (admin)
 const updatePlaceTag = asyncHandler(async (req, res) => {
   let placeTag = await PlaceTag.findById(req.params.id);
@@ -73,7 +73,7 @@ const updatePlaceTag = asyncHandler(async (req, res) => {
 });
 
 //@desc Delete tag
-//@route DELETE /place-tags/:id
+//@route DELETE /placeTags/:id
 //@access private (admin)
 const deletePlaceTag = asyncHandler(async (req, res) => {
   const placeTag = await PlaceTag.findById(req.params.id);

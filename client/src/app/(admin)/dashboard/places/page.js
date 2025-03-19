@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 const Page = async () => {
   const placesResponse = await axiosInstance.get("places");
   const placeTypesResponse = await axiosInstance.get("placeTypes/with-places");
+  const placesTagsResponse = await axiosInstance.get("placeTags");
   const dataTemp1 = {
     title: "",
     content: "",
@@ -16,8 +17,13 @@ const Page = async () => {
     website: "",
     link: "",
     type: "",
+    tags: [],
   };
   const dataTemp2 = {
+    tag: "",
+    type: "",
+  };
+  const dataTemp3 = {
     name: "",
   };
 
@@ -28,12 +34,18 @@ const Page = async () => {
         data={placesResponse.data}
         dataTemp={dataTemp1}
       />
-      <div className="h-4"></div>
+      <div className="h-4" />
+      <AdminTableTemplete
+        tableKey="placeTags"
+        data={placesTagsResponse.data}
+        dataTemp={dataTemp2}
+      />
+      <div className="h-4" />
       <AdminTableTemplete
         tableKey="placeTypes/with-places"
         subDataTitle="Place"
         data={placeTypesResponse.data}
-        dataTemp={dataTemp2}
+        dataTemp={dataTemp3}
       />
     </>
   );

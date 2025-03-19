@@ -25,6 +25,7 @@ const requiredFields = {
   services: ["name", "content", "pictures", "serviceType"],
   serviceTypes: ["name"],
   placeTypes: ["name"],
+  placeTags: ["type", "tag"],
 };
 
 export default function AdminModal() {
