@@ -36,6 +36,11 @@
  *         type:
  *           type: string
  *           description: Type or category of the place
+ *         tags:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Tags associated with the place
  *   securitySchemes:
  *     BearerAuth:
  *       type: http

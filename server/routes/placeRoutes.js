@@ -10,6 +10,8 @@ const {
   getPlacesByPlaceType,
   deletePlaceImage,
   reorderPlaceImages,
+  addTagToPlace,
+  removeTagFromPlace
 } = require("../controllers/placeController");
 const { validateMongoId } = require("../utils");
 
@@ -26,6 +28,11 @@ router
 
 router.route("/:id/images").delete(validateAdminToken, deletePlaceImage);
 router.route("/:id/images/reorder").put(validateAdminToken, reorderPlaceImages);
+
+// New tag routes
+router.route("/:id/tags")
+  .post(validateAdminToken, addTagToPlace)
+  .delete(validateAdminToken, removeTagFromPlace);
 
 router.param("id", validateMongoId);
 

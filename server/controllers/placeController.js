@@ -218,14 +218,81 @@ const addCategoryToPlace = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Category added successfully", place });
 });
 
+//@desc Add tag to place
+//@route POST /places/:id/tags
+//@access private (admin)
+const addTagToPlace = asyncHandler(async (req, res) => {
+  const { tag } = req.body;
+  
+  if (!tag) {
+    res.status(400);
+    throw new Error("Tag name is required");
+  }
+  
+  const place = await Place.findById(req.params.id);
+  
+  if (!place) {
+    res.status(404);
+    throw new Error("Place not found");
+  }
+
+  const PlaceTag = require("../models/placeTagModel");
+  const tagExists = await PlaceTag.findOne({ placeType: place.type, tag });
+  if (!tagExists) {
+    res.status(400);
+    throw new Error("This tag does not exist for the place type: " + place.type);
+  }
+  
+  if (place.tags.includes(tag)) {
+    res.status(400);
+    throw new Error("This tag is already added to the place");
+  }
+  
+  place.tags.push(tag);
+  await place.save();
+  
+  res.status(200).json({ message: "Tag added to place successfully", place });
+});
+
+//@desc Remove tag from place
+//@route DELETE /places/:id/tags
+//@access private (admin)
+const removeTagFromPlace = asyncHandler(async (req, res) => {
+  const { tag } = req.body;
+  
+  if (!tag) {
+    res.status(400);
+    throw new Error("Tag name is required");
+  }
+  
+  const place = await Place.findById(req.params.id);
+  
+  if (!place) {
+    res.status(404);
+    throw new Error("Place not found");
+  }
+  
+  if (!place.tags.includes(tag)) {
+    res.status(400);
+    throw new Error("This place does not have the specified tag");
+  }
+  
+  place.tags = place.tags.filter(t => t !== tag);
+  await place.save();
+  
+  res.status(200).json({ message: "Tag removed from place successfully", place });
+});
+
 module.exports = {
   getAllPlaces,
-  createPlace,
-  deletePlaceById,
-  updatePlaceById,
   getPlaceById,
+  createPlace,
+  updatePlaceById,
+  deletePlaceById,
   getPlacesByPlaceType,
   deletePlaceImage,
   reorderPlaceImages,
   addCategoryToPlace,
+  addTagToPlace,
+  removeTagFromPlace
 };

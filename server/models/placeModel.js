@@ -13,6 +13,7 @@ const placeSchema = new mongoose.Schema(
     link: { type: String, required: [true, "please add the link"] },
     priority: { type: Number, default: 0 },
     pinned: { type: Boolean, default: false },
+    tags: { type: [String], default: [] },
     type: {
       type: String,
       required: [true, "please add the type"],
