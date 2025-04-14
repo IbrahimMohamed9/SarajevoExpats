@@ -37,13 +37,13 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
     if (items && items.length > 0) {
       // Get all unique tags from all items
       const allTags = new Set();
-      items.forEach(item => {
+      items.forEach((item) => {
         if (item.tags && Array.isArray(item.tags)) {
-          item.tags.forEach(tag => allTags.add(tag));
+          item.tags.forEach((tag) => allTags.add(tag));
         }
       });
       setAvailableTags(Array.from(allTags));
-      
+
       // Initialize filtered items with all items
       setFilteredItems(items);
     }
@@ -57,20 +57,21 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
         setFilteredItems(items);
       } else {
         // Filter items that have at least one of the selected tags
-        const filtered = items.filter(item => {
-          if (!item.tags || !Array.isArray(item.tags)) return false;
-          return selectedTags.some(tag => item.tags.includes(tag));
-        });
+        const filtered = items.filter(
+          (item) =>
+            Array.isArray(item.tags) &&
+            selectedTags.every((tag) => item.tags.includes(tag))
+        );
         setFilteredItems(filtered);
       }
     }
   }, [selectedTags, items]);
 
   const handleTagClick = (tag) => {
-    setSelectedTags(prev => {
+    setSelectedTags((prev) => {
       if (prev.includes(tag)) {
         // Remove tag if already selected
-        return prev.filter(t => t !== tag);
+        return prev.filter((t) => t !== tag);
       } else {
         // Add tag if not selected
         return [...prev, tag];
@@ -111,7 +112,7 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
                 </h3>
               </div>
               {selectedTags.length > 0 && (
-                <button 
+                <button
                   onClick={clearAllTags}
                   className="px-3 py-1 text-xs font-medium rounded-full border border-tertiary text-tertiary hover:bg-tertiary hover:text-white transition-colors duration-200"
                 >
@@ -127,9 +128,11 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
                 onClick={() => handleTagClick(tag)}
                 className={`
                   px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200
-                  ${selectedTags.includes(tag) 
-                    ? 'bg-main text-white shadow-md hover:bg-tertiary' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow'}
+                  ${
+                    selectedTags.includes(tag)
+                      ? "bg-main text-white shadow-md hover:bg-tertiary"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow"
+                  }
                   transform hover:-translate-y-0.5
                 `}
               >
@@ -145,10 +148,12 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
         </p>
         {selectedTags.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-gray-700">Active filters:</span>
-            {selectedTags.map(tag => (
-              <span 
-                key={tag} 
+            <span className="text-sm font-medium text-gray-700">
+              Active filters:
+            </span>
+            {selectedTags.map((tag) => (
+              <span
+                key={tag}
                 className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-main text-white"
               >
                 {tag}
@@ -157,7 +162,9 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">{cardsElements}</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {cardsElements}
+      </div>
     </div>
   );
 };
