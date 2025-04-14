@@ -16,9 +16,9 @@ const validateAdminToken = require("../middleware/validateAdminToken");
 router
   .route("/")
   .get(getEvents)
-  .post(validateAdminToken, getEventsFromInstagram);
+  .post(validateAdminToken, getEventFromInstagram);
 
-router.route("/:url").post(validateAdminToken, getEventFromInstagram);
+router.route("/:url").post(validateAdminToken, getEventsFromInstagram);
 
 router.route("/pinned").get(getPinnedEvents);
 

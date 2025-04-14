@@ -44,7 +44,7 @@
 
 /**
  * @swagger
- * /api/events:
+ * /api/events/{url}:
  *   get:
  *     summary: Returns all events
  *     tags: [Events]
@@ -92,7 +92,7 @@
 
 /**
  * @swagger
- * /api/events/{url}:
+ * /api/events:
  *   post:
  *     summary: Fetch and create new event from Instagram post
  *     tags: [Events]
