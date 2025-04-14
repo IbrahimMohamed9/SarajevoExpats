@@ -33,7 +33,7 @@ const ImageGallery = ({
   const imagesBtnsElements = childPosts.map((media, index) => (
     <SortableImage
       key={index}
-      media={media.displayUrl || media}
+      media={media}
       index={index}
       onClick={onClick}
       reordering={reordering}

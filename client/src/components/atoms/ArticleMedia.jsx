@@ -35,6 +35,7 @@ const ArticleMedia = ({ src, alt, description }) => {
       >
         {isVideo && isClient ? (
           <video
+            key={mediaUrl}
             controls
             autoPlay
             muted
