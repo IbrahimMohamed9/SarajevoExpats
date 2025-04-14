@@ -19,7 +19,7 @@ import AdminModalField from "@adminMol/AdminModalField";
 
 // Define required fields for each table type
 const requiredFields = {
-  events: ["content", "displayUrl", "url", "date"],
+  events: ["url"],
   places: ["title", "content", "pictures", "type", "link"],
   news: ["title", "content", "pictures", "sources"],
   services: ["name", "content", "pictures", "serviceType"],
