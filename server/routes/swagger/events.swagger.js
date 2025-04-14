@@ -44,7 +44,7 @@
 
 /**
  * @swagger
- * /api/events/{url}:
+ * /api/events:
  *   get:
  *     summary: Returns all events
  *     tags: [Events]
@@ -57,6 +57,11 @@
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Event'
+ */
+
+/**
+ * @swagger
+ * /api/events/full:
  *   post:
  *     summary: Fetch and create new events from Instagram
  *     tags: [Events]

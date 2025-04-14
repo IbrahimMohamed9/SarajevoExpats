@@ -18,7 +18,7 @@ router
   .get(getEvents)
   .post(validateAdminToken, getEventFromInstagram);
 
-router.route("/:url").post(validateAdminToken, getEventsFromInstagram);
+router.route("/full").post(validateAdminToken, getEventsFromInstagram);
 
 router.route("/pinned").get(getPinnedEvents);
 
