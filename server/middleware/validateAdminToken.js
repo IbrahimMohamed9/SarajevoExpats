@@ -1,21 +1,15 @@
 const jwt = require("jsonwebtoken");
 const { USER_TYPES } = require("../constants");
+const { extractToken } = require("../utils/tokenExtractor");
 
 const validateAdminToken = (req, res, next) => {
   // Allow requests from the server IP address without token
-  if (req.ip === "46.202.159.229") return next();
+  // if (req.ip === "46.202.159.229") return next();
 
   try {
-    const authHeader = req.headers.authorization;
-    const tokenFromCookie = req.cookies?.access_token;
+    const token = extractToken(req);
 
-    let token;
-
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      token = authHeader.split(" ")[1];
-    } else if (tokenFromCookie) {
-      token = tokenFromCookie.split(" ")[1];
-    } else {
+    if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
 
