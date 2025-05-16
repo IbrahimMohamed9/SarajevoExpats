@@ -14,16 +14,10 @@ const placeSchema = new mongoose.Schema(
     priority: { type: Number, default: 0 },
     pinned: { type: Boolean, default: false },
     tags: { type: [String], default: [] },
+    approved: { type: Boolean, default: true },
     type: {
       type: String,
       required: [true, "please add the type"],
-      validate: {
-        validator: async function (value) {
-          const count = await PlaceType.countDocuments({ name: value });
-          return count > 0;
-        },
-        message: "The specified type does not exist in PlaceTypes collection",
-      },
     },
   },
   {
