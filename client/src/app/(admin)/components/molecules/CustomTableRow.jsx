@@ -136,6 +136,7 @@ const CustomTableRow = ({ data, tableKey, subDataTitle }) => {
           values={data}
           onUpdateClick={handleUpdateClick}
           onDeleteClick={handleDelete}
+          tableKey={tableKey}
         />
       </TableRow>
       {subDataTitle && (

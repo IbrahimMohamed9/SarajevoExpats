@@ -1,21 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import TableCell from "@mui/material/TableCell";
 import ActionBtn from "@adminMol/ActionBtn";
 import Image from "next/image";
 import ImageDialog from "./ImageDialog";
 import dynamic from "next/dynamic";
+import {
+  PREFERRED_FIELD_ORDER,
+  IGNORED_FIELDS,
+} from "@/constants/tableConstants";
 const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const ValueTableRow = ({
   values,
   onUpdateClick,
   onDeleteClick,
+  tableKey,
   actions = true,
 }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const ignoreKeys = ["_id", "subData", "__v", "password"];
   const cellClass =
     "max-w-20 overflow-hidden text-ellipsis text-wrap line-clamp-3 min-w-48";
 
@@ -27,24 +31,53 @@ const ValueTableRow = ({
     setSelectedImage(null);
   };
 
-  const cells = Object.entries(values).map(([key, val]) => {
-    const isCheckbox = ["pinned", "showInSlider"].includes(key);
+  const cellEntries = useMemo(() => {
+    const filteredEntries = Object.entries(values).filter(
+      ([key, val]) =>
+        !IGNORED_FIELDS.includes(key) &&
+        !(typeof val === "object" && !Array.isArray(val))
+    );
+
+    return filteredEntries.sort((a, b) => {
+      const indexA = PREFERRED_FIELD_ORDER.indexOf(a[0]);
+      const indexB = PREFERRED_FIELD_ORDER.indexOf(b[0]);
+
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      return a[0].localeCompare(b[0]);
+    });
+  }, [values]);
+
+  const cells = cellEntries.map(([key, val]) => {
+    const isCheckbox = ["pinned", "showInSlider", "approved"].includes(key);
     const isNumber = typeof val === "number";
     const isPictures = key === "pictures" || key === "childPosts";
     const isTags = key === "tags" && Array.isArray(val);
+    const isDate =
+      key.toLowerCase().includes("date") ||
+      key === "createdAt" ||
+      key === "updatedAt";
+    const isEmail = key === "email";
+    const isPhone = key === "phone";
+    const isLink = key === "link" || key === "website";
+    const isContent = key === "content";
 
     if (isCheckbox) {
       return (
-        <TableCell key={key} className={cellClass}>
+        <TableCell key={key} className="h-full" data-content={key}>
           <div
             className={`
-              text-center
-              px-2 py-1 rounded-full text-sm font-medium
-              ${
+              flex items-center justify-center h-full w-full ${
                 values[key]
                   ? "bg-green-100 text-green-700"
                   : "bg-red-100 text-red-700"
-              }
+              } text-center px-2 py-2 text-sm font-medium rounded-md
+              
             `}
           >
             {values[key] ? "True" : "False"}
@@ -53,12 +86,7 @@ const ValueTableRow = ({
       );
     }
 
-    if (
-      ignoreKeys.includes(key) ||
-      (typeof val === "object" && !Array.isArray(val))
-    ) {
-      return null;
-    }
+    // No need to check for ignored keys here as we've already filtered them out
 
     if (isPictures) {
       const imagesElements = val.map((imageUrl, index) => (
@@ -78,7 +106,13 @@ const ValueTableRow = ({
         </div>
       ));
       return (
-        <TableCell key={key} component="th" scope="row" className="min-w-24">
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          className="min-w-24"
+          data-content={key}
+        >
           <div className="flex flex-row items-center pl-[60px]">
             {imagesElements}
           </div>
@@ -88,7 +122,13 @@ const ValueTableRow = ({
 
     if (isTags) {
       return (
-        <TableCell key={key} component="th" scope="row" align="center">
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          align="center"
+          data-content={key}
+        >
           <div className="flex flex-wrap gap-1 justify-center">
             {val.length > 0 ? (
               val.map((tag, index) => (
@@ -107,23 +147,188 @@ const ValueTableRow = ({
       );
     }
 
+    // Handle date fields
+    if (isDate) {
+      return (
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          align="center"
+          data-content={key}
+        >
+          {val ? (
+            <div className="text-gray-700 font-medium">{val}</div>
+          ) : (
+            <span className="text-gray-400 italic">—</span>
+          )}
+        </TableCell>
+      );
+    }
+
+    // Handle email fields
+    if (isEmail && val) {
+      return (
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          align="center"
+          data-content={key}
+        >
+          <a
+            href={`mailto:${val}`}
+            className="text-blue-600 hover:text-blue-800 hover:underline flex items-center justify-center"
+          >
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+            </svg>
+            {val}
+          </a>
+        </TableCell>
+      );
+    }
+
+    // Handle phone fields
+    if (isPhone && val) {
+      return (
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          align="center"
+          data-content={key}
+        >
+          <a
+            href={`tel:${val}`}
+            className="text-green-600 hover:text-green-800 hover:underline flex items-center justify-center"
+          >
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"></path>
+            </svg>
+            {val}
+          </a>
+        </TableCell>
+      );
+    }
+
+    // Handle link/website fields
+    if (isLink && val) {
+      const displayUrl = val.replace(/^https?:\/\//i, "").replace(/\/$/, "");
+      return (
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          align="center"
+          data-content={key}
+        >
+          <a
+            href={val.startsWith("http") ? val : `https://${val}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-purple-600 hover:text-purple-800 hover:underline flex items-center justify-center"
+          >
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
+              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
+            </svg>
+            {displayUrl}
+          </a>
+        </TableCell>
+      );
+    }
+
+    // Handle content fields with truncation
+    if (isContent && val) {
+      const truncatedContent =
+        val.length > 100 ? `${val.substring(0, 100)}...` : val;
+      return (
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          align="center"
+          data-content={key}
+          title={val}
+        >
+          <div className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">
+            {truncatedContent}
+          </div>
+        </TableCell>
+      );
+    }
+
+    // Handle arrays (not tags or pictures)
+    if (Array.isArray(val) && !isPictures && !isTags) {
+      return (
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          align="center"
+          data-content={key}
+        >
+          <div className="flex flex-wrap gap-1 justify-center">
+            {val.length > 0 ? (
+              <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-1 rounded">
+                {val.length} items
+              </span>
+            ) : (
+              <span className="text-gray-400 text-sm">Empty</span>
+            )}
+          </div>
+        </TableCell>
+      );
+    }
+
+    // Handle all other values
     const value = isNumber ? String(val) : val;
 
     return (
-      <TableCell key={key} component="th" scope="row" align="center">
-        <SafeHtml className={cellClass} content={value} />
+      <TableCell
+        key={key}
+        component="th"
+        scope="row"
+        align="center"
+        data-content={key}
+      >
+        {value === "" || value === null || value === undefined ? (
+          <span className="text-gray-400 italic">—</span>
+        ) : (
+          <SafeHtml className={cellClass} content={value} />
+        )}
       </TableCell>
     );
   });
 
+  // Create a consistent table row by ensuring each cell has the proper data-content attribute
   return (
     <>
       {cells}
       {actions && (
-        <TableCell key="actions" align="center">
+        <TableCell key="actions" align="center" data-content="actions">
           <ActionBtn
             onDelete={() => onDeleteClick?.(values._id)}
             onUpdate={() => onUpdateClick?.(values)}
+            itemData={values}
+            tableKey={tableKey}
           />
         </TableCell>
       )}
