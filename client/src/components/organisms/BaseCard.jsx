@@ -6,6 +6,7 @@ import BaseCardContent from "@molecules/BaseCardContent";
 import Link from "next/link";
 import { useSetRecoilState } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
+import { getItemViewUrl } from "@/utils/navigation";
 
 const BaseCard = ({ item, type, className = "" }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -78,22 +79,7 @@ const BaseCard = ({ item, type, className = "" }) => {
     setStartPosition(0);
   };
 
-  const getHref = () => {
-    switch (type) {
-      case "services":
-        return `/services/${item.serviceType.replace("/", "%2F")}/${item._id}`;
-      case "places":
-        return `/places/${item.type.replace("/", "%2F")}/${item._id}`;
-      case "news":
-        return `/news/${item._id}`;
-      case "events":
-        return `/events/${item._id}`;
-      default:
-        return "/";
-    }
-  };
-
-  const href = getHref();
+  const href = getItemViewUrl(item, type);
 
   return (
     <Link
