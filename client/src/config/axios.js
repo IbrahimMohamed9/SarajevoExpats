@@ -6,7 +6,6 @@ const createAxiosInstance = () => {
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     timeout: 10000,
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
     withCredentials: true,
@@ -16,24 +15,44 @@ const createAxiosInstance = () => {
   });
 
   instance.interceptors.request.use(
-    (config) => {
-      if (typeof window !== "undefined" && localStorage) {
-        // For client-side requests, continue using localStorage
-        if (config.data instanceof FormData) {
-          delete config.headers["Content-Type"];
-          config.headers["Accept"] = "multipart/form-data";
-        }
-        const token = localStorage.getItem("access_token");
+    async (config) => {
+      if (typeof window !== "undefined") {
+        const token = localStorage.getItem("token");
         if (token) {
           config.headers.authorization = `Bearer ${token}`;
         }
       }
-      config.headers.authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY3NmE3ZjAxM2ZkY2NhNmUyODcyOTNiZSIsImVtYWlsIjoiaWJyYWhpbS5tb2hhbWVkIiwidXNlcm5hbWUiOiJpYnJhaGltLm1vaGFtZWQiLCJ0eXBlIjoiYWRtaW4ifSwiaWF0IjoxNzQxNjg5NTU5LCJleHAiOjE4MjgwODk1NTl9.QFELir_gBiMRV49mtRwJ0wTdlbP5lB4M2sYzeObIDF8`;
+
+      if (typeof window === "undefined") {
+        try {
+          const { cookies } = await import("next/headers");
+          const cookieStore = cookies();
+
+          if (cookieStore && typeof cookieStore.getAll === "function") {
+            const cookieString = cookieStore
+              .getAll()
+              .map((cookie) => `${cookie.name}=${cookie.value}`)
+              .join("; ");
+
+            if (cookieString) {
+              config.headers.Cookie = cookieString;
+
+              const tokenMatch = cookieString.match(/access_token=([^;]+)/);
+              if (tokenMatch && tokenMatch[1]) {
+                config.headers.authorization = `Bearer ${tokenMatch[1]}`;
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error accessing cookies in SSR:", error);
+        }
+
+        config.headers["x-server-side"] = "true";
+      }
+
       return config;
     },
-    (error) => {
-      return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
   );
 
   instance.interceptors.response.use(
@@ -63,7 +82,6 @@ const createAxiosInstance = () => {
   return instance;
 };
 
-// Create two instances - one for client-side and one for server-side
 const axiosInstance = createAxiosInstance();
 
 export default axiosInstance;

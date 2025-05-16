@@ -12,7 +12,6 @@ export const verifyAdmin = () => {
 
     return user.type === "admin";
   } catch (error) {
-    console.log(error);
     return false;
   }
 };

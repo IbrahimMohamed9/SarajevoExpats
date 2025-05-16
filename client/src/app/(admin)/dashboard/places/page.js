@@ -4,9 +4,13 @@ import axiosInstance from "@/config/axios";
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
-  const placesResponse = await axiosInstance.get("places");
-  const placeTypesResponse = await axiosInstance.get("placeTypes/with-places");
-  const placesTagsResponse = await axiosInstance.get("placeTags");
+  const [placesResponse, placeTypesResponse, placesTagsResponse] =
+    await Promise.all([
+      axiosInstance.get("places"),
+      axiosInstance.get("placeTypes/with-places"),
+      axiosInstance.get("placeTags"),
+    ]);
+
   const dataTemp1 = {
     title: "",
     content: "",
