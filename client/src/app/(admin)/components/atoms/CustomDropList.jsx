@@ -98,8 +98,6 @@ const CustomDropList = ({
 
   // Original implementation for type/serviceType
   if (!tables[tableKey[pathname]]) {
-    console.log(lowerKey, tableKey[pathname]);
-
     setSnackbar({
       message: `Please add ${keyVal} first`,
       open: true,

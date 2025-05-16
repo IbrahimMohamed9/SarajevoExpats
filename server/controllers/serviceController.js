@@ -35,8 +35,6 @@ const getServicesByServiceType = asyncHandler(async (req, res) => {
   orderByCreatedAtForServiceType =
     orderByCreatedAtForServiceType === 1 ? -1 : 1;
 
-  console.log(orderByCreatedAtForServiceType);
-
   if (!services.length) {
     res.status(404);
     throw new Error(

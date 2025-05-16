@@ -216,8 +216,6 @@ const updateEventById = asyncHandler(async (req, res) => {
 const deleteEventImage = asyncHandler(async (req, res) => {
   const event = await Event.findById(req.params.id);
   checkNotFound(event, "Event");
-  console.log(event.childPosts.length);
-  console.log(req.body.displayUrl);
   event.childPosts = event.childPosts.filter(
     (post) => post.displayUrl !== req.body.displayUrl
   );
