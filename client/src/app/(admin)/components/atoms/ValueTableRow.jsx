@@ -6,6 +6,13 @@ import ActionBtn from "@adminMol/ActionBtn";
 import Image from "next/image";
 import ImageDialog from "./ImageDialog";
 import dynamic from "next/dynamic";
+import { Checkbox, IconButton, Tooltip } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import axiosInstance from "@/config/axios";
+import { useSetRecoilState } from "recoil";
+import { snackbarState } from "@/store/atoms/snackbarAtom";
+import { tablesAtom } from "@/store/atoms/tablesAtom";
 import {
   PREFERRED_FIELD_ORDER,
   IGNORED_FIELDS,
@@ -20,6 +27,8 @@ const ValueTableRow = ({
   actions = true,
 }) => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const setSnackbar = useSetRecoilState(snackbarState);
+  const setTables = useSetRecoilState(tablesAtom);
   const cellClass =
     "max-w-20 overflow-hidden text-ellipsis text-wrap line-clamp-3 min-w-48";
 
@@ -68,6 +77,59 @@ const ValueTableRow = ({
     const isContent = key === "content";
 
     if (isCheckbox) {
+      // Special handling for the 'approved' field
+      if (key === "approved") {
+        const handleApproveToggle = async () => {
+          try {
+            const path = `/${tableKey.split("/")[0]}/${values._id}`;
+            const updatedData = { approved: !values[key] };
+            
+            const res = await axiosInstance.put(path, updatedData);
+            
+            setTables((prev) => ({
+              ...prev,
+              [tableKey]: prev[tableKey].map((item) =>
+                item._id === values._id ? { ...item, ...updatedData } : item
+              ),
+            }));
+            
+            setSnackbar({
+              open: true,
+              message: `Place ${!values[key] ? "approved" : "unapproved"} successfully`,
+              severity: "success",
+            });
+          } catch (error) {
+            setSnackbar({
+              open: true,
+              message: error.response?.data?.message || "Something went wrong!",
+              severity: "error",
+            });
+          }
+        };
+        
+        return (
+          <TableCell key={key} className="h-full" data-content={key}>
+            <div className="flex items-center justify-center gap-2">
+              <Checkbox 
+                checked={values[key]} 
+                onChange={handleApproveToggle}
+                color="success"
+              />
+              <Tooltip title={values[key] ? "Unapprove" : "Approve"}>
+                <IconButton 
+                  onClick={handleApproveToggle} 
+                  color={values[key] ? "success" : "error"}
+                  size="small"
+                >
+                  {values[key] ? <CheckCircleIcon /> : <CancelIcon />}
+                </IconButton>
+              </Tooltip>
+            </div>
+          </TableCell>
+        );
+      }
+      
+      // For other boolean fields (pinned, showInSlider)
       return (
         <TableCell key={key} className="h-full" data-content={key}>
           <div
@@ -77,7 +139,6 @@ const ValueTableRow = ({
                   ? "bg-green-100 text-green-700"
                   : "bg-red-100 text-red-700"
               } text-center px-2 py-2 text-sm font-medium rounded-md
-              
             `}
           >
             {values[key] ? "True" : "False"}

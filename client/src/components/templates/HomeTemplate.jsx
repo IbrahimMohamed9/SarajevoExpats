@@ -11,6 +11,7 @@ import LoadingArticle from "./LoadingArticle";
 import mapToBeEvents from "@/images/mapToBe.jpg";
 import NewsCarousel from "@organisms/NewsCarousel";
 import SponsorsBar from "@molecules/SponsorsBar";
+import AddPlaceButton from "@/components/molecules/AddPlaceButton";
 
 const HomeTemplate = ({
   news,
@@ -54,11 +55,18 @@ const HomeTemplate = ({
             type="services"
             title="Popular Services"
           />
-          <CarouselSection
-            items={places}
-            type="places"
-            title="Featured Places"
-          />
+          <div className="relative">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="text-xl font-semibold text-tertiary">Featured Places</h2>
+              <AddPlaceButton className="scale-90" />
+            </div>
+            <CarouselSection
+              items={places}
+              type="places"
+              title="Featured Places"
+              hideTitle={true}
+            />
+          </div>
         </div>
 
         <div className="hidden md:flex flex-col items-center gap-6 border-l border-gray-200 h-[calc(100vh-2rem)] max-h-[1200px] sticky top-12">

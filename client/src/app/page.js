@@ -1,6 +1,6 @@
 import BaseCard from "@organisms/BaseCard";
 import axiosInstance from "@/config/axios";
-import HomeTemplate from "@templates/HomeTemplate";
+import HomeWrapper from "@/components/templates/HomeWrapper";
 import { favicon } from "@/favicon";
 
 export const dynamic = "force-dynamic";
@@ -67,7 +67,7 @@ const Home = async () => {
   ));
 
   return (
-    <HomeTemplate
+    <HomeWrapper
       news={data.news}
       places={data.places}
       services={data.services}
