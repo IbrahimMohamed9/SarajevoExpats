@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Drawer, List, ListItemButton, ListItemText } from "@mui/material";
+import { Drawer, List, ListItemButton, ListItemText, Divider } from "@mui/material";
 import { useRecoilState } from "recoil";
 import NavOpenAtom from "@/store/atoms/navOpenAtom";
-// import HeaderButtons from "@molecules/HeaderButtons";
 import HeaderMobiDropMenu from "@atoms/HeaderMobiDropMenu";
+import AddIcon from "@mui/icons-material/Add";
 
 export const NavMobile = ({ routes = [] }) => {
   const [isOpen, setOpen] = useRecoilState(NavOpenAtom);
@@ -63,10 +63,19 @@ export const NavMobile = ({ routes = [] }) => {
         // "bg-main text-white flex flex-col absolute right-0 top-9 w-[250px] h-full z-40",
       }}
     >
-      <List className="flex-1">{routesElement}</List>
-      {/* <div className="p-4 border-t border-white/20">
-        <HeaderButtons className="flex h-full items-center gap-2 mb-16" />
-      </div> */}
+      <List className="flex-1">
+        {routesElement}
+        <Divider className="my-2 bg-white/20" />
+        <ListItemButton
+          component={Link}
+          href="/add-place"
+          onClick={onClose}
+          className="!text-white hover:bg-white/10 flex items-center gap-2"
+        >
+          <AddIcon fontSize="small" />
+          <ListItemText primary="Add Place" />
+        </ListItemButton>
+      </List>
     </Drawer>
   );
 };

@@ -142,12 +142,14 @@ const ImageUpload = ({ files = [], onChange, error, maxFiles = 20 }) => {
               <div key={index} className="relative group">
                 <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100">
                   <div className="relative w-full h-24">
-                    <Image
-                      src={URL.createObjectURL(file)}
-                      alt={`Preview ${index}`}
-                      fill
-                      className="object-cover"
-                    />
+                    {file && (
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        alt={`Preview ${index}`}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                 </div>
                 <button
@@ -158,7 +160,7 @@ const ImageUpload = ({ files = [], onChange, error, maxFiles = 20 }) => {
                   <DeleteIcon fontSize="small" className="text-red-500" />
                 </button>
                 <Typography variant="caption" className="block truncate mt-1">
-                  {file.name}
+                  {file?.name || 'File'}
                 </Typography>
               </div>
             ))}
