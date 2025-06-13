@@ -32,6 +32,7 @@ const AdminModalField = memo(
     const isDropList = ["type", "serviceType", "tags"].includes(keyVal);
     const isCheckbox = ["pinned", "showInSlider"].includes(keyVal);
     const isImages = ["childPosts", "pictures"].includes(keyVal);
+    const isPhoto = ["photo", "picture"].includes(keyVal);
     const isNumber = ["priority", "slidePriority"].includes(keyVal);
 
     if (isDropList) {
@@ -72,6 +73,17 @@ const AdminModalField = memo(
       );
     }
 
+    if (isPhoto) {
+      return (
+        <ImagesField
+          handleChange={handleChange}
+          keyVal={keyVal}
+          isRequired={isRequired}
+          fieldErrors={fieldErrors}
+          formData={formData}
+        />
+      );
+    }
     if (isCheckbox) {
       return (
         <CustomCheckbox

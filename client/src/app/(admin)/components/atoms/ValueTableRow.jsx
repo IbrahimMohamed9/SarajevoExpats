@@ -66,6 +66,7 @@ const ValueTableRow = ({
     const isCheckbox = ["pinned", "showInSlider", "approved"].includes(key);
     const isNumber = typeof val === "number";
     const isPictures = key === "pictures" || key === "childPosts";
+    const isPhoto = key === "photo" || key === "picture";
     const isTags = key === "tags" && Array.isArray(val);
     const isDate =
       key.toLowerCase().includes("date") ||
@@ -83,19 +84,21 @@ const ValueTableRow = ({
           try {
             const path = `/${tableKey.split("/")[0]}/${values._id}`;
             const updatedData = { approved: !values[key] };
-            
+
             const res = await axiosInstance.put(path, updatedData);
-            
+
             setTables((prev) => ({
               ...prev,
               [tableKey]: prev[tableKey].map((item) =>
                 item._id === values._id ? { ...item, ...updatedData } : item
               ),
             }));
-            
+
             setSnackbar({
               open: true,
-              message: `Place ${!values[key] ? "approved" : "unapproved"} successfully`,
+              message: `Place ${
+                !values[key] ? "approved" : "unapproved"
+              } successfully`,
               severity: "success",
             });
           } catch (error) {
@@ -106,18 +109,18 @@ const ValueTableRow = ({
             });
           }
         };
-        
+
         return (
           <TableCell key={key} className="h-full" data-content={key}>
             <div className="flex items-center justify-center gap-2">
-              <Checkbox 
-                checked={values[key]} 
+              <Checkbox
+                checked={values[key]}
                 onChange={handleApproveToggle}
                 color="success"
               />
               <Tooltip title={values[key] ? "Unapprove" : "Approve"}>
-                <IconButton 
-                  onClick={handleApproveToggle} 
+                <IconButton
+                  onClick={handleApproveToggle}
                   color={values[key] ? "success" : "error"}
                   size="small"
                 >
@@ -128,7 +131,7 @@ const ValueTableRow = ({
           </TableCell>
         );
       }
-      
+
       // For other boolean fields (pinned, showInSlider)
       return (
         <TableCell key={key} className="h-full" data-content={key}>
@@ -146,8 +149,6 @@ const ValueTableRow = ({
         </TableCell>
       );
     }
-
-    // No need to check for ignored keys here as we've already filtered them out
 
     if (isPictures) {
       const imagesElements = val.map((imageUrl, index) => (
@@ -181,6 +182,30 @@ const ValueTableRow = ({
       );
     }
 
+    if (isPhoto) {
+      return (
+        <TableCell
+          key={key}
+          component="th"
+          scope="row"
+          className="min-w-24"
+          data-content={key}
+        >
+          <div
+            className="relative w-20 h-20 group cursor-pointer overflow-hidden rounded-lg shadow-sm hover:shadow-md transition-all duration-200 -ml-[60px] first:ml-0 hover:translate-x-2 hover:z-10"
+            onClick={() => handleImageClick(val)}
+          >
+            <Image
+              src={val.displayUrl || val}
+              alt={`Image`}
+              fill
+              className="object-cover rounded-lg group-hover:scale-110 transition-transform duration-200"
+              sizes="80px"
+            />
+          </div>
+        </TableCell>
+      );
+    }
     if (isTags) {
       return (
         <TableCell
