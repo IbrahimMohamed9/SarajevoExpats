@@ -44,6 +44,7 @@ const ImagesField = ({
   isRequired,
   formData,
   handleChange,
+  isPhoto = false,
 }) => {
   const [reordering, setReordering] = useState(false);
   const setImageDialog = useSetRecoilState(imageDialogState);
@@ -89,7 +90,10 @@ const ImagesField = ({
         const imageUrl = response.data.url;
 
         // Add to existing images
-        const updatedImages = [...(formData[keyVal] || []), imageUrl];
+        let updatedImages = [...(formData[keyVal] || []), imageUrl];
+
+        if (isPhoto) updatedImages = imageUrl;
+
         handleChange(keyVal, updatedImages, false);
 
         setFieldErrors((prev) => ({ ...prev, [keyVal]: "" }));
@@ -128,7 +132,7 @@ const ImagesField = ({
   const handleImageClick = (image) => {
     // Open the image dialog with Recoil
     if (reordering) return; // Don't open dialog when reordering
-    
+
     setImageDialog({
       open: true,
       image,

@@ -69,6 +69,7 @@ const AdminModalField = memo(
           isRequired={isRequired}
           fieldErrors={fieldErrors}
           formData={formData}
+          isPhoto={false}
         />
       );
     }
@@ -81,6 +82,7 @@ const AdminModalField = memo(
           isRequired={isRequired}
           fieldErrors={fieldErrors}
           formData={formData}
+          isPhoto={true}
         />
       );
     }
