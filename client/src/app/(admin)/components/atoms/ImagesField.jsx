@@ -291,9 +291,19 @@ const ImagesField = ({
           onDragStart={() => setReordering(true)}
           onDragEnd={handleDragEnd}
         >
-          <SortableContext items={(formData[keyVal] || []).map((img) => img)}>
+          <SortableContext
+            items={
+              Array.isArray(formData[keyVal])
+                ? formData[keyVal]
+                : [formData[keyVal]].filter(Boolean)
+            }
+          >
             <ImageGallery
-              childPosts={formData[keyVal] || []}
+              childPosts={
+                Array.isArray(formData[keyVal])
+                  ? formData[keyVal]
+                  : [formData[keyVal]].filter(Boolean)
+              }
               onClick={handleImageClick}
               adminModal={true}
               reordering={reordering}
