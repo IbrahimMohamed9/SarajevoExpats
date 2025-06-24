@@ -114,7 +114,7 @@ const TripApplicationForm = ({ tripId }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full border-2 border-main rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <AnimatePresence mode="wait">
         {submitSuccess ? (
           <motion.div
@@ -169,7 +169,7 @@ const TripApplicationForm = ({ tripId }) => {
             </p>
             <button
               onClick={() => setShowForm(true)}
-              className="px-8 py-3 bg-main text-white text-lg font-medium rounded-md hover:bg-tertiary transition-all transform hover:-translate-y-1 hover:shadow-lg"
+              className="px-8 py-3 bg-main text-white text-lg font-medium rounded-md hover:bg-tertiary transition-all transform hover:-translate-y-1 hover:shadow-lg border-2 border-white"
             >
               Apply Now
             </button>
@@ -180,13 +180,12 @@ const TripApplicationForm = ({ tripId }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="bg-white rounded-lg border-2 border-main shadow-lg p-6"
           >
-            <h3 className="text-xl font-medium text-main mb-6">
+            <h3 className="text-2xl font-semibold text-main mb-8 text-center">
               Select participants, date, and contact info
             </h3>
 
-            <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+            <form onSubmit={handleSubmit} className="flex flex-col space-y-8">
               {/* First Row */}
               <FormRow>
                 {/* Name Input */}
@@ -327,11 +326,12 @@ const TripApplicationForm = ({ tripId }) => {
               </FormRow>
 
               {/* Third Row - Submit Button */}
-              <div className="mt-4">
+              <div className="mt-6">
                 <SubmitButton
                   text="Check availability"
                   loadingText="Submitting..."
                   isLoading={isSubmitting}
+                  className="w-full py-4 text-lg font-medium transition-all transform hover:scale-[1.02]"
                   disabled={
                     !formData.name ||
                     !formData.email ||
