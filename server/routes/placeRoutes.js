@@ -19,10 +19,7 @@ const { validateMongoId } = require("../utils");
 
 const decodeToken = require("../middleware/decodeToken");
 
-router
-  .route("/")
-  .get(decodeToken, getAllPlaces)
-  .post(validateAdminToken, createPlace);
+router.route("/").get(getAllPlaces).post(validateAdminToken, createPlace);
 
 const {
   uploadMultiplePhotosMiddleware,
@@ -36,7 +33,7 @@ router.post(
 
 router.get("/by-place-type/:placeType", getPlacesByPlaceType);
 
-router.get("/:id", decodeToken, getPlaceById);
+router.get("/:id", getPlaceById);
 router
   .route("/:id")
   .all(validateAdminToken)

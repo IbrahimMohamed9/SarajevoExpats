@@ -16,7 +16,7 @@ router
   .get(getAllServiceTypes)
   .post(validateAdminToken, createServiceType);
 
-router.get("/with-services", getAllServiceTypesWithServe);
+router.get("/with-services", validateAdminToken, getAllServiceTypesWithServe);
 
 router
   .route("/:id")
