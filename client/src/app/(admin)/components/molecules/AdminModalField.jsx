@@ -1,20 +1,30 @@
 "use client";
 
 import { TextField } from "@mui/material";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import ImagesField from "@adminAto/ImagesField";
 import CustomTextarea from "@adminAto/CustomTextarea";
 import CustomCheckbox from "@adminAto/CustomCheckbox";
 import CustomDropList from "@adminAto/CustomDropList";
+import CustomDatePicker from "@adminAto/CustomDatePicker";
 import { useRecoilValue } from "recoil";
 import { fieldErrorsAtom } from "@/store/atoms/formAtoms";
 import { tablesAtom } from "@/store/atoms/tablesAtom";
 
 const AdminModalField = memo(
   ({ keyVal, formData, handleChange, title, requiredFields }) => {
-    // Access state from Recoil instead of props
     const fieldErrors = useRecoilValue(fieldErrorsAtom);
     const tables = useRecoilValue(tablesAtom);
+    const [showDatePicker, setShowDatePicker] = useState(false);
+
+    useEffect(() => {
+      if (formData.repeatAt === "One-time") {
+        setShowDatePicker(true);
+      } else {
+        setShowDatePicker(false);
+      }
+      console.log(showDatePicker);
+    }, [formData.repeatAt]);
 
     const lowerKey = keyVal.toLowerCase();
 
@@ -44,7 +54,24 @@ const AdminModalField = memo(
     ].includes(keyVal);
     const isImages = ["childPosts", "pictures"].includes(keyVal);
     const isPhoto = ["photo", "picture"].includes(keyVal);
-    const isNumber = ["priority", "slidePriority"].includes(keyVal);
+    const isNumber = [
+      "priority",
+      "slidePriority",
+      "lastDayToRegister",
+    ].includes(keyVal);
+    const isDatePicker = keyVal === "tripDate" && showDatePicker;
+
+    if (isDatePicker) {
+      return (
+        <CustomDatePicker
+          keyVal={keyVal}
+          isRequired={isRequired}
+          fieldErrors={fieldErrors}
+          formData={formData}
+          handleChange={handleChange}
+        />
+      );
+    }
 
     if (isDropList) {
       return (

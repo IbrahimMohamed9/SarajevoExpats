@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.1.10",
     "@mui/material": "^6.1.10",
+    "@mui/x-date-pickers": "^8.5.3",
     "axios": "^1.7.7",
     "date-fns": "^4.1.0",
     "framer-motion": "^11.11.9",

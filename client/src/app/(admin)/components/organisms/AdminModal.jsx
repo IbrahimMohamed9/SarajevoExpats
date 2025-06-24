@@ -26,6 +26,7 @@ const requiredFields = {
   serviceTypes: ["name"],
   placeTypes: ["name"],
   placeTags: ["type", "tag"],
+  trips: ["title", "content", "pictures", "repeatAt"],
 };
 
 export default function AdminModal() {
@@ -113,6 +114,15 @@ export default function AdminModal() {
           isValid = false;
         }
       });
+    }
+
+    if (
+      title === "trips" &&
+      formData.repeatAt === "One-time" &&
+      !formData.tripDate
+    ) {
+      errors.tripDate = "Trip date is required for one-time trips";
+      isValid = false;
     }
 
     setFieldErrors(errors);

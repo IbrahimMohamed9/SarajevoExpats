@@ -12,6 +12,7 @@ const Page = async () => {
     dayOfWeek: "",
     repeatAt: "None",
     lastDayToRegister: 1,
+    tripDate: "",
   };
 
   return (
