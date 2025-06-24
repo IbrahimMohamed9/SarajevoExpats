@@ -339,6 +339,59 @@ const reorderTripImages = asyncHandler(async (req, res) => {
   });
 });
 
+//@desc Get all trips with their applications
+//@route GET /api/trips/with-applications
+//@access private/admin
+const getTripsWithApplications = asyncHandler(async (req, res) => {
+  const trips = await Trip.find().sort({ createdAt: -1 });
+
+  const tripsWithApplications = await Promise.all(
+    trips.map(async (trip) => {
+      const applications = await TripApplication.find({
+        tripId: trip._id,
+      }).sort({ createdAt: -1 });
+
+      const formattedApplications = applications.map((app) => {
+        const formattedDate = app.selectedDate
+          ? new Date(app.selectedDate).toISOString().split("T")[0]
+          : null;
+
+        const formattedCreatedAt = app.createdAt
+          ? new Date(app.createdAt).toISOString().split("T")[0]
+          : null;
+
+        return {
+          _id: app._id,
+          name: app.name,
+          email: app.email,
+          phone: app.phone,
+          selectedDate: formattedDate,
+          createdAt: formattedCreatedAt,
+        };
+      });
+
+      return {
+        _id: trip._id,
+        title: trip.title,
+        content: trip.content,
+        pictures: trip.pictures,
+        repeatAt: trip.repeatAt,
+        lastDayToRegister: trip.lastDayToRegister,
+        isActive: trip.isActive,
+        dayOfWeek: trip.dayOfWeek,
+        tripDate: trip.tripDate
+          ? new Date(trip.tripDate).toISOString().split("T")[0]
+          : null,
+        createdAt: trip.createdAt,
+        updatedAt: trip.updatedAt,
+        subData: formattedApplications,
+      };
+    })
+  );
+
+  res.status(200).json(tripsWithApplications);
+});
+
 module.exports = {
   getTrips,
   getTripById,
@@ -350,4 +403,5 @@ module.exports = {
   getTripApplications,
   deleteTripImages,
   reorderTripImages,
+  getTripsWithApplications,
 };

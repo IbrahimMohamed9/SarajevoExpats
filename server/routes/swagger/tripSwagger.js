@@ -373,3 +373,91 @@
  *       404:
  *         description: Trip not found
  */
+
+/**
+ * @swagger
+ * /api/trips/with-applications:
+ *   get:
+ *     summary: Get all trips with their applications
+ *     tags: [Trips]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of all trips with their applications
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The trip ID
+ *                   title:
+ *                     type: string
+ *                     description: Title of the trip
+ *                   content:
+ *                     type: string
+ *                     description: Description of the trip
+ *                   pictures:
+ *                     type: array
+ *                     items:
+ *                       type: string
+ *                     description: Array of image URLs for the trip
+ *                   repeatAt:
+ *                     type: string
+ *                     enum: [One-time, Weekly, Monthly]
+ *                     description: Frequency of trip repetition
+ *                   lastDayToRegister:
+ *                     type: number
+ *                     description: Number of days before the trip that registration closes
+ *                   isActive:
+ *                     type: boolean
+ *                     description: Whether the trip is active or not
+ *                   dayOfWeek:
+ *                     type: string
+ *                     enum: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+ *                     description: Day of the week when the trip occurs (optional)
+ *                   tripDate:
+ *                     type: string
+ *                     format: date
+ *                     description: Date of the trip (without time part)
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Timestamp when the trip was created
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     description: Timestamp when the trip was last updated
+ *                   subData:
+ *                     type: array
+ *                     description: List of applications for this trip
+ *                     items:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           description: The application ID
+ *                         name:
+ *                           type: string
+ *                           description: Applicant's full name
+ *                         email:
+ *                           type: string
+ *                           description: Applicant's email
+ *                         phone:
+ *                           type: string
+ *                           description: Applicant's phone number
+ *                         selectedDate:
+ *                           type: string
+ *                           format: date
+ *                           description: Selected date for the trip (without time part)
+ *                         createdAt:
+ *                           type: string
+ *                           format: date-time
+ *                           description: Timestamp when the application was created
+ *       401:
+ *         description: Unauthorized
+ */

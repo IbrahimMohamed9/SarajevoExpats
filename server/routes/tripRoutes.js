@@ -10,15 +10,15 @@ const {
   applyForTrip,
   getTripApplications,
   deleteTripImages,
-  reorderTripImages
+  reorderTripImages,
+  getTripsWithApplications,
 } = require("../controllers/tripController");
 const { validateMongoId } = require("../utils");
 const validateAdminToken = require("../middleware/validateAdminToken");
 
-router
-  .route("/")
-  .get(getTrips)
-  .post(validateAdminToken, createTrip);
+router.route("/").get(getTrips).post(validateAdminToken, createTrip);
+
+router.get("/with-applications", validateAdminToken, getTripsWithApplications);
 
 router.get("/:id", getTripById);
 
