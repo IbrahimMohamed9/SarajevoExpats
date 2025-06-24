@@ -6,6 +6,7 @@ import ArticleContent from "@atoms/ArticleContent";
 import ContactInfo from "@atoms/ContactInfo";
 import ErrorDisplay from "@molecules/ErrorDisplay";
 import LoadingArticle from "@templates/LoadingArticle";
+import TripApplicationForm from "@molecules/TripApplicationForm";
 import getArticle from "@/utils/getArticle";
 import { useRecoilState } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
@@ -21,6 +22,7 @@ const ArticleTemplate = ({ contentType, url }) => {
   const [article, setArticle] = useState();
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [firstLoad, setFirstLoad] = useState(true);
+
   const containsImages =
     article?.childPosts?.length > 1 || article?.pictures?.length > 1;
   const images = article?.childPosts || article?.pictures;
@@ -48,7 +50,7 @@ const ArticleTemplate = ({ contentType, url }) => {
     };
 
     init();
-  }, [url, setLoading]);
+  }, [url, setLoading, contentType]);
 
   if (loading || firstLoad) return <LoadingArticle />;
 
@@ -76,6 +78,7 @@ const ArticleTemplate = ({ contentType, url }) => {
     article.pictureDescription || article.title || contentTitle || contentType;
 
   const isEvent = contentType.toLowerCase() === "event";
+  const isTrip = contentType.toLowerCase() === "trip";
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-gray-50">
@@ -109,6 +112,9 @@ const ArticleTemplate = ({ contentType, url }) => {
             instagramLink={isEvent ? article.url : null}
             website={article.website}
           />
+
+          {/* Trip Application Form */}
+          {isTrip && article && <TripApplicationForm tripId={article._id} />}
         </article>
       </div>
     </main>

@@ -15,12 +15,25 @@ const Page = async () => {
     tripDate: "",
   };
 
+  const responseWithApplications = await axiosInstance.get(
+    "trips/with-applications"
+  );
+
   return (
-    <AdminTableTemplete
-      tableKey="trips"
-      data={response.data}
-      dataTemp={dataTemp}
-    />
+    <>
+      <AdminTableTemplete
+        tableKey="trips"
+        data={response.data}
+        dataTemp={dataTemp}
+      />
+      <div className="h-4" />
+      <AdminTableTemplete
+        tableKey="trips/with-applications"
+        subDataTitle="Applications"
+        data={responseWithApplications.data}
+        dataTemp={dataTemp}
+      />
+    </>
   );
 };
 
