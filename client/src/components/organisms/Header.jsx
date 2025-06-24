@@ -24,14 +24,20 @@ const Header = async () => {
       </div>
 
       <div className="flex items-center gap-2">
-        <Link href="/add-place" className="no-underline">
+        <Link href="/add-place" className="no-underline hidden">
           <Button
             variant="contained"
             size="small"
             disableElevation
             disableRipple
             className="bg-gradient-to-r from-main to-secondary text-white hover:from-secondary hover:to-main active:from-tertiary active:to-main active:scale-95 hidden lg:flex items-center px-4 py-1 h-7 rounded-full shadow-md transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-main/20 font-semibold tracking-wide text-xs focus:ring-1 focus:ring-orange-300 focus:outline-none border border-white/30"
-            startIcon={<AddIcon className="text-white mr-0.5" fontSize="small" sx={{ fontSize: '16px' }} />}
+            startIcon={
+              <AddIcon
+                className="text-white mr-0.5"
+                fontSize="small"
+                sx={{ fontSize: "16px" }}
+              />
+            }
           >
             ADD PLACE
           </Button>

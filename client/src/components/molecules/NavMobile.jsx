@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Drawer, List, ListItemButton, ListItemText, Divider } from "@mui/material";
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { useRecoilState } from "recoil";
 import NavOpenAtom from "@/store/atoms/navOpenAtom";
 import HeaderMobiDropMenu from "@atoms/HeaderMobiDropMenu";
@@ -70,7 +76,7 @@ export const NavMobile = ({ routes = [] }) => {
           component={Link}
           href="/add-place"
           onClick={onClose}
-          className="!text-white hover:bg-white/10 flex items-center gap-2"
+          className="!text-white hover:bg-white/10 flex items-center gap-2 hidden"
         >
           <AddIcon fontSize="small" />
           <ListItemText primary="Add Place" />
