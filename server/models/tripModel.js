@@ -9,7 +9,7 @@ const tripSchema = new mongoose.Schema({
     type: [String],
     required: [true, "Please add the picture"],
   },
-  body: {
+  content: {
     type: String,
     required: [true, "Please add a description"],
   },

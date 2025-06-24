@@ -30,10 +30,10 @@ const getTripById = asyncHandler(async (req, res) => {
 //@route POST /api/trips
 //@access private/admin
 const createTrip = asyncHandler(async (req, res) => {
-  const { title, body, repeatAt, lastDayToRegister, isActive, dayOfWeek } =
+  const { title, content, repeatAt, lastDayToRegister, isActive, dayOfWeek } =
     req.body;
 
-  if (!title || !body) {
+  if (!title || !content) {
     res.status(400);
     throw new Error("Please add all required fields");
   }
@@ -48,7 +48,7 @@ const createTrip = asyncHandler(async (req, res) => {
 
   const trip = await Trip.create({
     title,
-    body,
+    content,
     pictures,
     repeatAt: repeatAt || "None",
     lastDayToRegister: lastDayToRegister || 1,

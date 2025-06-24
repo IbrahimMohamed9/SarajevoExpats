@@ -7,7 +7,7 @@
  *       required:
  *         - title
  *         - pictures
- *         - body
+ *         - content
  *       properties:
  *         id:
  *           type: string
@@ -20,7 +20,7 @@
  *           items:
  *             type: string
  *           description: Array of image URLs for the trip
- *         body:
+ *         content:
  *           type: string
  *           description: Description of the trip
  *         isActive:
@@ -46,7 +46,7 @@
  *         id: 60d21b4667d0d8992e610c85
  *         title: Weekend Hiking Trip
  *         pictures: ["/api/media/trips/hiking1.jpg", "/api/media/trips/hiking2.jpg"]
- *         body: Join us for a weekend hiking trip to the beautiful mountains around Sarajevo.
+ *         content: Join us for a weekend hiking trip to the beautiful mountains around Sarajevo.
  *         isActive: true
  *         repeatAt: Weekly
  *         lastDayToRegister: 2
@@ -129,7 +129,7 @@
  *             required:
  *               - title
  *               - pictures
- *               - body
+ *               - content
  *               - startDate
  *             properties:
  *               title:
@@ -139,7 +139,7 @@
  *                 items:
  *                   type: string
  *                 description: Array of image URLs for the trip
- *               body:
+ *               content:
  *                 type: string
  *               dayOfWeek:
  *                 type: string
@@ -215,7 +215,7 @@
  *                 items:
  *                   type: string
  *                 description: Array of image URLs for the trip
- *               body:
+ *               content:
  *                 type: string
  *               isActive:
  *                 type: boolean
