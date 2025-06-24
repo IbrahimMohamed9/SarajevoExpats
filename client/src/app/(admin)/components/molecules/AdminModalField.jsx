@@ -15,15 +15,6 @@ const AdminModalField = memo(
   ({ keyVal, formData, handleChange, title, requiredFields }) => {
     const fieldErrors = useRecoilValue(fieldErrorsAtom);
     const tables = useRecoilValue(tablesAtom);
-    const [showDatePicker, setShowDatePicker] = useState(false);
-
-    useEffect(() => {
-      if (formData.repeatAt === "One-time") {
-        setShowDatePicker(true);
-      } else {
-        setShowDatePicker(false);
-      }
-    }, [formData.repeatAt]);
 
     const lowerKey = keyVal.toLowerCase();
 
@@ -50,6 +41,7 @@ const AdminModalField = memo(
       "showInSlider",
       "approved",
       "isActive",
+      "isLastDayOfRegistration",
     ].includes(keyVal);
     const isImages = ["childPosts", "pictures"].includes(keyVal);
     const isPhoto = ["photo", "picture"].includes(keyVal);
@@ -59,9 +51,17 @@ const AdminModalField = memo(
       "lastDayToRegister",
       "price",
     ].includes(keyVal);
-    const isDatePicker = keyVal === "tripDate";
+    const isDatePicker = ["tripDate", "lastDateOfRegister"].includes(keyVal);
 
     if (isDatePicker) {
+      let showCondition = false;
+      if (keyVal === "tripDate") {
+        showCondition = formData.repeatAt === "One-time";
+      } else if (keyVal === "lastDateOfRegister") {
+        showCondition =
+          !formData.isLastDayOfRegistration && formData.repeatAt !== "One-time";
+      }
+
       return (
         <CustomDatePicker
           keyVal={keyVal}
@@ -69,7 +69,7 @@ const AdminModalField = memo(
           fieldErrors={fieldErrors}
           formData={formData}
           handleChange={handleChange}
-          className={!showDatePicker && "hidden"}
+          className={!showCondition && "hidden"}
         />
       );
     }
@@ -126,6 +126,13 @@ const AdminModalField = memo(
       );
     }
     if (isCheckbox) {
+      // hide isLastDayOfRegistration if repeatAt is One-time
+      if (
+        keyVal === "isLastDayOfRegistration" &&
+        formData.repeatAt === "One-time"
+      ) {
+        return null;
+      }
       return (
         <CustomCheckbox
           fieldErrors={fieldErrors}
@@ -138,6 +145,15 @@ const AdminModalField = memo(
     }
 
     const type = isNumber ? "number" : "text";
+
+    if (
+      isNumber &&
+      keyVal === "lastDayToRegister" &&
+      !formData.isLastDayOfRegistration
+    ) {
+      return null;
+    }
+
     return (
       <TextField
         fullWidth

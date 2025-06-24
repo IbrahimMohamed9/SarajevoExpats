@@ -67,6 +67,7 @@ const ValueTableRow = ({
       "pinned",
       "showInSlider",
       "approved",
+      "isLastDayOfRegistration",
       "isActive",
     ].includes(key);
     const isNumber = typeof val === "number";

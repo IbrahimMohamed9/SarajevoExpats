@@ -2,7 +2,6 @@
 
 import CarouselSection from "@molecules/CarouselSection";
 import SectionHeder from "@atoms/SectionHeder";
-import SingleNewsLayout from "@molecules/SingleNewsLayout";
 import AdBanner from "@atoms/AdBanner";
 import WhatsappLink from "@atoms/WhatsappLink";
 import { useRecoilValue } from "recoil";
@@ -55,9 +54,7 @@ const HomeTemplate = ({
             title="Popular Services"
           />
           <div className="relative">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-semibold text-tertiary">Featured Places</h2>
-            </div>
+            <SectionHeder title="Featured Places" />
             <CarouselSection
               items={places}
               type="places"

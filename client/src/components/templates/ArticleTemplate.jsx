@@ -99,7 +99,7 @@ const ArticleTemplate = ({ contentType, url }) => {
                   {typeof article.price === "number"
                     ? article.price === 0
                       ? "FREE"
-                      : `Price: ${article.price.toFixed(2)} KM`
+                      : `Price: ${article.price.toFixed(2)} €`
                     : `Price: ${article.price}`}
                 </span>
               </div>

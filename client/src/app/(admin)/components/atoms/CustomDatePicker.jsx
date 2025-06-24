@@ -37,7 +37,7 @@ const CustomDatePicker = ({
     >
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
-          label="Trip Date"
+          label={keyVal}
           value={selectedDate}
           onChange={handleDateChange}
           slotProps={{

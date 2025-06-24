@@ -5,12 +5,20 @@ import axiosInstance from "@/config/axios";
 import { toast } from "react-toastify";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Import atomic components
+import FormInput from "../atoms/FormInput";
+import ParticipantsSelector from "../atoms/ParticipantsSelector";
+import StyledDatePicker from "../atoms/StyledDatePicker";
+import SubmitButton from "../atoms/SubmitButton";
+import FormRow from "../atoms/FormRow";
+
 const TripApplicationForm = ({ tripId }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     selectedDate: "",
+    numberOfPeople: 1,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -22,10 +30,19 @@ const TripApplicationForm = ({ tripId }) => {
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    if (name === "phone") {
+      const numbersOnly = value.replace(/[^0-9]/g, "");
+      setFormData((prev) => ({
+        ...prev,
+        [name]: numbersOnly,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   // Fetch available dates when component mounts
@@ -68,13 +85,13 @@ const TripApplicationForm = ({ tripId }) => {
 
       // Remove tripId from the form data sent to the API
       const { selectedDate, ...otherFormData } = formData;
-      
+
       // Format the date to remove time part
-      const formattedDate = new Date(selectedDate).toISOString().split('T')[0];
-      
+      const formattedDate = new Date(selectedDate).toISOString().split("T")[0];
+
       const applicationData = {
         ...otherFormData,
-        selectedDate: formattedDate
+        selectedDate: formattedDate,
       };
 
       await axiosInstance.post(`/trips/${tripId}/apply`, applicationData);
@@ -85,6 +102,7 @@ const TripApplicationForm = ({ tripId }) => {
         email: "",
         phone: "",
         selectedDate: "",
+        numberOfPeople: 1,
       });
       toast.success("Application submitted successfully!");
     } catch (error) {
@@ -96,9 +114,7 @@ const TripApplicationForm = ({ tripId }) => {
   };
 
   return (
-    <div className="mt-10 p-6 bg-white rounded-lg shadow-md border border-orange-100">
-      <h2 className="text-2xl font-bold text-tertiary mb-6">Join This Trip</h2>
-
+    <div className="w-full">
       <AnimatePresence mode="wait">
         {submitSuccess ? (
           <motion.div
@@ -159,125 +175,173 @@ const TripApplicationForm = ({ tripId }) => {
             </button>
           </motion.div>
         ) : (
-          <motion.form
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            onSubmit={handleSubmit}
-            className="space-y-4"
+            className="bg-white rounded-lg border-2 border-main shadow-lg p-6"
           >
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Full Name *
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-main focus:border-main"
-                placeholder="Enter your full name"
-              />
-            </div>
+            <h3 className="text-xl font-medium text-main mb-6">
+              Select participants, date, and contact info
+            </h3>
 
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email Address *
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-main focus:border-main"
-                placeholder="Enter your email address"
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+              {/* First Row */}
+              <FormRow>
+                {/* Name Input */}
+                <div className="relative flex-1">
+                  <FormInput
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your name"
+                    icon={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-gray-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                    }
+                  />
+                </div>
 
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-main focus:border-main"
-                placeholder="Enter your phone number"
-              />
-            </div>
+                {/* Email Input */}
+                <div className="relative flex-1">
+                  <FormInput
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter your email"
+                    icon={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-gray-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                        />
+                      </svg>
+                    }
+                  />
+                </div>
+              </FormRow>
 
-            <div>
-              <label
-                htmlFor="selectedDate"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Select Date *
-              </label>
-              <select
-                id="selectedDate"
-                name="selectedDate"
-                value={formData.selectedDate}
-                onChange={handleInputChange}
-                required
-                disabled={isLoadingDates}
-                className={`w-full px-4 py-2 border border-gray-300 rounded-md ${
-                  isLoadingDates ? "bg-gray-100" : ""
-                } focus:ring-main focus:border-main`}
-              >
-                <option value="">
-                  {isLoadingDates ? "Loading dates..." : "Select a date"}
-                </option>
-                {availableDates && availableDates.length > 0
-                  ? availableDates.map((date, index) => (
-                      <option key={index} value={date}>
-                        {new Date(date).toLocaleDateString("en-US", {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </option>
-                    ))
-                  : !isLoadingDates && (
-                      <option value="" disabled>
-                        {dateError || "No available dates found"}
-                      </option>
-                    )}
-              </select>
-            </div>
+              {/* Second Row */}
+              <FormRow>
+                {/* Participants Selector */}
+                <div className="relative flex-1">
+                  <ParticipantsSelector
+                    numberOfPeople={formData.numberOfPeople}
+                    onChange={(value) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        numberOfPeople: value,
+                      }));
+                    }}
+                  />
+                </div>
 
-            <div className="pt-2">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`w-full px-6 py-3 text-white font-medium rounded-md transition-colors ${
-                  isSubmitting
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-main hover:bg-tertiary"
-                }`}
-              >
-                {isSubmitting ? "Submitting..." : "Submit Application"}
-              </button>
-            </div>
-          </motion.form>
+                {/* Date Selector */}
+                <div className="relative flex-1">
+                  <StyledDatePicker
+                    disabled={isLoadingDates || availableDates.length === 0}
+                    value={
+                      formData.selectedDate
+                        ? new Date(formData.selectedDate)
+                        : null
+                    }
+                    onChange={(newDate) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        selectedDate: newDate
+                          ? typeof newDate === "string"
+                            ? newDate
+                            : newDate.toISOString()
+                          : "",
+                      }));
+                    }}
+                    shouldDisableDate={(date) => {
+                      if (availableDates.length === 0) return true;
+                      return !availableDates.some(
+                        (availableDate) =>
+                          new Date(availableDate).toDateString() ===
+                          date.toDateString()
+                      );
+                    }}
+                    placeholder={
+                      isLoadingDates ? "Loading dates..." : "Select date"
+                    }
+                  />
+                </div>
+
+                {/* Phone Input */}
+                <div className="relative flex-1">
+                  <FormInput
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="Enter phone number"
+                    icon={
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-gray-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                        />
+                      </svg>
+                    }
+                  />
+                </div>
+              </FormRow>
+
+              {/* Third Row - Submit Button */}
+              <div className="mt-4">
+                <SubmitButton
+                  text="Check availability"
+                  loadingText="Submitting..."
+                  isLoading={isSubmitting}
+                  disabled={
+                    !formData.name ||
+                    !formData.email ||
+                    !formData.phone ||
+                    !formData.selectedDate
+                  }
+                />
+              </div>
+            </form>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

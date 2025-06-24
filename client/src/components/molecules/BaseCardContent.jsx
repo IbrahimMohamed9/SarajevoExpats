@@ -37,7 +37,7 @@ const BaseCardContent = ({
               {typeof price === "number"
                 ? price === 0
                   ? "FREE"
-                  : `${price.toFixed(2)} KM`
+                  : `${price.toFixed(2)} €`
                 : price}
             </span>
           </div>
