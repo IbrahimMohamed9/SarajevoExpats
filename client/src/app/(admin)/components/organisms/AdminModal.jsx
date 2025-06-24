@@ -149,7 +149,12 @@ export default function AdminModal() {
           throw new Error("Table key is required");
         }
 
-        const data = await onSubmit(formData);
+        const cleanFormData = { ...formData };
+        excludeFields.forEach((field) => {
+          delete cleanFormData[field];
+        });
+
+        const data = await onSubmit(cleanFormData);
         handleClose();
 
         setSnackbar({

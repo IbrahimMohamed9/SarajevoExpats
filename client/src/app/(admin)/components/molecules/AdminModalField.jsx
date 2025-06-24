@@ -23,7 +23,6 @@ const AdminModalField = memo(
       } else {
         setShowDatePicker(false);
       }
-      console.log(showDatePicker);
     }, [formData.repeatAt]);
 
     const lowerKey = keyVal.toLowerCase();
@@ -58,8 +57,9 @@ const AdminModalField = memo(
       "priority",
       "slidePriority",
       "lastDayToRegister",
+      "price",
     ].includes(keyVal);
-    const isDatePicker = keyVal === "tripDate" && showDatePicker;
+    const isDatePicker = keyVal === "tripDate";
 
     if (isDatePicker) {
       return (
@@ -69,6 +69,7 @@ const AdminModalField = memo(
           fieldErrors={fieldErrors}
           formData={formData}
           handleChange={handleChange}
+          className={!showDatePicker && "hidden"}
         />
       );
     }

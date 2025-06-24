@@ -5,10 +5,13 @@
  * @returns {String} - The URL path for viewing the item
  */
 export const getItemViewUrl = (itemData, tableKey) => {
+  let type = tableKey?.split("/")?.[0]?.toLowerCase();
   if (!itemData || !itemData._id) return "/";
 
   // Extract the base table type from tableKey (remove any path segments)
-  const type = tableKey?.split("/")?.[0]?.toLowerCase();
+  if (type === "trips") {
+    type = "tours";
+  }
 
   switch (type) {
     case "services":
@@ -21,8 +24,8 @@ export const getItemViewUrl = (itemData, tableKey) => {
       return `/news/${itemData._id}`;
     case "events":
       return `/events/${itemData._id}`;
-    case "trips":
-      return `/trips/${itemData._id}`;
+    case "tours":
+      return `/tours/${itemData._id}`;
     default:
       return "/";
   }

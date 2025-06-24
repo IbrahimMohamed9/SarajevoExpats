@@ -39,7 +39,9 @@ const createTrip = asyncHandler(async (req, res) => {
     tripDate,
   } = req.body;
 
-  if (!title || !content) {
+  const price = req.body.price ? Number(req.body.price) : 0;
+
+  if (!title || !content || !price) {
     res.status(400);
     throw new Error("Please add all required fields");
   }
@@ -66,6 +68,7 @@ const createTrip = asyncHandler(async (req, res) => {
   const trip = await Trip.create({
     title,
     content,
+    price,
     pictures,
     repeatAt: repeatAt || "One-time",
     lastDayToRegister: lastDayToRegister || 1,
@@ -105,8 +108,13 @@ const updateTripById = asyncHandler(async (req, res) => {
     formattedTripDate = new Date(datePart);
   }
 
+  const { createdAt, updatedAt, ...restBody } = req.body;
+  const price =
+    restBody.price !== undefined ? Number(restBody.price) : undefined;
+
   const updateData = {
-    ...req.body,
+    ...restBody,
+    ...(price !== undefined && { price }),
     pictures,
     tripDate: formattedTripDate,
   };
@@ -384,6 +392,7 @@ const getTripsWithApplications = asyncHandler(async (req, res) => {
         _id: trip._id,
         title: trip.title,
         content: trip.content,
+        price: trip.price,
         pictures: trip.pictures,
         repeatAt: trip.repeatAt,
         lastDayToRegister: trip.lastDayToRegister,

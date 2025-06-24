@@ -13,6 +13,11 @@ const tripSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please add a description"],
   },
+  price: {
+    type: Number,
+    required: [true, "Please add a price"],
+    min: [0, "Price cannot be negative"],
+  },
   isActive: {
     type: Boolean,
     default: true,

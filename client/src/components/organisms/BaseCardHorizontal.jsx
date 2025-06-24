@@ -20,6 +20,7 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
   const title = item?.title || item?.name;
   let image = item?.pictures || item?.displayUrl;
   const content = item?.content;
+  const price = item?.price;
   const date = (item?.createdAt || item?.date)?.split(" at ")[0];
   const values = {
     phone: item?.phone,
@@ -89,6 +90,7 @@ const BaseCardHorizontal = ({ item, type, className = "" }) => {
         date={date}
         type={type}
         values={values}
+        price={price}
         isHovered={isHovered}
         horizontal={true}
         className="w-full h-full"

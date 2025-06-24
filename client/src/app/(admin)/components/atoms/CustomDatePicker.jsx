@@ -11,6 +11,7 @@ const CustomDatePicker = ({
   fieldErrors,
   formData,
   handleChange,
+  className,
 }) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
@@ -32,6 +33,7 @@ const CustomDatePicker = ({
       fullWidth
       sx={{ mt: 2 }}
       error={!!fieldErrors[keyVal]}
+      className={className}
     >
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
