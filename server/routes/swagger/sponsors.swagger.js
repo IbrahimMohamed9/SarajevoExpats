@@ -54,7 +54,7 @@
  *     summary: Create a new sponsor
  *     tags: [Sponsors]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -117,12 +117,12 @@
  *               $ref: '#/components/schemas/Sponsor'
  *       404:
  *         description: The sponsor was not found
- * 
+ *
  *   put:
  *     summary: Update the sponsor by id
  *     tags: [Sponsors]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -167,12 +167,12 @@
  *         description: Admin access required
  *       404:
  *         description: The sponsor was not found
- * 
+ *
  *   delete:
  *     summary: Remove the sponsor by id
  *     tags: [Sponsors]
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
