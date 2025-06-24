@@ -48,11 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 // Configure CORS
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://sarajevoexpats.com",
-      "https://www.sarajevoexpats.com",
-    ],
+    origin: ["http://localhost:3000", "https://sarajevoexpats.com"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
     credentials: true,
@@ -72,6 +68,7 @@ app.use("/api/services/", require("./routes/serviceRoutes"));
 app.use("/api/serviceTypes/", require("./routes/serviceTypeRoutes"));
 app.use("/api/users/", require("./routes/userRoutes"));
 app.use("/api/sponsors/", require("./routes/sponsorRoutes"));
+app.use("/api/trips/", require("./routes/tripRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
 
 const mediaDir = path.join(__dirname, "media");
@@ -81,7 +78,6 @@ const getMedia = (req, res, next) => {
     "Access-Control-Allow-Origin": [
       "http://localhost:3000",
       "https://sarajevoexpats.com",
-      "https://www.sarajevoexpats.com",
     ].includes(req.headers.origin)
       ? req.headers.origin
       : null,
