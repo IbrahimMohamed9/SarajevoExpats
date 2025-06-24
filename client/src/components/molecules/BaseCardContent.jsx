@@ -31,7 +31,7 @@ const BaseCardContent = ({
             : "text-sm h-[6.25rem] leading-relaxed tracking-wide line-clamp-5"
         }`}
       >
-        <SafeHtml content={content.replace(/<[^>]*>/g, "")} />
+        <SafeHtml content={content ? content.replace(/<[^>]*>/g, "") : ""} />
       </div>
       <BaseCardEnd isHovered={isHovered} date={date} values={values} />
     </CardContent>

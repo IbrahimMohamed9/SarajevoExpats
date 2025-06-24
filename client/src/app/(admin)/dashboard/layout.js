@@ -5,6 +5,7 @@ import HomeRepairServiceIcon from "@mui/icons-material/HomeRepairService";
 import GroupIcon from "@mui/icons-material/Group";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import HandshakeIcon from "@mui/icons-material/Handshake";
+import ExploreIcon from "@mui/icons-material/Explore";
 import AdminDashboardGrid from "@adminOrg/AdminDashboardGrid";
 import AdminModal from "@adminOrg/AdminModal";
 import ImagePreviewDialog from "@adminMol/ImagePreviewDialog";
@@ -37,6 +38,7 @@ export default function DashboardLayout({ children }) {
     { text: "Sponsors", icon: <HandshakeIcon />, href: "/dashboard/sponsors" },
     { text: "Users", icon: <GroupIcon />, href: "/dashboard/users" },
     { text: "QaAs", icon: <QuestionAnswerIcon />, href: "/dashboard/qaas" },
+    { text: "Trips", icon: <ExploreIcon />, href: "/dashboard/trips" },
   ];
 
   return (

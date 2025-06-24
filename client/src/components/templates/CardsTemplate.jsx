@@ -32,10 +32,8 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
     init();
   }, [url, data, setLoading]);
 
-  // Extract all unique tags from items when items change
   useEffect(() => {
     if (items && items.length > 0) {
-      // Get all unique tags from all items
       const allTags = new Set();
       items.forEach((item) => {
         if (item.tags && Array.isArray(item.tags)) {
@@ -44,19 +42,15 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
       });
       setAvailableTags(Array.from(allTags));
 
-      // Initialize filtered items with all items
       setFilteredItems(items);
     }
   }, [items]);
 
-  // Filter items when selected tags change
   useEffect(() => {
     if (items && items.length > 0) {
       if (selectedTags.length === 0) {
-        // If no tags selected, show all items
         setFilteredItems(items);
       } else {
-        // Filter items that have at least one of the selected tags
         const filtered = items.filter(
           (item) =>
             Array.isArray(item.tags) &&
@@ -70,10 +64,8 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
   const handleTagClick = (tag) => {
     setSelectedTags((prev) => {
       if (prev.includes(tag)) {
-        // Remove tag if already selected
         return prev.filter((t) => t !== tag);
       } else {
-        // Add tag if not selected
         return [...prev, tag];
       }
     });

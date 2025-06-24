@@ -21,6 +21,8 @@ export const getItemViewUrl = (itemData, tableKey) => {
       return `/news/${itemData._id}`;
     case "events":
       return `/events/${itemData._id}`;
+    case "trips":
+      return `/trips/${itemData._id}`;
     default:
       return "/";
   }

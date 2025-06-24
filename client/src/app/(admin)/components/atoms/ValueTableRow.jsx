@@ -63,7 +63,12 @@ const ValueTableRow = ({
   }, [values]);
 
   const cells = cellEntries.map(([key, val]) => {
-    const isCheckbox = ["pinned", "showInSlider", "approved"].includes(key);
+    const isCheckbox = [
+      "pinned",
+      "showInSlider",
+      "approved",
+      "isActive",
+    ].includes(key);
     const isNumber = typeof val === "number";
     const isPictures = key === "pictures" || key === "childPosts";
     const isPhoto = key === "photo" || key === "picture";

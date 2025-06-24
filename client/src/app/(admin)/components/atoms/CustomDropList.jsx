@@ -13,7 +13,6 @@ import { useSetRecoilState } from "recoil";
 
 const CustomDropList = ({
   keyVal,
-  lowerKey,
   isRequired,
   fieldErrors,
   formData,
@@ -23,16 +22,90 @@ const CustomDropList = ({
   const pathname = usePathname().split("/")[2];
   const setSnackbar = useSetRecoilState(snackbarState);
 
-  // Here is the recoil keys to get the data for the dropdown
   const tableKey = {
     places: "placeTypes/with-places",
     services: "serviceTypes/with-services",
     users: "usersType",
+    trips: "trips",
   };
 
-  // Special handling for tags
+  const dayOfWeekOptions = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
+
+  const repeatAtOptions = ["Weekly", "Monthly", "One-time"];
+
+  if (keyVal === "dayOfWeek") {
+    return (
+      <FormControl
+        key={keyVal}
+        fullWidth
+        sx={{ mt: 2 }}
+        error={!!fieldErrors[keyVal]}
+      >
+        <InputLabel id={`${keyVal}-label`}>Day of Week</InputLabel>
+        <Select
+          labelId={`${keyVal}-label`}
+          id={keyVal}
+          name={keyVal}
+          value={formData[keyVal] || ""}
+          onChange={(e) => handleChange(keyVal, e.target.value)}
+          label="Day of Week"
+          required={Boolean(isRequired)}
+        >
+          {dayOfWeekOptions.map((day) => (
+            <MenuItem key={day} value={day}>
+              {day}
+            </MenuItem>
+          ))}
+        </Select>
+        {fieldErrors[keyVal] && (
+          <FormHelperText>{fieldErrors[keyVal]}</FormHelperText>
+        )}
+      </FormControl>
+    );
+  }
+
+  // Handle repeatAt field
+  if (keyVal === "repeatAt") {
+    return (
+      <FormControl
+        key={keyVal}
+        fullWidth
+        sx={{ mt: 2 }}
+        error={!!fieldErrors[keyVal]}
+      >
+        <InputLabel id={`${keyVal}-label`}>Repeat Schedule</InputLabel>
+        <Select
+          labelId={`${keyVal}-label`}
+          id={keyVal}
+          name={keyVal}
+          value={formData[keyVal] || ""}
+          onChange={(e) => handleChange(keyVal, e.target.value)}
+          label="Repeat Schedule"
+          required={Boolean(isRequired)}
+        >
+          {repeatAtOptions.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </Select>
+        {fieldErrors[keyVal] && (
+          <FormHelperText>{fieldErrors[keyVal]}</FormHelperText>
+        )}
+      </FormControl>
+    );
+  }
+
+  // Handle tags field
   if (keyVal === "tags") {
-    // For tags, filter by the current place type
     const placeType = formData.type;
 
     if (!tables["placeTags"]) {

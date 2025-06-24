@@ -29,8 +29,19 @@ const AdminModalField = memo(
       "answer",
     ].includes(lowerKey);
 
-    const isDropList = ["type", "serviceType", "tags"].includes(keyVal);
-    const isCheckbox = ["pinned", "showInSlider"].includes(keyVal);
+    const isDropList = [
+      "type",
+      "serviceType",
+      "tags",
+      "repeatAt",
+      "dayOfWeek",
+    ].includes(keyVal);
+    const isCheckbox = [
+      "pinned",
+      "showInSlider",
+      "approved",
+      "isActive",
+    ].includes(keyVal);
     const isImages = ["childPosts", "pictures"].includes(keyVal);
     const isPhoto = ["photo", "picture"].includes(keyVal);
     const isNumber = ["priority", "slidePriority"].includes(keyVal);

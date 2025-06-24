@@ -66,10 +66,12 @@ const ArticleTemplate = ({ contentType, url }) => {
   const date = article.createdAt || article.date;
 
   const contentTitle = article.content
-    .replace(/<[^>]*>/g, "")
-    .split("\n")[0]
-    .substring(0, 60)
-    .trim();
+    ? article.content
+        .replace(/<[^>]*>/g, "")
+        .split("\n")[0]
+        .substring(0, 60)
+        .trim()
+    : "";
   const imageAlt =
     article.pictureDescription || article.title || contentTitle || contentType;
 
