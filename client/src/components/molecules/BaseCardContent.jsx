@@ -2,6 +2,7 @@ import { CardContent } from "@mui/material";
 import BaseCardTitle from "@atoms/BaseCardTitle";
 import BaseCardEnd from "@atoms/BaseCardEnd";
 import dynamic from "next/dynamic";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 const SafeHtml = dynamic(() => import("@atoms/SafeHtml"), { ssr: false });
 
 const BaseCardContent = ({
@@ -9,6 +10,7 @@ const BaseCardContent = ({
   content,
   date,
   values,
+  price,
   isHovered,
   className,
   horizontal,
@@ -20,6 +22,27 @@ const BaseCardContent = ({
       } ${className}`}
     >
       {title && <BaseCardTitle title={title} isHovered={isHovered} />}
+      {price !== undefined && price !== null && (
+        <div
+          className={`flex items-center mt-1 mb-1 ${
+            horizontal ? "justify-start" : "justify-center"
+          }`}
+        >
+          <div className="inline-flex items-center px-2 py-1 rounded-full bg-gradient-to-r from-main to-tertiary shadow-sm">
+            <LocalOfferIcon
+              className="text-white mr-1"
+              style={{ fontSize: "0.875rem" }}
+            />
+            <span className="text-xs font-bold text-white">
+              {typeof price === "number"
+                ? price === 0
+                  ? "FREE"
+                  : `${price.toFixed(2)} KM`
+                : price}
+            </span>
+          </div>
+        </div>
+      )}
       <div
         className={`flex-1 transition-all line-clamp-${
           horizontal ? 2 : 3

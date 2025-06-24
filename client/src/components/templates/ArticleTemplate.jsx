@@ -12,6 +12,7 @@ import { useRecoilState } from "recoil";
 import { loadingAtom } from "@/store/atoms/loadingAtom";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 const ImageGallery = dynamic(() => import("@molecules/ImageGallery"), {
   ssr: false,
@@ -90,6 +91,20 @@ const ArticleTemplate = ({ contentType, url }) => {
             type={type}
             contentType={contentType}
           />
+          {isTrip && article.price !== undefined && article.price !== null && (
+            <div className="flex justify-center my-4">
+              <div className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-main to-tertiary shadow-md transform hover:scale-105 transition-transform duration-300">
+                <LocalOfferIcon className="text-white mr-2" />
+                <span className="text-lg font-bold text-white">
+                  {typeof article.price === "number"
+                    ? article.price === 0
+                      ? "FREE"
+                      : `Price: ${article.price.toFixed(2)} KM`
+                    : `Price: ${article.price}`}
+                </span>
+              </div>
+            </div>
+          )}
           {selectedMedia && (
             <ArticleMedia
               src={selectedMedia}
