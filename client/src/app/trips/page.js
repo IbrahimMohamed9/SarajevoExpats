@@ -30,14 +30,32 @@ export const metadata = {
 };
 
 const Trips = async () => {
-  const response = await axiosInstance.get("/trips");
-  const trips = response.data;
+  try {
+    const response = await axiosInstance.get("/api/trips");
+    const trips = response.data;
 
-  return (
-    <div className="max-w-7xl mx-auto px-4">
-      <CardsTemplate data={trips} pageType="trips" type="trips" />
-    </div>
-  );
+    return (
+      <div className="max-w-7xl mx-auto px-4">
+        <CardsTemplate data={trips} pageType="trips" type="trips" />
+      </div>
+    );
+  } catch (error) {
+    console.error("Error fetching trips:", error);
+
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-12 text-center">
+        <h2 className="text-2xl font-bold mb-4">Unable to load trips</h2>
+        <p className="text-gray-600 mb-6">
+          {error.response?.status === 404
+            ? "No trips found. New trips will be added soon!"
+            : "There was an error loading the trips. Please try again later."}
+        </p>
+        <a href="/" className="text-blue-600 hover:text-blue-800 underline">
+          Return to homepage
+        </a>
+      </div>
+    );
+  }
 };
 
 export default Trips;

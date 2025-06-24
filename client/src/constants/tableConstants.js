@@ -32,6 +32,11 @@ export const PREFERRED_FIELD_ORDER = [
   "sources",
   "approved",
   "priority",
+  "dayOfWeek",
+  "isActive",
+  "lastDayToRegister",
+  "repeatAt",
+  "tripDate",
   "createdAt",
   "updatedAt",
 ];

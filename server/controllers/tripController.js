@@ -3,8 +3,7 @@ const Trip = require("../models/tripModel");
 const TripApplication = require("../models/tripApplicationModel");
 const { checkNotFound } = require("../utils");
 const { formatArrayDates, formatObjectDates } = require("../utils/formatDate");
-const downloadImage = require("../utils/downloadImage");
-const { logError } = require("../utils/logger");
+const { sendTripApplicationNotification } = require("../utils/emailSender");
 
 //@desc Get all trips
 //@route GET /api/trips
@@ -58,6 +57,12 @@ const createTrip = asyncHandler(async (req, res) => {
     throw new Error("Trip date is required for one-time trips");
   }
 
+  let formattedTripDate;
+  if (repeatAt === "One-time" && tripDate) {
+    const datePart = new Date(tripDate).toISOString().split("T")[0];
+    formattedTripDate = new Date(datePart);
+  }
+
   const trip = await Trip.create({
     title,
     content,
@@ -66,7 +71,7 @@ const createTrip = asyncHandler(async (req, res) => {
     lastDayToRegister: lastDayToRegister || 1,
     isActive: isActive ?? true,
     dayOfWeek: dayOfWeek || undefined,
-    tripDate: repeatAt === "One-time" ? new Date(tripDate) : undefined,
+    tripDate: formattedTripDate,
   });
 
   res.status(201).json({
@@ -89,21 +94,21 @@ const updateTripById = asyncHandler(async (req, res) => {
   }
   pictures = req.body.pictures;
 
-  // Validate tripDate is provided when repeatAt is One-time
   if (req.body.repeatAt === "One-time" && !req.body.tripDate) {
     res.status(400);
     throw new Error("Trip date is required for one-time trips");
   }
 
-  // Prepare update data
+  let formattedTripDate;
+  if (req.body.repeatAt === "One-time" && req.body.tripDate) {
+    const datePart = new Date(req.body.tripDate).toISOString().split("T")[0];
+    formattedTripDate = new Date(datePart);
+  }
+
   const updateData = {
     ...req.body,
     pictures,
-    // Convert tripDate to Date object if provided and repeatAt is One-time
-    tripDate:
-      req.body.repeatAt === "One-time" && req.body.tripDate
-        ? new Date(req.body.tripDate)
-        : undefined,
+    tripDate: formattedTripDate,
   };
 
   const updatedTrip = await Trip.findByIdAndUpdate(req.params.id, updateData, {
@@ -125,7 +130,6 @@ const deleteTripById = asyncHandler(async (req, res) => {
 
   await trip.deleteOne();
 
-  // Also delete all applications for this trip
   await TripApplication.deleteMany({ tripId: req.params.id });
 
   res.json({ message: "Trip and related applications deleted successfully" });
@@ -220,11 +224,8 @@ const applyForTrip = asyncHandler(async (req, res) => {
     throw new Error("This trip is not currently active");
   }
   const selectedDateObj = new Date(selectedDate);
-
   const availableDates = getAvailableDatesHelper(trip);
-
   const selectedDateString = selectedDateObj.toISOString().split("T")[0];
-
   const isDateAvailable = availableDates.includes(selectedDateString);
 
   if (!isDateAvailable) {
@@ -239,6 +240,15 @@ const applyForTrip = asyncHandler(async (req, res) => {
     phone,
     selectedDate: selectedDateObj,
   });
+
+  try {
+    await sendTripApplicationNotification(application, trip);
+  } catch (emailError) {
+    console.error(
+      "Failed to send trip application notification email:",
+      emailError
+    );
+  }
 
   res.status(201).json({
     message: "Application submitted successfully",
