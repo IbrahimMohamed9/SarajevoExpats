@@ -8,7 +8,9 @@ const {
   deleteTripById,
   getAvailableDates,
   applyForTrip,
-  getTripApplications
+  getTripApplications,
+  deleteTripImages,
+  reorderTripImages
 } = require("../controllers/tripController");
 const { validateMongoId } = require("../utils");
 const validateAdminToken = require("../middleware/validateAdminToken");
@@ -28,6 +30,8 @@ router
 
 router.get("/:id/available-dates", getAvailableDates);
 router.post("/:id/apply", applyForTrip);
+router.delete("/:id/images", validateAdminToken, deleteTripImages);
+router.put("/:id/images/reorder", validateAdminToken, reorderTripImages);
 
 router
   .route("/:id/applications")

@@ -32,8 +32,12 @@
  *           description: Day of the week when the trip occurs (optional)
  *         repeatAt:
  *           type: string
- *           enum: [None, Weekly, Monthly]
+ *           enum: [One-time, Weekly, Monthly]
  *           description: Frequency of trip repetition
+ *         tripDate:
+ *           type: string
+ *           format: date-time
+ *           description: Date of the trip (required when repeatAt is One-time)
 
  *         lastDayToRegister:
  *           type: number
@@ -49,6 +53,7 @@
  *         content: Join us for a weekend hiking trip to the beautiful mountains around Sarajevo.
  *         isActive: true
  *         repeatAt: Weekly
+ *         dayOfWeek: Saturday
  *         lastDayToRegister: 2
  *         createdAt: 2023-06-01T12:00:00.000Z
  *
@@ -130,7 +135,6 @@
  *               - title
  *               - pictures
  *               - content
- *               - startDate
  *             properties:
  *               title:
  *                 type: string
@@ -149,6 +153,10 @@
  *                 enum: [None, Weekly, Monthly]
  *               lastDayToRegister:
  *                 type: number
+ *               tripDate:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Date of the trip (required when repeatAt is One-time)
  *     responses:
  *       201:
  *         description: Trip created successfully
@@ -221,7 +229,14 @@
  *                 type: boolean
  *               repeatAt:
  *                 type: string
- *                 enum: [None, Weekly, Monthly]
+ *                 enum: [One-time, Weekly, Monthly]
+ *               tripDate:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Date of the trip (required when repeatAt is One-time)
+ *               dayOfWeek:
+ *                 type: string
+ *                 enum: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
  *     responses:
  *       200:
  *         description: Trip updated successfully

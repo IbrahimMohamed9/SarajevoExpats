@@ -30,8 +30,15 @@ const getTripById = asyncHandler(async (req, res) => {
 //@route POST /api/trips
 //@access private/admin
 const createTrip = asyncHandler(async (req, res) => {
-  const { title, content, repeatAt, lastDayToRegister, isActive, dayOfWeek } =
-    req.body;
+  const {
+    title,
+    content,
+    repeatAt,
+    lastDayToRegister,
+    isActive,
+    dayOfWeek,
+    tripDate,
+  } = req.body;
 
   if (!title || !content) {
     res.status(400);
@@ -46,14 +53,20 @@ const createTrip = asyncHandler(async (req, res) => {
   }
   pictures = req.body.pictures;
 
+  if (repeatAt === "One-time" && !tripDate) {
+    res.status(400);
+    throw new Error("Trip date is required for one-time trips");
+  }
+
   const trip = await Trip.create({
     title,
     content,
     pictures,
-    repeatAt: repeatAt || "None",
+    repeatAt: repeatAt || "One-time",
     lastDayToRegister: lastDayToRegister || 1,
     isActive: isActive ?? true,
     dayOfWeek: dayOfWeek || undefined,
+    tripDate: repeatAt === "One-time" ? new Date(tripDate) : undefined,
   });
 
   res.status(201).json({
@@ -76,11 +89,26 @@ const updateTripById = asyncHandler(async (req, res) => {
   }
   pictures = req.body.pictures;
 
-  const updatedTrip = await Trip.findByIdAndUpdate(
-    req.params.id,
-    { ...req.body, pictures },
-    { new: true }
-  );
+  // Validate tripDate is provided when repeatAt is One-time
+  if (req.body.repeatAt === "One-time" && !req.body.tripDate) {
+    res.status(400);
+    throw new Error("Trip date is required for one-time trips");
+  }
+
+  // Prepare update data
+  const updateData = {
+    ...req.body,
+    pictures,
+    // Convert tripDate to Date object if provided and repeatAt is One-time
+    tripDate:
+      req.body.repeatAt === "One-time" && req.body.tripDate
+        ? new Date(req.body.tripDate)
+        : undefined,
+  };
+
+  const updatedTrip = await Trip.findByIdAndUpdate(req.params.id, updateData, {
+    new: true,
+  });
 
   res.json({
     message: "Trip updated successfully",
@@ -233,6 +261,84 @@ const getTripApplications = asyncHandler(async (req, res) => {
   res.json(formattedApplications);
 });
 
+//@desc Delete images from a trip
+//@route DELETE /api/trips/:id/images
+//@access private/admin
+const deleteTripImages = asyncHandler(async (req, res) => {
+  const trip = await Trip.findById(req.params.id);
+  checkNotFound(trip, "Trip");
+
+  const { pictures } = req.body;
+
+  if (!pictures || !Array.isArray(pictures) || pictures.length === 0) {
+    res.status(400);
+    throw new Error("Please provide an array of image URLs to delete");
+  }
+
+  const updatedPictures = trip.pictures.filter(
+    (url) => !pictures.includes(url)
+  );
+
+  if (updatedPictures.length === 0) {
+    res.status(400);
+    throw new Error("Trip must have at least one image");
+  }
+
+  trip.pictures = updatedPictures;
+  await trip.save();
+
+  res.json({
+    message: "Images deleted successfully",
+    pictures: trip.pictures,
+  });
+});
+
+//@desc Reorder images in a trip
+//@route PUT /api/trips/:id/images/reorder
+//@access private/admin
+const reorderTripImages = asyncHandler(async (req, res) => {
+  const trip = await Trip.findById(req.params.id);
+  checkNotFound(trip, "Trip");
+
+  // Get the reordered image URLs from the request body
+  const { images } = req.body;
+
+  if (!images || !Array.isArray(images) || images.length === 0) {
+    res.status(400);
+    throw new Error("Please provide an array of image URLs");
+  }
+
+  // Validate that the images array contains all the same images as the trip
+  if (images.length !== trip.pictures.length) {
+    res.status(400);
+    throw new Error(
+      "The number of images doesn't match the trip's current images"
+    );
+  }
+
+  // Check that all images in the request exist in the trip's pictures
+  const allImagesExist = images.every((img) => trip.pictures.includes(img));
+  const allOriginalImagesIncluded = trip.pictures.every((img) =>
+    images.includes(img)
+  );
+
+  if (!allImagesExist || !allOriginalImagesIncluded) {
+    res.status(400);
+    throw new Error(
+      "The provided images don't match the trip's current images"
+    );
+  }
+
+  // Update the trip with the reordered images
+  trip.pictures = images;
+  await trip.save();
+
+  res.json({
+    message: "Images reordered successfully",
+    pictures: trip.pictures,
+  });
+});
+
 module.exports = {
   getTrips,
   getTripById,
@@ -242,4 +348,6 @@ module.exports = {
   getAvailableDates,
   applyForTrip,
   getTripApplications,
+  deleteTripImages,
+  reorderTripImages,
 };

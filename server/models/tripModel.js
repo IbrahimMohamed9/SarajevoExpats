@@ -24,8 +24,12 @@ const tripSchema = new mongoose.Schema({
   },
   repeatAt: {
     type: String,
-    enum: ["None", "Weekly", "Monthly"],
-    default: "None",
+    enum: ["One-time", "Weekly", "Monthly"],
+    default: "One-time",
+  },
+  tripDate: {
+    type: Date,
+    required: function() { return this.repeatAt === "One-time"; },
   },
   lastDayToRegister: {
     type: Number,
