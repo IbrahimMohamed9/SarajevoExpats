@@ -31,7 +31,6 @@ const Page = async () => {
         tableKey="trips/with-applications"
         subDataTitle="Applications"
         data={responseWithApplications.data}
-        dataTemp={dataTemp}
       />
     </>
   );
