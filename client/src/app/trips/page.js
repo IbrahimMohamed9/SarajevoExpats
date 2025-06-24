@@ -3,13 +3,13 @@ import axiosInstance from "@/config/axios";
 
 export const metadata = {
   metadataBase: new URL("https://sarajevoexpats.com"),
-  title: "Latest Trips from Sarajevo | Updates & Stories | Sarajevo Expats",
+  title: "Latest Tours from Sarajevo | Updates & Stories | Sarajevo Expats",
   description:
     "Stay informed with the latest news, updates, and stories from Sarajevo. Get insights into local events, community updates, and important developments affecting expat life in Bosnia's capital city.",
   keywords:
     "Sarajevo news, Sarajevo updates, expat news Sarajevo, local news Bosnia, Sarajevo events news, community updates Sarajevo, latest happenings Sarajevo, Sarajevo current events",
   openGraph: {
-    title: "Latest Trips from Sarajevo | Updates & Stories",
+    title: "Latest Tours from Sarajevo | Updates & Stories",
     description:
       "Stay informed with the latest news, updates, and stories from Sarajevo. Get insights into local events and community updates affecting expat life.",
     type: "website",
@@ -31,12 +31,12 @@ export const metadata = {
 
 const Trips = async () => {
   try {
-    const response = await axiosInstance.get("/api/trips");
+    const response = await axiosInstance.get("/trips");
     const trips = response.data;
 
     return (
       <div className="max-w-7xl mx-auto px-4">
-        <CardsTemplate data={trips} pageType="trips" type="trips" />
+        <CardsTemplate data={trips} pageType="tours" type="tours" />
       </div>
     );
   } catch (error) {

@@ -9,8 +9,8 @@ const getStaticRoutes = () => [
     href: "/news",
   },
   {
-    title: "Trips",
-    href: "/trips",
+    title: "Tours",
+    href: "/tours",
   },
   {
     title: "Events",
@@ -73,7 +73,7 @@ const routes = async () => {
         { href: "/dashboard/services", title: "Manage Services" },
         { href: "/dashboard/sponsors", title: "Manage Sponsors" },
         { href: "/dashboard/users", title: "Manage Users" },
-        { href: "/dashboard/trips", title: "Manage Trips" },
+        { href: "/dashboard/tours", title: "Manage Tours" },
       ],
     });
   }

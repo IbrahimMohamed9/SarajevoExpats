@@ -38,7 +38,7 @@ export default function DashboardLayout({ children }) {
     { text: "Sponsors", icon: <HandshakeIcon />, href: "/dashboard/sponsors" },
     { text: "Users", icon: <GroupIcon />, href: "/dashboard/users" },
     { text: "QaAs", icon: <QuestionAnswerIcon />, href: "/dashboard/qaas" },
-    { text: "Trips", icon: <ExploreIcon />, href: "/dashboard/trips" },
+    { text: "Tours", icon: <ExploreIcon />, href: "/dashboard/tours" },
   ];
 
   return (

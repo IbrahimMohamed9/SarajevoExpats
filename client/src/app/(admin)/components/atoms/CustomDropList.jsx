@@ -26,7 +26,7 @@ const CustomDropList = ({
     places: "placeTypes/with-places",
     services: "serviceTypes/with-services",
     users: "usersType",
-    trips: "trips",
+    tours: "tours",
   };
 
   const dayOfWeekOptions = [
