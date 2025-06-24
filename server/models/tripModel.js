@@ -42,6 +42,15 @@ const tripSchema = new mongoose.Schema({
     min: 0,
     description: "Number of days before the trip that registration closes",
   },
+  lastDateOfRegister: {
+    type: Date,
+    description: "The final date when registration closes",
+  },
+  isLastDayOfRegistration: {
+    type: Boolean,
+    default: false,
+    description: "Flag indicating if today is the last day of registration",
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -42,6 +42,13 @@
  *         lastDayToRegister:
  *           type: number
  *           description: Number of days before the trip that registration closes
+ *         lastDateOfRegister:
+ *           type: string
+ *           format: date-time
+ *           description: The final date when registration closes
+ *         isLastDayOfRegistration:
+ *           type: boolean
+ *           description: Flag indicating if today is the last day of registration
  *         createdAt:
  *           type: string
  *           format: date-time
@@ -55,6 +62,8 @@
  *         repeatAt: Weekly
  *         dayOfWeek: Saturday
  *         lastDayToRegister: 2
+ *         lastDateOfRegister: 2023-06-20T00:00:00.000Z
+ *         isLastDayOfRegistration: false
  *         createdAt: 2023-06-01T12:00:00.000Z
  *
  *     TripApplication:
@@ -153,6 +162,13 @@
  *                 enum: [None, Weekly, Monthly]
  *               lastDayToRegister:
  *                 type: number
+ *               lastDateOfRegister:
+ *                 type: string
+ *                 format: date-time
+ *                 description: The final date when registration closes
+ *               isLastDayOfRegistration:
+ *                 type: boolean
+ *                 description: Flag indicating if today is the last day of registration
  *               tripDate:
  *                 type: string
  *                 format: date-time
@@ -413,6 +429,13 @@
  *                   lastDayToRegister:
  *                     type: number
  *                     description: Number of days before the trip that registration closes
+ *                   lastDateOfRegister:
+ *                     type: string
+ *                     format: date
+ *                     description: The final date when registration closes
+ *                   isLastDayOfRegistration:
+ *                     type: boolean
+ *                     description: Flag indicating if today is the last day of registration
  *                   isActive:
  *                     type: boolean
  *                     description: Whether the trip is active or not

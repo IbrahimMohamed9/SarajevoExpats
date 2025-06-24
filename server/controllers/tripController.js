@@ -34,6 +34,8 @@ const createTrip = asyncHandler(async (req, res) => {
     content,
     repeatAt,
     lastDayToRegister,
+    lastDateOfRegister,
+    isLastDayOfRegistration,
     isActive,
     dayOfWeek,
     tripDate,
@@ -71,7 +73,9 @@ const createTrip = asyncHandler(async (req, res) => {
     price,
     pictures,
     repeatAt: repeatAt || "One-time",
-    lastDayToRegister: lastDayToRegister || 1,
+    lastDayToRegister: lastDayToRegister,
+    lastDateOfRegister,
+    isLastDayOfRegistration: isLastDayOfRegistration ?? false,
     isActive: isActive ?? true,
     dayOfWeek: dayOfWeek || undefined,
     tripDate: formattedTripDate,
@@ -143,8 +147,18 @@ const deleteTripById = asyncHandler(async (req, res) => {
   res.json({ message: "Trip and related applications deleted successfully" });
 });
 
-// Helper function to get available dates for a trip
 const getAvailableDatesHelper = (trip) => {
+  if (trip.lastDateOfRegister) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const lastDate = new Date(trip.lastDateOfRegister);
+    lastDate.setHours(0, 0, 0, 0);
+
+    if (today > lastDate) {
+      return [];
+    }
+  }
+
   if (!trip.isActive) {
     return [];
   }
@@ -154,8 +168,14 @@ const getAvailableDatesHelper = (trip) => {
 
   const minBookingDate = new Date(today);
 
-  const endBoundary = new Date(today);
-  endBoundary.setDate(endBoundary.getDate() + trip.lastDayToRegister);
+  let endBoundary;
+  if (trip.lastDateOfRegister) {
+    endBoundary = new Date(trip.lastDateOfRegister);
+    endBoundary.setHours(0, 0, 0, 0);
+  } else {
+    endBoundary = new Date(today);
+    endBoundary.setDate(endBoundary.getDate() + (trip.lastDayToRegister || 1));
+  }
 
   let currentDate = new Date(today);
 
@@ -363,6 +383,9 @@ const reorderTripImages = asyncHandler(async (req, res) => {
 const getTripsWithApplications = asyncHandler(async (req, res) => {
   const trips = await Trip.find().sort({ createdAt: -1 });
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const tripsWithApplications = await Promise.all(
     trips.map(async (trip) => {
       const applications = await TripApplication.find({
@@ -388,6 +411,13 @@ const getTripsWithApplications = asyncHandler(async (req, res) => {
         };
       });
 
+      let isLastDay = false;
+      if (trip.lastDateOfRegister) {
+        const lastDate = new Date(trip.lastDateOfRegister);
+        lastDate.setHours(0, 0, 0, 0);
+        isLastDay = lastDate.getTime() === today.getTime();
+      }
+
       return {
         _id: trip._id,
         title: trip.title,
@@ -396,6 +426,11 @@ const getTripsWithApplications = asyncHandler(async (req, res) => {
         pictures: trip.pictures,
         repeatAt: trip.repeatAt,
         lastDayToRegister: trip.lastDayToRegister,
+        lastDateOfRegister: trip.lastDateOfRegister
+          ? new Date(trip.lastDateOfRegister).toISOString().split("T")[0]
+          : null,
+        isLastDayOfRegistration:
+          isLastDay || trip.isLastDayOfRegistration || false,
         isActive: trip.isActive,
         dayOfWeek: trip.dayOfWeek,
         tripDate: trip.tripDate
