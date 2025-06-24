@@ -154,7 +154,7 @@ const CardsTemplate = ({ url, pageType, type, data }) => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className={`grid grid-cols-1 ${pageType !== "tours" ? "md:grid-cols-2 lg:grid-cols-3" : ""} gap-6`}>
         {cardsElements}
       </div>
     </div>
